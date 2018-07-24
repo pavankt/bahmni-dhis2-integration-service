@@ -26,5 +26,4 @@ public class TableMetaDataController {
     public List<String> getAllColumns(@RequestParam("tableName") String tableName) {
         return tableMetaDataService.getAllColumns(tableName);
     }
-
 }

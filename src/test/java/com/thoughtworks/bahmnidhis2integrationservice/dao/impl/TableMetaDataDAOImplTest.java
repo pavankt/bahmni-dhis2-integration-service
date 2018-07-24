@@ -35,7 +35,6 @@ public class TableMetaDataDAOImplTest {
     @Test
     public void shouldGetAllTheTables() {
         String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='public'";
-
         Map<String, Object> map1 = new HashMap<>();
         map1.put("table_name", "patient");
         Map<String, Object> map2 = new HashMap<>();
@@ -70,8 +69,8 @@ public class TableMetaDataDAOImplTest {
 
         when(jdbcTemplate.queryForList(sql)).thenReturn(results);
 
-        Assert.assertEquals(expected,tableMetaDataDAO.getAllColumns(tableName));
+        Assert.assertEquals(expected, tableMetaDataDAO.getAllColumns(tableName));
 
-        verify(jdbcTemplate,times(1)).queryForList(sql);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
     }
 }
