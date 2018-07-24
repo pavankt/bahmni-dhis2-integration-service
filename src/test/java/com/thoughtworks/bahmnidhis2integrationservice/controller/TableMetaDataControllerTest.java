@@ -39,4 +39,16 @@ public class TableMetaDataControllerTest {
         Assert.assertEquals(expectedList, allTable);
         verify(tableMetaDataService, times(1)).getAllTableNames();
     }
+    
+    @Test
+    public void getAllColumns() {
+        String tableName = "hts_table";
+
+        List<String> expectedList = Arrays.asList("UIC", "patient_name", "program_id");
+        when(tableMetaDataService.getAllColumns(tableName)).thenReturn(expectedList);
+        List<String> allColumns = tableMetaDataController.getAllColumns(tableName);
+
+        Assert.assertEquals(expectedList, allColumns);
+        verify(tableMetaDataService, times(1)).getAllColumns(tableName);
+    }
 }

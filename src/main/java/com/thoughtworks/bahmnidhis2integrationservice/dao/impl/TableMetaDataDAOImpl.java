@@ -22,4 +22,11 @@ public class TableMetaDataDAOImpl implements TableMetaDataDAO {
         return jdbcTemplate.queryForList(sql).stream().map(table -> table.get("table_name").toString())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> getAllColumns(String tableName){
+        String sql = String.format("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='public' AND TABLE_NAME='%s'",tableName);
+        return jdbcTemplate.queryForList(sql).stream().map(table -> table.get("column_name").toString())
+                .collect(Collectors.toList());
+    }
 }

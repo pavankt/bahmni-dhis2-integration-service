@@ -51,4 +51,27 @@ public class TableMetaDataDAOImplTest {
         Assert.assertEquals(expected, tableMetaDataDAO.getAllTableNames());
         verify(jdbcTemplate, times(1)).queryForList(sql);
     }
+
+    @Test
+    public void shouldReturnAllColumnNamesOfATable() {
+        String tableName = "hts_program";
+        String sql = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='public' AND TABLE_NAME='hts_program'";
+
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("column_name", "UIC");
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("column_name", "patient_name");
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("column_name", "program_id");
+
+        List<Map<String, Object>> results = Arrays.asList(map1, map2, map3);
+
+        List<String> expected = Arrays.asList("UIC", "patient_name", "program_id");
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(results);
+
+        Assert.assertEquals(expected,tableMetaDataDAO.getAllColumns(tableName));
+
+        verify(jdbcTemplate,times(1)).queryForList(sql);
+    }
 }

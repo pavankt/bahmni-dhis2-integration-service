@@ -17,4 +17,9 @@ public class TableMetaDataServiceImpl implements TableMetaDataService {
     public List<String> getAllTableNames() {
         return tableMetaDataDAO.getAllTableNames();
     }
+
+    @Override
+    public List<String> getAllColumns(String tableName) {
+        return tableMetaDataDAO.getAllColumns(tableName);
+    }
 }

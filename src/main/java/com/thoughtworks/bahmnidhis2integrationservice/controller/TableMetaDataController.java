@@ -4,6 +4,7 @@ import com.thoughtworks.bahmnidhis2integrationservice.service.impl.TableMetaData
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -19,4 +20,11 @@ public class TableMetaDataController {
     public List<String> getAllTableNames() {
         return tableMetaDataService.getAllTableNames();
     }
+
+    @GetMapping(value = "/getColumns")
+    @ResponseBody
+    public List<String> getAllColumns(@RequestParam("tableName") String tableName) {
+        return tableMetaDataService.getAllColumns(tableName);
+    }
+
 }

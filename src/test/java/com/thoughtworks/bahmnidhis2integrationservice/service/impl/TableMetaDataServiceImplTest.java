@@ -39,4 +39,15 @@ public class TableMetaDataServiceImplTest {
         verify(tableMetaDataDAO, times(1)).getAllTableNames();
         Assert.assertEquals(expectedList, allTable);
     }
+
+    @Test
+    public void shouldReturnListOfColumnNames() {
+        List<String> expectedList = Arrays.asList("UIC","patient_name","program_id");
+        when(tableMetaDataDAO.getAllColumns("hts_table")).thenReturn(expectedList);
+        List<String> allColumns= tableMetaDataService.getAllColumns("hts_table");
+
+        Assert.assertEquals(expectedList,allColumns);
+        verify(tableMetaDataDAO,times(1)).getAllColumns("hts_table");
+
+    }
 }
