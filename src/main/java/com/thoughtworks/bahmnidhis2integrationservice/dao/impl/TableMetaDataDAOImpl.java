@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class TableMetaDataDAOImpl implements TableMetaDataDAO {
 
     @Autowired
-    @Qualifier("martJdbcTemplate")
+    @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     @Override

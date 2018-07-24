@@ -9,13 +9,13 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DatabaseConfiguration {
-    @Bean(name = "martJdbcTemplate")
-    public JdbcTemplate martJdbcTemplate(DataSource dataSource) {
+    @Bean(name = "jdbcTemplate")
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean(name = "martNamedJdbcTemplate")
-    public NamedParameterJdbcTemplate martNamedJdbcTemplate(DataSource dataSource) {
+    @Bean(name = "namedJdbcTemplate")
+    public NamedParameterJdbcTemplate namedJdbcTemplate(DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 }
