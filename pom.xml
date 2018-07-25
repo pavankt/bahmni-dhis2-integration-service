@@ -130,7 +130,6 @@
 					<installDirectory>.</installDirectory>
 					<workingDirectory>.</workingDirectory>
 				</configuration>
-
 				<executions>
 					<execution>
 						<id>install node and npm</id>
