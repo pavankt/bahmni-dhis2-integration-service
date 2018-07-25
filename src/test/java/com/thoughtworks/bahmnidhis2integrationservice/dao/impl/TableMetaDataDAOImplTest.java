@@ -34,7 +34,7 @@ public class TableMetaDataDAOImplTest {
 
     @Test
     public void shouldGetAllTheTables() {
-        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES where table_schema='public'";
+        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='public'";
 
         Map<String, Object> map1 = new HashMap<>();
         map1.put("table_name", "patient");

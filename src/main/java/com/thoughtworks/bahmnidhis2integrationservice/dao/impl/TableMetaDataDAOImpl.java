@@ -18,7 +18,7 @@ public class TableMetaDataDAOImpl implements TableMetaDataDAO {
 
     @Override
     public List<String> getAllTableNames() {
-        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES where table_schema='public'";
+        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='public'";
         return jdbcTemplate.queryForList(sql).stream().map(table -> table.get("table_name").toString())
                 .collect(Collectors.toList());
     }
