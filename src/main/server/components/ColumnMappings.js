@@ -10,6 +10,10 @@ class ColumnMappings extends Component{
         this.getColumns = this.getColumns.bind(this);
     }
 
+    componentDidMount(){
+      this.getColumns();
+    }
+
     componentDidUpdate() {
         this.getColumns();
     }

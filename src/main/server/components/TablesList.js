@@ -36,6 +36,7 @@ class TablesList extends Component {
 
     onSelect(selectedTable) {
         this.setState({selectedTable});
+        this.refs.tablesSearch.value = selectedTable;
     }
 
     render() {
@@ -49,7 +50,7 @@ class TablesList extends Component {
                     onKeyUp={this.searchTables}
                 />
                 { (this.state.selectedTable == "") && <FilteredTables tables={this.state.filteredTables} onSelect={this.onSelect}/> }
-                <ColumnMappings selectedTable={this.state.selectedTable}/>
+                { (this.state.selectedTable) && <ColumnMappings selectedTable={this.state.selectedTable}/> }
             </div>
         );
     }
