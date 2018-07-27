@@ -1,4 +1,4 @@
-package com.thoughtworks.bahmnidhis2integrationservice;
+package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
