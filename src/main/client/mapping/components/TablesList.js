@@ -54,7 +54,7 @@ class TablesList extends Component {
     }
 }
 
-TablesList.protoTypes = {
+TablesList.propTypes = {
     "selectedTable": PropTypes.string.isRequired,
     "dispatch": PropTypes.func.isRequired,
     "tables": PropTypes.array.isRequired
