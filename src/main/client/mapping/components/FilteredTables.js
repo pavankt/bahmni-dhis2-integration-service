@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { selectedTable } from "../actions/MappingActions";
+import {connect} from 'react-redux';
+import {selectedTable} from "../actions/MappingActions";
 
 class FilteredTables extends Component {
     constructor() {
@@ -19,27 +19,28 @@ class FilteredTables extends Component {
             <li
                 key={tableName}
                 onClick={this.onSelect}
-                data-selected-table = {tableName}
             >{tableName}</li>)
         );
     }
 
     render() {
         return (
-            <ul type="none">
-                {this.getListItems()}
-            </ul>
+            <div>
+                <ul type="none">
+                    {this.getListItems()}
+                </ul>
+            </div>
         );
     }
 }
 
 FilteredTables.propTypes = {
-    "filteredTables" : PropTypes.array.isRequired,
+    "filteredTables": PropTypes.array.isRequired,
     "dispatch": PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-   "filteredTables" : state.filteredTables
+    "filteredTables": state.filteredTables
 });
 
 export default connect(mapStateToProps)(FilteredTables);
