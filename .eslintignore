@@ -6,5 +6,5 @@ node/**
 node_modules/**
 src/main/java/**
 src/test/java/**
-src/main/resources/static/bundle.js
+src/main/resources/static/**
 target/**
