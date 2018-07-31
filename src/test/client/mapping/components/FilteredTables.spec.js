@@ -1,23 +1,27 @@
+import 'jsdom-global/register';
 import React from 'react';
 import FilteredTables from '../../../../../src/main/client/mapping/components/FilteredTables';
+import * as MappingActions from '../../../../../src/main/client/mapping/actions/MappingActions';
 import thunkMiddleware from 'redux-thunk';
-import { shallow, mount, render, configure } from 'enzyme';
-import { applyMiddleware, createStore} from 'redux';
+import {configure, render, shallow, mount} from 'enzyme';
+import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
+import sinon from 'sinon';
+
+configure({adapter: new Adapter()});
 
 
-describe.only('FilteredTables', () => {
+describe('FilteredTables', () => {
 
     let rendered;
 
-    beforeEach(()=>{
+    beforeEach(() => {
         const store = createStore(() => ({
             "filteredTables": ["pat_identifier", "program"]
         }), applyMiddleware(thunkMiddleware));
 
-        rendered = render(
+        rendered = mount(
             <Provider store={store}>
                 <FilteredTables dispatch={() => {
                 }}/>
@@ -25,17 +29,40 @@ describe.only('FilteredTables', () => {
         );
     });
 
-    it('should have ul element with type non', () => {
+    it('should have ul element with type none', () => {
         expect(rendered.find('ul')).toHaveLength(1);
-        expect(rendered.find('ul')[0].attribs.type).toEqual('none');
+        expect(rendered.find('ul').props().type).toEqual('none');
     });
 
-    it('should have two children elements for ul', () => {
-        let ulElement = rendered.find('ul')[0];
-        let ulChildren = ulElement.children;
-        expect(ulElement.children).toHaveLength(2);
-        expect(ulChildren[0].children[0].data).toEqual('pat_identifier');
-        expect(ulChildren[1].children[0].data).toEqual('program');
+    describe("#li elements", () => {
+        it('should have two li elements', () => {
+            let liElements = rendered.find('li');
+            expect(liElements).toHaveLength(2);
+        });
+
+        it('should have filteredTables as li elements', () => {
+            let liElements = rendered.find('li');
+            expect(liElements.first().text()).toEqual('pat_identifier');
+            expect(liElements.at(1).text()).toEqual('program');
+        });
+
+        it('should dispatch selectedTable on click on li element', () => {
+            let sandBox = sinon.createSandbox();
+
+            let selectedTableMock = sandBox.mock(MappingActions).expects("selectedTable")
+                .withArgs("pat_identifier")
+                .returns({
+                        "type": "selectedTable",
+                        "selectedTable": "pat_identifier"
+                    }
+                );
+
+            rendered.find("li").first().simulate('click', {'target': {'dataset': {'tableName': 'pat_identifier'}}});
+
+            selectedTableMock.verify();
+
+            sandBox.restore();
+        });
     });
 
 });

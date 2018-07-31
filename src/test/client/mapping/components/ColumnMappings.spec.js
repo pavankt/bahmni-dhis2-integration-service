@@ -1,18 +1,19 @@
 import React from 'react';
 import ColumnMappings from '../../../../../src/main/client/mapping/components/ColumnMappings';
 import thunkMiddleware from 'redux-thunk';
-import { shallow, mount, render, configure } from 'enzyme';
-import { applyMiddleware, createStore} from 'redux';
+import {shallow, mount, render, configure} from 'enzyme';
+import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
+
+configure({adapter: new Adapter()});
 
 
-describe('A suite', function() {
+describe('ColumnMappings', function () {
 
     let rendered;
 
-    beforeEach(()=>{
+    beforeEach(() => {
         const store = createStore(() => ({
             "selectedTable": "patient_identifier",
             "selectedTableColumns": ["pat_id", "pat_name"]
@@ -31,7 +32,7 @@ describe('A suite', function() {
         expect(rendered.find('.DHIS2Element')).toHaveLength(2);
     });
 
-    it('should have table headers ',()=>{
+    it('should have table headers ', () => {
         let tableHeader = rendered.find('tr')[0];
         let tableHeaderFirstElement = tableHeader.children[0];
         let tableHeaderSecondElement = tableHeader.children[1];

@@ -177,4 +177,6 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{js,jsx}'],
 };

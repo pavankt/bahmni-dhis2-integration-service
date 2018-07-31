@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {selectedTable} from "../actions/MappingActions";
+import * as MappingActions from "../actions/MappingActions";
 
 class FilteredTables extends Component {
     constructor() {
@@ -11,7 +11,7 @@ class FilteredTables extends Component {
     }
 
     onSelect(_event) {
-        this.props.dispatch(selectedTable(_event.target.innerText))
+        this.props.dispatch(MappingActions.selectedTable(_event.target.dataset.tableName))
     }
 
     getListItems() {
@@ -19,13 +19,14 @@ class FilteredTables extends Component {
             <li
                 key={tableName}
                 onClick={this.onSelect}
+                data-table-name={tableName}
             >{tableName}</li>)
         );
     }
 
     render() {
         return (
-            <div>
+            <div className="tables-list">
                 <ul type="none">
                     {this.getListItems()}
                 </ul>
