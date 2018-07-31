@@ -4,11 +4,23 @@ import {BrowserRouter, Switch, Route, Link} from 'react-router-dom';
 import MappingDashboard from './mapping/mappingDashboard';
 import SyncDashboard from './sync/syncDashboard';
 import LogDashboard from './log/logDashboard';
+import Spinner from '../client/common/Spinner';
 
 class App extends React.Component {
+    constructor() {
+        super();
+        this.state = { loading: true };
+        this.setState = this.setState.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({ loading: false });
+    }
+
     render() {
         return (
             <div className="form-builder-link">
+                <Spinner show={this.state.loading} />
                 <Link to={'/mapping'}>
                     <i className="fa fa-map-signs"></i>
                     Manage Mapping

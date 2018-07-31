@@ -1,10 +1,23 @@
 import React from 'react';
-import {render} from 'react-dom';
+import Spinner from '../common/Spinner';
 
 export default class LogDashboard extends React.Component {
+    constructor() {
+        super();
+        this.state = {loading: true};
+        this.setState = this.setState.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({loading: false});
+    }
+
     render() {
         return (
-            <p>Logging Dashboard</p>
+            <div>
+                <Spinner show={this.state.loading}/>
+                <p>Logging Dashboard</p>
+            </div>
         );
     }
 }
