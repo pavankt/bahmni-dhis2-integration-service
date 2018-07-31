@@ -26,15 +26,21 @@ class ColumnMappings extends Component{
 
     renderColumns() {
         return this.props.columns.map(column =>
-            <tr key={column}><td>{column}</td><td><input type="text" className="DHIS2Element"/></td></tr>)
+            <tr key={column} className="mapping-row">
+                <td className="mapping-column-name">{column}</td>
+                <td className="mapping-data-element">
+                    <input type="text" className="mapping-input"/>
+                </td>
+            </tr>)
     }
 
     render(){
         return (
             <div>
-                <table className="column-mapping">
-                    <tr>
-                        <th>Bahmni Data Column</th><th>DHIS2 Data Element ID</th>
+                <table className="mapping-table">
+                    <tr className="mapping-row-header">
+                        <th className="mapping-header">Bahmni Data Column</th>
+                        <th className="mapping-header">DHIS2 Data Element ID</th>
                     </tr>
                     {this.renderColumns()}
                 </table>

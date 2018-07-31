@@ -45,8 +45,7 @@ class TablesList extends Component {
                     name="tableName"
                     placeholder="Enter table name"
                     onKeyUp={this.searchTables}
-                    className="table-input"
-                />
+                    className="table-input"/>
                 {(this.props.selectedTable.length === 0) && <FilteredTables/>}
                 {(this.props.selectedTable) && <ColumnMappings/>}
             </div>

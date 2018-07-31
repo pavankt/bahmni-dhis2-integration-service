@@ -1,0 +1,15 @@
+table tr th td{
+    border : 1px solid black;
+}
+
+table{
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 50px;
+}
+
+th {
+    ackground-color: rgb(204, 204, 204);
+    border: 2px solid black;
+    height: 30px;
+}

@@ -20,6 +20,7 @@ class FilteredTables extends Component {
                 key={tableName}
                 onClick={this.onSelect}
                 data-table-name={tableName}
+                className='table-name'
             >{tableName}</li>)
         );
     }
@@ -27,7 +28,9 @@ class FilteredTables extends Component {
     render() {
         return (
             <div className="tables-list">
-                <ul type="none">
+                <ul
+                    type="none"
+                    className='filtered-tables'>
                     {this.getListItems()}
                 </ul>
             </div>

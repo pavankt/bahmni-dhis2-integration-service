@@ -1,0 +1,58 @@
+.mapping-table {
+  border: 2px solid black;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.mapping-row-header {
+  border: 1px solid black;
+  height: 40px;
+}
+
+.mapping-row {
+  border: 1px solid black;
+  height: 35px;
+}
+
+.mapping-header {
+  background-color: rgb(204, 204, 204);
+  border: 2px solid black;
+  min-width: 300px;
+}
+
+.mapping-column-name {
+  background-color: rgb(238, 238, 238);
+  border: 1px solid black;
+}
+
+.mapping-data-element {
+  background-color: rgb(204, 204, 204);
+}
+
+.mapping-input {
+  width: 100%;
+  padding: 0;
+  border: 1px solid black;
+  height: 30px;
+}
+
+.filtered-tables {
+  margin-left: 170px;
+  font-family: 'sans-serif';
+  background-color: '#e4e3e375';
+  color: '#000000bd';
+}
+
+.table-name {
+  padding-top: 2px;
+  font-size: 15px;
+}
+
+.table-input {
+  width: 300px;
+  height: 25px;
+  border: 1px solid black;
+  font-size: 17px;
+  margin-top: 50px;
+  margin-left: 150px;
+}
