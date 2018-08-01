@@ -1,12 +1,15 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+var path = require('path');
 
 module.exports = {
-    entry: './src/main/client/index.js',
+    entry: [
+        './src/main/client/index.js',
+        './src/main/client/styles/styles.scss'
+    ],
     cache: true,
     output: {
-        path: __dirname,
-        filename: './src/main/resources/static/bundle.js'
+        path: path.resolve(__dirname, './src/main/resources/static/'),
+        filename: 'bundle.js'
     },
     plugins: [
         new ExtractTextPlugin('styles.css', {allChunks: true})
@@ -36,21 +39,6 @@ module.exports = {
                 test: /\.scss/,
                 use: ExtractTextPlugin.extract([
                     {loader: 'css-loader'},
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: () => ([
-                                autoprefixer({
-                                    browsers: [
-                                        'last 2 versions',
-                                        'Safari >= 7',
-                                        'ie >= 10',
-                                        'iOS >= 8'
-                                    ]
-                                })
-                            ])
-                        }
-                    },
                     {loader: 'resolve-url-loader'},
                     {
                         loader: 'sass-loader',
@@ -58,7 +46,7 @@ module.exports = {
                             sourceMap: true,
                             includePaths: [
                                 './node_modules',
-                                './src/client'
+                                './src/main/client'
                             ]
                         }
                     }
