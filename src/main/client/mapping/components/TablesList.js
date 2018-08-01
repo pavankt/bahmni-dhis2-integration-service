@@ -43,7 +43,7 @@ class TablesList extends Component {
                     type="text"
                     ref="tablesSearch"
                     name="tableName"
-                    placeholder="Enter table name"
+                    placeholder="Please select patient instance table"
                     onKeyUp={this.searchTables}
                     className="table-input"/>
                 {(this.props.selectedTable.length === 0) && <FilteredTables/>}
