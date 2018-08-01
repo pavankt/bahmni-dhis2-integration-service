@@ -28,15 +28,15 @@ describe('ColumnMappings', function () {
     });
 
     it('should have table element with two children', function () {
-        expect(rendered.find('.column-mapping')).toHaveLength(1);
-        expect(rendered.find('.DHIS2Element')).toHaveLength(2);
+        expect(rendered.find('.mapping-table')).toHaveLength(1);
+        expect(rendered.find('.mapping-column-name')).toHaveLength(2);
     });
 
     it('should have table headers ', () => {
         let tableHeader = rendered.find('tr')[0];
         let tableHeaderFirstElement = tableHeader.children[0];
         let tableHeaderSecondElement = tableHeader.children[1];
-        expect(tableHeaderFirstElement.children[0].data).toEqual('Bahmni Data Column');
+        expect(tableHeaderFirstElement.children[0].data).toEqual('Bahmni Data Point');
         expect(tableHeaderSecondElement.children[0].data).toEqual('DHIS2 Data Element ID');
     });
 

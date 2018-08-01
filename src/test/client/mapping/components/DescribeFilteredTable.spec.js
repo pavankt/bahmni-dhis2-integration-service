@@ -37,8 +37,8 @@ describe('DescribeFilteredTable', function () {
             </Provider>
         );
 
-        expect(rendered.find('.column-mapping')).toHaveLength(1);
-        expect(rendered.find('.tables-list')).toHaveLength(0);
+        expect(rendered.find('.mapping-table-div')).toHaveLength(1);
+            expect(rendered.find('.tables-list')).toHaveLength(0);
     });
 
     it('should render only Filtered component when selectedTable is empty', () => {
@@ -65,7 +65,7 @@ describe('DescribeFilteredTable', function () {
             </Provider>
         );
 
-        expect(rendered.find('.column-mapping')).toHaveLength(0);
+        expect(rendered.find('.mapping-table-div')).toHaveLength(0);
         expect(rendered.find('.tables-list')).toHaveLength(1);
     });
 
