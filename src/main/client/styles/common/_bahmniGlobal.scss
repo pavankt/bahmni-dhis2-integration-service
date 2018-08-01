@@ -154,32 +154,11 @@ input[type="checkbox"] {
   margin: 0 0 10px;
 }
 
-ul li a.back-btn, a.back-btn {
-  padding: 4px 10px 5px 10px;
-  /* stylelint-disable */
-  border: 1px solid #476b6b;
-  background: linear-gradient(to bottom, $bahmniSecondaryColor, #527a7a);
-  /* stylelint-enable */
-}
-
 ul li a.back-btn i, a.back-btn i {
   font-size: 30px;
   line-height: 1;
   margin: 0;
   padding: 0;
-}
-
-a.back-btn {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-  z-index: 1;
-  margin: 6px 6px 0 0;
-  color: $white;
-  border-left: 0;
-  float: left;
-  font-size: 16px;
-  border-radius: 3px;
 }
 
 a.back-btn:hover {
