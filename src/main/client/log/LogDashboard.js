@@ -13,9 +13,10 @@ export default class LogDashboard extends React.Component {
   }
 
   render() {
+      let { loading } = this.state;
     return (
       <div>
-        <Spinner show={this.state.loading} />
+        <Spinner show={loading} />
         <p>Logging Dashboard</p>
       </div>
     );

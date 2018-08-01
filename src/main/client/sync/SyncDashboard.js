@@ -13,9 +13,10 @@ export default class SyncDashboard extends React.Component {
   }
 
   render() {
+      let { loading } = this.state;
     return (
       <div>
-        <Spinner show={this.state.loading} />
+        <Spinner show={loading} />
         <p>Sync Dashboard</p>
       </div>
 

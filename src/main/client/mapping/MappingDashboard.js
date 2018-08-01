@@ -1,7 +1,6 @@
 import React from 'react';
 import Spinner from '../common/Spinner';
-import TablesList from './components/DescribeFilteredTable.js';
-// import DescribeFilteredTable from ''
+import DescribeFilteredTable from './components/DescribeFilteredTable.js';
 
 export default class MappingDashboard extends React.Component {
   constructor() {
@@ -15,10 +14,11 @@ export default class MappingDashboard extends React.Component {
   }
 
   render() {
+      let { loading } = this.state;
     return (
       <div>
-        <Spinner show={this.state.loading} />
-        <TablesList />
+        <Spinner show={loading} />
+        <DescribeFilteredTable />
       </div>
     );
   }
