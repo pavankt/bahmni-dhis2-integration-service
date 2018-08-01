@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as MappingActions from "../actions/MappingActions";
 
-class FilteredTables extends Component {
+class DisplayTableNames extends Component {
     constructor() {
         super();
         this.onSelect = this.onSelect.bind(this);
@@ -38,7 +38,7 @@ class FilteredTables extends Component {
     }
 }
 
-FilteredTables.propTypes = {
+DisplayTableNames.propTypes = {
     "filteredTables": PropTypes.array.isRequired,
     "dispatch": PropTypes.func.isRequired
 };
@@ -47,4 +47,4 @@ const mapStateToProps = (state) => ({
     "filteredTables": state.filteredTables
 });
 
-export default connect(mapStateToProps)(FilteredTables);
+export default connect(mapStateToProps)(DisplayTableNames);

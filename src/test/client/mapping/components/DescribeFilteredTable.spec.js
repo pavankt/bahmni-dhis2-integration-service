@@ -1,6 +1,6 @@
 import 'jsdom-global/register';
 import React from 'react';
-import TablesList from '../../../../../src/main/client/mapping/components/TablesList';
+import DescribeFilteredTable from '../../../../main/client/mapping/components/DescribeFilteredTable';
 import thunkMiddleware from 'redux-thunk';
 import {render} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
@@ -10,40 +10,9 @@ import {configure} from "enzyme/build/index";
 
 configure({adapter: new Adapter()});
 
-describe('TablesList', function () {
+describe('DescribeFilteredTable', function () {
 
     let rendered;
-
-    // it("should return empty array when table name less than 3 characters",()=>{
-    //     let response = [
-    //         "patient_identifier",
-    //         "hiv_self_testing",
-    //         "bed_patient_assignment_default",
-    //         "patient_encounter_details_default",
-    //         "patient_allergy_status_default"
-    //     ];
-    //
-    //     const promise = Promise.resolve(response);
-    //         let stubFetch = sinon.stub(window, 'fetch');
-    //         stubFetch.returnsPromise().resolves([]);
-    //
-    //     let mockAllTables = sinon.mock(MappingActions).expects('allTables')
-    //         .withArgs(response)
-    //         .returns({
-    //            "type": "allTables",
-    //            "allTables": response
-    //         });
-    //
-    //     rendered = mount(
-    //         <Provider store={store}>
-    //             <TablesList dispatch={() => {}}/>
-    //         </Provider>
-    //     );
-    //
-    //     promise.then(() => {
-    //         mockAllTables.verify();
-    //     })
-    // });
 
     it('should render only ColumnMapping component when selectedTable have value', () => {
         const store = createStore(() => ({
@@ -63,7 +32,7 @@ describe('TablesList', function () {
 
         rendered = render(
             <Provider store={store}>
-                <TablesList dispatch={() => {
+                <DescribeFilteredTable dispatch={() => {
                 }}/>
             </Provider>
         );
@@ -91,7 +60,7 @@ describe('TablesList', function () {
 
         rendered = render(
             <Provider store={store}>
-                <TablesList dispatch={() => {
+                <DescribeFilteredTable dispatch={() => {
                 }}/>
             </Provider>
         );
@@ -119,7 +88,7 @@ describe('TablesList', function () {
 
         rendered = render(
             <Provider store={store}>
-                <TablesList dispatch={() => {
+                <DescribeFilteredTable dispatch={() => {
                 }}/>
             </Provider>
         );

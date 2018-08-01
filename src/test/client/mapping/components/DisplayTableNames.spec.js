@@ -1,6 +1,6 @@
 import 'jsdom-global/register';
 import React from 'react';
-import FilteredTables from '../../../../../src/main/client/mapping/components/FilteredTables';
+import DisplayTableNames from '../../../../main/client/mapping/components/DisplayTableNames';
 import * as MappingActions from '../../../../../src/main/client/mapping/actions/MappingActions';
 import thunkMiddleware from 'redux-thunk';
 import {configure, render, shallow, mount} from 'enzyme';
@@ -12,7 +12,7 @@ import sinon from 'sinon';
 configure({adapter: new Adapter()});
 
 
-describe('FilteredTables', () => {
+describe('DisplayTableNames', () => {
 
     let rendered;
 
@@ -23,7 +23,7 @@ describe('FilteredTables', () => {
 
         rendered = mount(
             <Provider store={store}>
-                <FilteredTables dispatch={() => {
+                <DisplayTableNames dispatch={() => {
                 }}/>
             </Provider>
         );

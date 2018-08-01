@@ -36,10 +36,11 @@ class ColumnMappings extends Component{
 
     render(){
         return (
-            <div>
+            <div className="mapping-table-div">
+                <label>Please provide DHIS2 data element mapping for patient instance</label>
                 <table className="mapping-table">
                     <tr className="mapping-row-header">
-                        <th className="mapping-header">Bahmni Data Column</th>
+                        <th className="mapping-header">Bahmni Data Point</th>
                         <th className="mapping-header">DHIS2 Data Element ID</th>
                     </tr>
                     {this.renderColumns()}

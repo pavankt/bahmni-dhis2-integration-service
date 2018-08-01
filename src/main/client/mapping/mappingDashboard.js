@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from '../common/Spinner';
-import TablesList from './components/TablesList.js';
-// import TablesList from ''
+import TablesList from './components/DescribeFilteredTable.js';
+// import DescribeFilteredTable from ''
 
 export default class MappingDashboard extends React.Component {
     constructor() {

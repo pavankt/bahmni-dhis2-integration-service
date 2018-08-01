@@ -1,6 +1,9 @@
 .mapping-table {
   border: 2px solid black;
-  margin: auto;
+  margin-top: 5px;
+}
+
+.mapping-table-div{
   margin-top: 50px;
 }
 
@@ -22,11 +25,13 @@
 
 .mapping-column-name {
   background-color: rgb(238, 238, 238);
+  padding-left: 10px;
   border: 1px solid black;
 }
 
 .mapping-data-element {
-  background-color: rgb(204, 204, 204);
+  background-color: rgb(238, 238, 238);
+  padding: 5px;
 }
 
 .mapping-input {
@@ -44,15 +49,20 @@
 }
 
 .table-name {
-  padding-top: 2px;
-  font-size: 15px;
+  padding-top: 5px;
+  font-size: 17px;
 }
 
 .table-input {
-  width: 300px;
-  height: 25px;
+  width: 430px;
+  height: 38px;
+  padding-left: 5px;
   border: 1px solid black;
   font-size: 17px;
+  margin-top: 5px;
+}
+
+.mapping-div{
   margin-top: 50px;
   margin-left: 150px;
 }

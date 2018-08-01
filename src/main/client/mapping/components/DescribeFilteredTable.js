@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import FilteredTables from './FilteredTables';
+import DisplayTableNames from './DisplayTableNames';
 import ColumnMappings from './ColumnMappings';
 import * as MappingActions from '../actions/MappingActions';
 
-class TablesList extends Component {
+class DescribeFilteredTable extends Component {
     constructor() {
         super();
         this.searchTables = this.searchTables.bind(this);
@@ -38,22 +38,23 @@ class TablesList extends Component {
 
     render() {
         return (
-            <div>
+            <div className="mapping-div">
+                <label>Please select patient instance table</label>
                 <input
                     type="text"
                     ref="tablesSearch"
                     name="tableName"
-                    placeholder="Please select patient instance table"
+                    placeholder="Enter at least 3 characters of the table name to search"
                     onKeyUp={this.searchTables}
                     className="table-input"/>
-                {(this.props.selectedTable.length === 0) && <FilteredTables/>}
+                {(this.props.selectedTable.length === 0) && <DisplayTableNames/>}
                 {(this.props.selectedTable) && <ColumnMappings/>}
             </div>
         );
     }
 }
 
-TablesList.propTypes = {
+DescribeFilteredTable.propTypes = {
     "selectedTable": PropTypes.string.isRequired,
     "dispatch": PropTypes.func.isRequired,
     "tables": PropTypes.array.isRequired
@@ -65,4 +66,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default connect(mapStateToProps)(TablesList)
+export default connect(mapStateToProps)(DescribeFilteredTable)
