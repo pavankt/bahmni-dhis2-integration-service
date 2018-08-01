@@ -4,22 +4,22 @@ import TablesList from './components/DescribeFilteredTable.js';
 // import DescribeFilteredTable from ''
 
 export default class MappingDashboard extends React.Component {
-    constructor() {
-        super();
-        this.state = {loading: true};
-        this.setState = this.setState.bind(this);
-    }
+  constructor() {
+    super();
+    this.state = { loading: true };
+    this.setState = this.setState.bind(this);
+  }
 
-    componentDidMount() {
-        this.setState({loading: false});
-    }
+  componentDidMount() {
+    this.setState({ loading: false });
+  }
 
-    render() {
-        return (
-            <div>
-                <Spinner show={this.state.loading}/>
-                <TablesList/>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Spinner show={this.state.loading} />
+        <TablesList />
+      </div>
+    );
+  }
 }
