@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 const Spinner = (props) => {
   if (props.show) {
-    return (<div className="overlay" />);
+    return (
+        <div className="overlay" />
+    );
   }
   return null;
 };

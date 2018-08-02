@@ -1,7 +1,10 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 var path = require('path');
 
 module.exports = {
+    devtool: 'source-map',
     entry: [
         './src/main/client/index.js',
         './src/main/client/styles/styles.scss'
@@ -12,7 +15,18 @@ module.exports = {
         filename: 'bundle.js'
     },
     plugins: [
-        new ExtractTextPlugin('styles.css', {allChunks: true})
+        new ExtractTextPlugin('styles.css', {allChunks: true}),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, './src/main/client/styles/fonts'),
+                to: path.join(__dirname, './src/main/resources/static/fonts'),
+            },
+            {
+                from: path.join(__dirname, './src/main/client/styles/images'),
+                to: path.join(__dirname, './src/main/resources/static/images'),
+            }
+        ], { copyUnmodified: true }
+        )
     ],
     module: {
         rules: [
