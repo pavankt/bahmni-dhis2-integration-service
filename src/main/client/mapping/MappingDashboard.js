@@ -1,25 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Spinner from '../common/Spinner';
 import DescribeFilteredTable from './components/DescribeFilteredTable.js';
+import * as CommonActions from '../common/Actions';
 
-export default class MappingDashboard extends React.Component {
-  constructor() {
-    super();
-    this.state = { loading: true };
-    this.setState = this.setState.bind(this);
-  }
+class MappingDashboard extends Component {
+    componentWillMount() {
+        this.props.dispatch(CommonActions.hideSpinner(false));
+    }
 
-  componentDidMount() {
-    this.setState({ loading: false });
-  }
+    componentDidMount() {
+        this.props.dispatch(CommonActions.hideSpinner());
+    }
 
   render() {
-      let { loading } = this.state;
     return (
       <div>
-        <Spinner show={loading} />
+        <Spinner hide={this.props.hideSpinner} />
         <DescribeFilteredTable />
       </div>
     );
   }
 }
+
+MappingDashboard.propTypes = {
+  hideSpinner : PropTypes.bool,
+    dispatch : PropTypes.func.isRequired
+};
+
+const mapStoreToProps = (store) => ({
+  hideSpinner : store.hideSpinner
+});
+
+export default connect(mapStoreToProps)(MappingDashboard);
