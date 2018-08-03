@@ -1,10 +1,13 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
-import com.thoughtworks.bahmnidhis2integrationservice.AbstractBaseBatchIT;
-import org.junit.After;
-import org.junit.Before;
+import com.thoughtworks.bahmnidhis2integrationservice.BahmniDhis2IntegrationServiceApplication;
+import com.thoughtworks.bahmnidhis2integrationservice.SystemPropertyActiveProfileResolver;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,23 +15,20 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TableMetaDataControllerIT extends AbstractBaseBatchIT {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = BahmniDhis2IntegrationServiceApplication.class)
+@ActiveProfiles(profiles = "test", resolver = SystemPropertyActiveProfileResolver.class)
+public class TableMetaDataControllerIT{
 
     @Autowired
     private TableMetaDataController tableMetaDataController;
-
-    //TODO : Integration tests are failing in the absence of @Before
-    @Override
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void shouldReturnAllTableNames() {
         List<String> allTableNames = tableMetaDataController.getAllTableNames();
 
-        int expectedTablesCount = 2;
-        List<String> expectedTables = Arrays.asList("person_details_default", "patient_identifier");
+        int expectedTablesCount = 3;
+        List<String> expectedTables = Arrays.asList("person_details_default", "patient_identifier", "mapping");
 
         assertEquals(expectedTablesCount, allTableNames.size());
         assertTrue(expectedTables.containsAll(allTableNames));
@@ -43,10 +43,5 @@ public class TableMetaDataControllerIT extends AbstractBaseBatchIT {
 
         assertEquals(expectedColumnCount, tableColumns.size());
         assertTrue(expectedColumn.containsAll(tableColumns));
-    }
-
-    @Override
-    @After
-    public void tearDown() throws Exception {
     }
 }

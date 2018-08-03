@@ -1,11 +1,10 @@
 import 'jsdom-global/register';
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
-import { render } from 'enzyme';
-import { applyMiddleware, createStore } from 'redux';
-import { Provider } from 'react-redux';
+import {render, configure} from 'enzyme';
+import {applyMiddleware, createStore} from 'redux';
+import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure } from 'enzyme/build/index';
 import DescribeFilteredTable from '../../../../main/client/mapping/components/DescribeFilteredTable';
 
 configure({ adapter: new Adapter() });

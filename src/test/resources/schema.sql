@@ -29,3 +29,16 @@ CREATE TABLE "public"."patient_identifier" (
 	"PREP_OI_Identifier" Text,
 	PRIMARY KEY ( "patient_id" )
 );
+
+DROP TABLE IF EXISTS mapping CASCADE;
+CREATE TABLE "public"."mapping"(
+  mapping_name text,
+  program_name text,
+  category text,
+  lookup_table text,
+  mapping_json json,
+  created_by text,
+  created_date date,
+  modifed_by text,
+  modifed_date date
+);
