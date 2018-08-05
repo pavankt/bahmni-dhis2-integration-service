@@ -12,7 +12,6 @@ class MappingDashboard extends React.Component {
             loading: true,
             redirectToAddMapping: false
         };
-        this.setState = this.setState.bind(this);
         this.renderMappingNames = this.renderMappingNames.bind(this);
     }
 
@@ -28,48 +27,48 @@ class MappingDashboard extends React.Component {
     renderMappingNames() {
         return (
             this.props.mappingNames.map(mappingName => (
-              <tr key={mappingName}>
-                <td>
-                  {mappingName}
-                </td>
-                <td>
-                  <button className="center">
+                <tr key={mappingName}>
+                    <td>
+                        {mappingName}
+                    </td>
+                    <td>
+                        <button className="center">
                             Edit
-                  </button>
-                </td>
-              </tr>
+                        </button>
+                    </td>
+                </tr>
             ))
         );
     }
 
     render() {
         if (this.state.redirectToAddMapping) {
-            return <Redirect to='/mapping/addEditMappings' />
+            return <Redirect to='/mapping/addEditMappings'/>
         }
         return (
-          <div>
-            <Spinner show={this.state.loading} />
-            <div className="center mapping-names-table">
-              <button
-                className="add-mapping-button"
-                onClick={() => {
+            <div>
+                <Spinner show={this.state.loading}/>
+                <div className="center mapping-names-table">
+                    <button
+                        className="add-mapping-button"
+                        onClick={() => {
                             this.setState({redirectToAddMapping: true})
                         }}
-              >
+                    >
                         Add Mapping
-              </button>
-              <section className="all-mappings-sections">
-                <h2 className="section-title">
-                    Current mappings
-                </h2>
-                <table className="mapping-table">
-                  <tbody>
-                    {this.renderMappingNames()}
-                  </tbody>
-                </table>
-              </section>
+                    </button>
+                    <section className="all-mappings-sections">
+                        <h2 className="section-title">
+                            Current mappings
+                        </h2>
+                        <table className="mapping-table">
+                            <tbody>
+                            {this.renderMappingNames()}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
             </div>
-          </div>
         );
     }
 }
