@@ -9,14 +9,14 @@ configure({ adapter: new Adapter() });
 describe('Spinner Component', () => {
     it('should render spinner', () => {
         const wrapper = mount(
-          <Spinner hide />
+          <Spinner hide={false}/>
         );
         expect(wrapper.find('div')).toHaveLength(1);
     });
 
     it('should not render spinner', () => {
         const wrapper = mount(
-          <Spinner hide={false} />
+          <Spinner hide={true} />
         );
         expect(wrapper.find('div')).toHaveLength(0);
     });

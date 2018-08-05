@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from './common/Spinner';
-import * as CommonActions from './common/Actions';
+import * as Actions from './common/Actions';
 
 class App extends Component {
     componentWillMount() {
-        this.props.dispatch(CommonActions.hideSpinner(false));
+        this.props.dispatch(Actions.hideSpinner(false));
     }
 
     componentDidMount() {
-        this.props.dispatch(CommonActions.hideSpinner());
+        this.props.dispatch(Actions.hideSpinner());
     }
 
     render() {

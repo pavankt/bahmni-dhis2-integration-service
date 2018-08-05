@@ -1,4 +1,4 @@
-export function hideSpinner(state=true, action = {}) {
+export function hideSpinner(state = true, action = {}) {
     switch(action.type) {
         case 'hideSpinner' :
             return action.hideSpinner;
