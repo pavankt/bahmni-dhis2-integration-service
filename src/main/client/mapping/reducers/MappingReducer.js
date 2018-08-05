@@ -33,3 +33,12 @@ export function selectedTableColumns(state = [], action = {}) {
       return state;
   }
 }
+
+export function allMappingNames(state = [], action = {}){
+    switch (action.type) {
+        case 'renderedMappingNames':
+            return action.renderedMappingNames;
+        default:
+            return state;
+    }
+}

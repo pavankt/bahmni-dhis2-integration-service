@@ -3,14 +3,16 @@ import {
   filteredTables,
   selectedTable,
   allTables,
-  selectedTableColumns
+  selectedTableColumns,
+  allMappingNames
 } from './mapping/reducers/MappingReducer';
 
 const reducers = combineReducers({
   filteredTables,
   selectedTable,
   allTables,
-  selectedTableColumns
+  selectedTableColumns,
+  allMappingNames
 });
 
 export default reducers;

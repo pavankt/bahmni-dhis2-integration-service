@@ -25,3 +25,11 @@ export function tableColumns(columns = []) {
     selectedTableColumns: columns
   };
 }
+
+
+export function allMappingNames(mappingNames = []){
+  return{
+    type: 'renderedMappingNames',
+    renderedMappingNames: mappingNames
+  }
+}

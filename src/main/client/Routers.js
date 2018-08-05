@@ -5,6 +5,7 @@ import LogDashboard from "./log/LogDashboard";
 import MappingDashboard from "./mapping/MappingDashboard";
 import SyncDashboard from "./sync/SyncDashboard";
 import App from './App';
+import DescribeFilteredTable from "./mapping/components/DescribeFilteredTable";
 
 export function routes() {
 return (
@@ -15,6 +16,7 @@ return (
       <Route exact path="/mapping" component={MappingDashboard} />
       <Route exact path="/sync" component={SyncDashboard} />
       <Route exact path="/logs" component={LogDashboard} />
+      <Route exact path="/mapping/addEditMappings" component={DescribeFilteredTable} />
     </div>
   </BrowserRouter>);
 }

@@ -17,7 +17,9 @@ export default class SyncDashboard extends React.Component {
     return (
       <div>
         <Spinner show={loading} />
-        <p>Sync Dashboard</p>
+        <p>
+            Sync Dashboard
+        </p>
       </div>
 
     );
