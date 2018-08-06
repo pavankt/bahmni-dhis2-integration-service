@@ -124,6 +124,70 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<executions>
+					<execution>
+						<id>generate-rpm</id>
+						<goals>
+							<goal>rpm</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<group>Application/Collectors</group>
+					<packager>bahmnidhis2integration</packager>
+					<prefix>/opt/bahmni-dhis2-integration-service</prefix>
+                    <mappings>
+                    <mapping>
+                        <directory>/opt/bahmni-dhis2-integration-service</directory>
+                        <filemode>755</filemode>
+                        <username>bahmni</username>
+                        <sources>
+                            <source>
+                                <location>target/classes</location>
+                            </source>
+                        </sources>
+                    </mapping>
+       	            <mapping>
+                        <directory>/opt/bahmni-dhis2-integration-service/lib</directory>
+                        <filemode>755</filemode>
+                        <username>bahmni</username>
+                        <sources>
+                            <source>
+                                <location>target/bahmni-dhis2-integration-service-0.0.1-SNAPSHOT.jar</location>
+                            </source>
+                        </sources>
+                    </mapping>	
+		    <mapping>
+                        <directory>/opt/bahmni-dhis2-integration-service/conf</directory>
+                        <filemode>755</filemode>
+                        <username>bahmni</username>
+                        <sources>
+                           <source>
+                                <location>conf/liquibase.xml</location>
+                            </source>
+                        </sources>
+                    </mapping>
+                    </mappings>
+                    <preinstallScriptlet>
+						<script>echo "installing ${project.name} now"</script>
+					</preinstallScriptlet>
+					<postinstallScriptlet>
+						<scriptFile>scripts/builds/postinstall.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
+						<filter>true</filter>
+					</postinstallScriptlet>
+					<preremoveScriptlet>
+						<scriptFile>scripts/builds/postuninstall.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
+					</preremoveScriptlet>
+				</configuration>
+			</plugin>			
+
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
