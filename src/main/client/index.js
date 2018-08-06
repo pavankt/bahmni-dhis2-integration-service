@@ -5,6 +5,7 @@ import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducers from './Reducers';
 import {routes} from './Routers';
+import 'babel-polyfill';
 
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 

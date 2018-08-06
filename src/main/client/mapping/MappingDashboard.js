@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Spinner from '../common/Spinner';
 import {allMappingNames} from './actions/MappingActions';
+import * as CommonActions from '../common/Actions';
 
 class MappingDashboard extends React.Component {
     constructor() {
@@ -15,6 +16,10 @@ class MappingDashboard extends React.Component {
         this.renderMappingNames = this.renderMappingNames.bind(this);
     }
 
+    componentWillMount() {
+        this.props.dispatch(CommonActions.hideSpinner(false));
+    }
+
     componentDidMount() {
         fetch('/getMappingNames')
             .then(res => res.json())
@@ -22,6 +27,7 @@ class MappingDashboard extends React.Component {
                 this.props.dispatch(allMappingNames(result));
             });
         this.setState({loading: false});
+        this.props.dispatch(CommonActions.hideSpinner());
     }
 
     renderMappingNames() {
@@ -47,7 +53,7 @@ class MappingDashboard extends React.Component {
         }
         return (
             <div>
-                <Spinner show={this.state.loading}/>
+                <Spinner hide={this.props.hideSpinner} />
                 <div className="center mapping-names-table">
                     <button
                         className="add-mapping-button"
@@ -74,12 +80,14 @@ class MappingDashboard extends React.Component {
 }
 
 MappingDashboard.propTypes = {
+    hideSpinner : PropTypes.bool,
     mappingNames: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    mappingNames: state.allMappingNames
+    mappingNames: state.allMappingNames,
+    hideSpinner : state.hideSpinner
 });
 
 export default connect(mapStateToProps)(MappingDashboard);
