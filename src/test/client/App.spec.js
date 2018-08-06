@@ -5,11 +5,11 @@ import {
 } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Adapter from 'enzyme-adapter-react-16';
-import App from "../../main/client/App";
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import sinon from 'sinon';
+import App from "../../main/client/App";
 import * as Actions from '../../main/client/common/Actions';
 
 configure({ adapter: new Adapter() });
@@ -26,7 +26,7 @@ describe('App', () => {
         rendered = render(
           <Router>
             <Provider store={store}>
-                <App dispatch={() => {}}/>
+              <App dispatch={() => {}} />
             </Provider>
           </Router>
         );
@@ -70,11 +70,11 @@ describe('App', () => {
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
-            <Router>
-                <Provider store={store}>
-                    <App dispatch={() => {}}/>
-                </Provider>
-            </Router>
+          <Router>
+            <Provider store={store}>
+              <App dispatch={() => {}} />
+            </Provider>
+          </Router>
         );
 
         expect(rendered.find('.overlay')).toHaveLength(0);
@@ -97,11 +97,11 @@ describe('App', () => {
             .returns({ type: '' });
 
         mount(
-            <Router>
-                <Provider store={store}>
-                    <App dispatch={() => {}}/>
-                </Provider>
-            </Router>
+          <Router>
+            <Provider store={store}>
+              <App dispatch={() => {}} />
+            </Provider>
+          </Router>
         );
 
         spinnerFalse.verify();

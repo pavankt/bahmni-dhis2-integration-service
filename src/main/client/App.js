@@ -39,7 +39,7 @@ class App extends Component {
 
 
 App.propTypes = {
-    hideSpinner : PropTypes.bool,
+    hideSpinner : PropTypes.bool.isRequired,
     dispatch : PropTypes.func.isRequired
 };
 

@@ -11,6 +11,18 @@ class DescribeFilteredTable extends Component {
         this.searchTables = this.searchTables.bind(this);
     }
 
+    componentDidMount() {
+        fetch('/getTables')
+            .then(res => res.json())
+            .then(result => this.props.dispatch(MappingActions.allTables(result)));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.selectedTable !== this.props.selectedTable) {
+            this.refs.tablesSearch.value = nextProps.selectedTable;
+        }
+    }
+
     searchTables() {
         const searchText = this.refs.tablesSearch.value;
         if (searchText.length === 0) {
@@ -24,35 +36,23 @@ class DescribeFilteredTable extends Component {
         }
     }
 
-    componentDidMount() {
-        fetch('/getTables')
-            .then(res => res.json())
-            .then(result => this.props.dispatch(MappingActions.allTables(result)));
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedTable !== this.props.selectedTable) {
-            this.refs.tablesSearch.value = nextProps.selectedTable;
-        }
-    }
-
     render() {
         return (
-            <div className="mapping-div">
-                <label id="selectPatient">
+          <div className="mapping-div">
+            <span>
                     Please select patient instance table
-                </label>
-                <input
-                    type="text"
-                    ref="tablesSearch"
-                    name="tableName"
-                    placeholder="Enter at least 3 characters of the table name to search"
-                    onKeyUp={this.searchTables}
-                    className="table-input"
-                />
-                {(this.props.selectedTable.length === 0) && <DisplayTableNames/>}
-                {(this.props.selectedTable) && <ColumnMappings/>}
-            </div>
+            </span>
+            <input
+              type="text"
+              ref="tablesSearch"
+              name="tableName"
+              placeholder="Enter at least 3 characters of the table name to search"
+              onKeyUp={this.searchTables}
+              className="table-input"
+            />
+            {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
+            {(this.props.selectedTable) && <ColumnMappings />}
+          </div>
         );
     }
 }

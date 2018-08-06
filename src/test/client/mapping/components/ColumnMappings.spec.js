@@ -21,11 +21,11 @@ describe('ColumnMappings', () => {
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
-            <Provider store={store}>
-                <ColumnMappings dispatch={() => {
+          <Provider store={store}>
+            <ColumnMappings dispatch={() => {
                 }}
-                />
-            </Provider>
+            />
+          </Provider>
         );
     });
 

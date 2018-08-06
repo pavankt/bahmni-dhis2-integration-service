@@ -6,7 +6,7 @@ const Spinner = (props) => {
         return null;
     }
     return (
-        <div className="overlay"/>
+      <div className="overlay" />
     );
 };
 

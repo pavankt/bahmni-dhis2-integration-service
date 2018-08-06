@@ -40,7 +40,9 @@ class ColumnMappings extends Component {
   render() {
     return (
       <div className="mapping-table-div">
-        <label>Please provide DHIS2 data element mapping for patient instance</label>
+        <span>
+Please provide DHIS2 data element mapping for patient instance
+        </span>
         <table className="mapping-table">
           <tr className="mapping-row-header">
             <th className="mapping-header">
