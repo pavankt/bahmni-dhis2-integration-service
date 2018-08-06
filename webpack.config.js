@@ -6,6 +6,7 @@ var path = require('path');
 module.exports = {
     devtool: 'source-map',
     entry: [
+        'babel-polyfill',
         './src/main/client/index.js',
         './src/main/client/styles/styles.scss'
     ],
