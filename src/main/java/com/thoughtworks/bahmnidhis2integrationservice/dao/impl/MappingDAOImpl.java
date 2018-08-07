@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,6 +15,22 @@ public class MappingDAOImpl implements MappingDAO {
     @Autowired
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
+
+    private final static int SUCCESS = 1;
+
+    @Override
+    public String saveMapping(String mappingName, String category, String lookupTable, String mappingJson) throws Exception {
+        String sql = String.format("INSERT INTO mapping (mapping_name, category, lookup_table, mapping_json) " +
+                "VALUES ('%s', '%s', '%s', '%s')", mappingName, category, lookupTable, mappingJson);
+
+        int result = jdbcTemplate.update(sql);
+
+        if (result == SUCCESS) {
+            return "Successfully Added New Mapping";
+        }
+
+        throw new Exception("Could not able to add Mapping");
+    }
 
     @Override
     public List<String> getMappingNames() {

@@ -11,7 +11,12 @@ import java.util.List;
 public class MappingServiceImpl implements MappingService {
 
     @Autowired
-    public MappingDAOImpl mappingDAO;
+    private MappingDAOImpl mappingDAO;
+
+    @Override
+    public String saveMapping(String mappingName, String category, String lookupTable, String mappingJson) throws Exception {
+        return mappingDAO.saveMapping(mappingName, category, lookupTable, mappingJson);
+    }
 
     @Override
     public List<String> getMappingNames() {
