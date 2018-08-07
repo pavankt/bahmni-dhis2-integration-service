@@ -66,7 +66,7 @@ class MappingDashboard extends React.Component {
               </button>
               <section className="all-mappings-sections">
                 <h2 className="section-title">
-                            Service Name
+                            Mapping Name
                 </h2>
                 <table className="mapping-table">
                   <tbody>
