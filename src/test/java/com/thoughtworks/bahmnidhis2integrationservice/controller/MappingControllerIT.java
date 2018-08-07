@@ -10,7 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,5 +34,20 @@ public class MappingControllerIT{
 
         assertEquals(expectedRows, mappingNames.size());
         assertTrue(mappingNames.containsAll(expectedList));
+    }
+
+    @Test
+    public void shouldReturnSuccessMessageOnSuccessOfAddMapping() throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("mappingName", "HTS Service");
+        params.put("category", "instance");
+        params.put("lookupTable", "patient");
+        params.put("mappingJson", "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}");
+
+        String expectedMessage = "Successfully Added New Mapping";
+
+        String actualMessage = mappingController.saveMappings(params);
+
+        assertEquals(expectedMessage, actualMessage);
     }
 }
