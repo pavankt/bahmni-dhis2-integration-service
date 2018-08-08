@@ -50,11 +50,11 @@ public class MappingControllerTest {
 
         when(mappingService.saveMapping(mappingName, category, lookupTable, mappingJson)).thenReturn(expected);
 
-        String actual = mappingController.saveMappings(params);
+        Map<String, String> actual = mappingController.saveMappings(params);
 
         verify(mappingService, times(1))
                 .saveMapping(mappingName, category, lookupTable, mappingJson);
-        assertEquals(expected, actual);
+        assertEquals(expected, actual.get("data"));
     }
 
     @Test

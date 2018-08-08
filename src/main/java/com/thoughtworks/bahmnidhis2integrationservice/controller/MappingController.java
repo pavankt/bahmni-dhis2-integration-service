@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,14 @@ public class MappingController {
 
     @PutMapping(value = "/addMapping")
     @ResponseBody
-    public String saveMappings(@RequestBody Map<String, String> params) throws Exception {
-        return mappingService.saveMapping(params.get("mappingName"), params.get("category"), params.get("lookupTable"), params.get("mappingJson"));
+    public Map<String, String> saveMappings(@RequestBody Map<String, String> params) throws Exception {
+        String response = mappingService.saveMapping(params.get("mappingName"), params.get("category"), params.get("lookupTable"), params.get("mappingJson"));
+
+        Map<String, String> responseObj = new HashMap<>();
+
+        responseObj.put("data", response);
+
+        return responseObj;
     }
 
     @GetMapping(value = "/getMappingNames")

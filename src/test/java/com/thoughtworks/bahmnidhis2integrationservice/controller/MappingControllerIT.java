@@ -46,8 +46,8 @@ public class MappingControllerIT{
 
         String expectedMessage = "Successfully Added New Mapping";
 
-        String actualMessage = mappingController.saveMappings(params);
+        Map<String, String> actualMessage = mappingController.saveMappings(params);
 
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, actualMessage.get("data"));
     }
 }
