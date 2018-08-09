@@ -22,7 +22,7 @@ class ColumnMappings extends Component {
 
   renderColumns() {
     return this.props.columns.map(column => (
-      <tr key={column} className="mapping-row">
+      <tr key={column} className="mapping-row table-row">
         <td className="mapping-column-name">
           {column}
         </td>
@@ -39,17 +39,19 @@ class ColumnMappings extends Component {
         <span>
 Please provide DHIS2 data element mapping for patient instance
         </span>
-        <table className="mapping-table">
-          <tr className="mapping-row-header">
-            <th className="mapping-header">
-                Bahmni Data Point
-            </th>
-            <th className="mapping-header">
-                DHIS2 Data Element ID
-            </th>
-          </tr>
-          {this.renderColumns()}
-        </table>
+        <section className="column-mapping-section">
+          <table className="mapping-table">
+            <tr className="mapping-row-header">
+              <th className="mapping-header">
+                    Bahmni Data Point
+              </th>
+              <th className="mapping-header">
+                    DHIS2 Data Element ID
+              </th>
+            </tr>
+            {this.renderColumns()}
+          </table>
+        </section>
       </div>
     );
   }

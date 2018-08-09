@@ -10,38 +10,9 @@ import DescribeFilteredTable from '../../../../main/client/mapping/components/De
 configure({adapter: new Adapter()});
 
 describe('DescribeFilteredTable', () => {
-    let rendered;
 
     it('should render only ColumnMapping component when selectedTable have value', () => {
-        const store = createStore(() => ({
-            selectedTable: 'patient_identifier',
-            allTables: [
-                'patient_identifier',
-                'hiv_self_testing',
-                'bed_patient_assignment_default',
-                'patient_encounter_details_default',
-                'patient_allergy_status_default'
-            ],
-            selectedTableColumns: [
-                'id',
-                'name'
-            ],
-            showMessage: {
-                responseMessage: "",
-                responseType: ""
-            }
-        }), applyMiddleware(thunkMiddleware));
-
-        rendered = render(
-          <Provider store={store}>
-            <DescribeFilteredTable
-              dispatch={() => {
-                }}
-              history={{}}
-            />
-          </Provider>
-        );
-
+        let rendered = getDescribeRenderer("pat_identifier");
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
         expect(rendered.find('.tables-list')).toHaveLength(0);
     });
@@ -59,7 +30,7 @@ describe('DescribeFilteredTable', () => {
     });
 
     it('should have a footer, cancel and save className', () => {
-        let describeRenderer = getDescribeRenderer();
+        let describeRenderer = getDescribeRenderer("program");
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);
         expect(describeRenderer.find('.save')).toHaveLength(1);
@@ -109,9 +80,9 @@ describe('DescribeFilteredTable', () => {
     //     sandbox.restore();
     // });
 
-    function getDescribeRenderer(history = {}) {
+    function getDescribeRenderer(selectTable = "") {
         const store = createStore(() => ({
-            selectedTable: '',
+            selectedTable: selectTable,
             allTables: [
                 'patient_identifier',
                 'hiv_self_testing',
@@ -135,7 +106,7 @@ describe('DescribeFilteredTable', () => {
             <DescribeFilteredTable
               dispatch={() => {
                 }}
-              history={history}
+              history={{}}
             />
           </Provider>
         ));

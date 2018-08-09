@@ -61,7 +61,7 @@ class DescribeFilteredTable extends Component {
         <input
           type="text"
           ref="mappingName"
-          className="mapping-name"
+          className="mapping-name mapping-name-input"
           placeholder="Enter Mapping Name"
         />
         <span>
@@ -76,15 +76,18 @@ class DescribeFilteredTable extends Component {
           className="table-input"
         />
         {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
-        {(this.props.selectedTable) && <ColumnMappings />}
+        {(this.props.selectedTable) && <ColumnMappings /> }
+        {(this.props.selectedTable) && (
         <div className="footer">
-          <span className="cancel" onClick={this._onCancel}>
-            Cancel
-          </span>
-          <span className="save" onClick={this._onSave}>
-            Save
-          </span>
+          <button type="button" className="save" onClick={this._onSave}>
+              Save
+          </button>
+          <button type="button" className="cancel" onClick={this._onCancel}>
+              Cancel
+          </button>
         </div>
+)
+          }
       </div>
     );
   }

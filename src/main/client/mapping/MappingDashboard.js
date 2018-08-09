@@ -5,6 +5,7 @@ import {Redirect} from "react-router-dom";
 import Spinner from '../common/Spinner';
 import {allMappingNames} from './actions/MappingActions';
 import { hideSpinner } from '../common/Actions';
+import Message from '../common/Message';
 
 class MappingDashboard extends Component {
     constructor() {
@@ -52,6 +53,7 @@ class MappingDashboard extends Component {
         }
         return (
           <div>
+            <Message />
             <Spinner hide={this.props.hideSpinner} />
             <div className="center mapping-names-table">
               <button

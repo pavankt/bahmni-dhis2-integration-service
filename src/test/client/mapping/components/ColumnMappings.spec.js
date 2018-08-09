@@ -51,4 +51,9 @@ describe('ColumnMappings', () => {
         expect(firstRowFirstElement.children[0].data).toEqual('pat_id');
         expect(secondRowFirstElement.children[0].data).toEqual('pat_name');
     });
+
+    it('should have section tag and column-mapping-section className', () => {
+        expect(rendered.find('section')).toHaveLength(1);
+        expect(rendered.find('.column-mapping-section')).toHaveLength(1);
+    });
 });
