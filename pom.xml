@@ -141,6 +141,7 @@
 					<group>Application/Collectors</group>
 					<packager>bahmnidhis2integration</packager>
 					<prefix>/opt/bahmni-dhis2-integration-service</prefix>
+					<release>1</release>
                     <mappings>
                     <mapping>
                         <directory>/opt/bahmni-dhis2-integration-service/resources</directory>
@@ -166,7 +167,7 @@
                         <filemode>755</filemode>
                         <sources>
                            <source>
-                                <location>conf/liquibase.xml</location>
+                                <location>conf/liquibase-scdf.xml</location>
                             </source>
                         </sources>
                     </mapping>

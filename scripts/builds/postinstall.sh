@@ -1,19 +1,19 @@
 #!/bin/bash
 
 create_mart_directories() {
-    if [ ! -d /opt/bahmni-mart/log/ ]; then
-        mkdir -p /opt/bahmni-mart/log/
+    if [ ! -d /opt/bahmni-dhis2-integration-service/log/ ]; then
+        mkdir -p /opt/bahmni-dhis2-integration-service/log/
     fi
 
-    if [ ! -d /opt/bahmni-mart/properties/ ]; then
-        mkdir -p /opt/bahmni-mart/properties/
+    if [ ! -d /opt/bahmni-dhis2-integration-service/properties/ ]; then
+        mkdir -p /opt/bahmni-dhis2-integration-service/properties/
     fi
 
 }
 
 link_directories() {
     #create links
-    ln -s /opt/bahmni-mart/bin/bahmni-dhis2-integration-service.sh /usr/bin/bahmni-dhis2-integration-service
+    ln -s /opt/bahmni-dhis2-integration-service/bin/bahmni-dhis2-integration-service.sh /usr/bin/bahmni-dhis2-integration-service
     ln -s /opt/bahmni-dhis2-integration-service/log /var/log/bahmni-dhis2-integration-service
 }
 
