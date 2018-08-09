@@ -80,4 +80,11 @@ describe('#mappingActions', () => {
             });
         });
     });
+
+    describe('addNewMapping', () => {
+        it('should return object with type and mapping', () => {
+            expect(MappingActions.addNewMapping("new mapping"))
+                .toEqual({ type: 'addNewMapping', mappingName: 'new mapping' })
+        })
+    });
 });

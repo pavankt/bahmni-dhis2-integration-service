@@ -10,7 +10,7 @@ import Header from "../../../main/client/common/Header";
 configure({ adapter: new Adapter() });
 
 
-describe.only('Header', () => {
+describe('Header', () => {
     let rendered;
 
     beforeEach(() => {

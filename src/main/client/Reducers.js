@@ -1,5 +1,4 @@
-import {combineReducers} from 'redux';
-import {hideSpinner} from './common/Reducers';
+import { combineReducers } from 'redux';
 import {
     allMappingNames,
     allTables,
@@ -8,13 +7,18 @@ import {
     selectedTableColumns
 } from './mapping/reducers/MappingReducer';
 
+import { hideSpinner,
+    showMessage
+} from './common/Reducers';
+
 const reducers = combineReducers({
   filteredTables,
   selectedTable,
   allTables,
   selectedTableColumns,
   allMappingNames,
-  hideSpinner
+  hideSpinner,
+  showMessage
 });
 
 export default reducers;

@@ -14,10 +14,6 @@ class ColumnMappings extends Component {
     this.getColumns();
   }
 
-  componentDidUpdate() {
-    this.getColumns();
-  }
-
   getColumns() {
     fetch(`/getColumns?tableName=${this.props.table}`)
       .then(res => res.json())

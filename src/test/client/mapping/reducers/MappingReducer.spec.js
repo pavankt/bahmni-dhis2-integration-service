@@ -124,5 +124,15 @@ describe('#mappingReducers', () => {
         it('should return state when "action.type" is anything other than "renderedMappingNames"', () => {
             expect(allMappingNames()).toEqual([]);
         });
+
+        it('should add new mapping name to the existing list', () => {
+           let action = {
+               type: 'addNewMapping',
+               mappingName: "new mapping"
+           };
+
+           expect(allMappingNames([ "first name", "second name" ], action))
+               .toEqual([ "first name", "second name", "new mapping" ]);
+        });
     });
 });

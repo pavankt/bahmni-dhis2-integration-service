@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {Redirect} from "react-router-dom";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
 import Spinner from '../common/Spinner';
 import {allMappingNames} from './actions/MappingActions';
-import * as CommonActions from '../common/Actions';
+import { hideSpinner } from '../common/Actions';
 
-class MappingDashboard extends React.Component {
+class MappingDashboard extends Component {
     constructor() {
         super();
         this.state = {
@@ -16,7 +16,7 @@ class MappingDashboard extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(CommonActions.hideSpinner(false));
+        this.props.dispatch(hideSpinner(false));
     }
 
     componentDidMount() {
@@ -26,7 +26,7 @@ class MappingDashboard extends React.Component {
             .then((result) => {
                 props.dispatch(allMappingNames(result));
             });
-        props.dispatch(CommonActions.hideSpinner());
+        props.dispatch(hideSpinner());
     }
 
     renderMappingNames() {

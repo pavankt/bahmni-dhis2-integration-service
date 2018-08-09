@@ -38,6 +38,8 @@ export function allMappingNames(state = [], action = {}){
     switch (action.type) {
         case 'renderedMappingNames':
             return action.renderedMappingNames;
+        case 'addNewMapping':
+            return state.concat(action.mappingName);
         default:
             return state;
     }
