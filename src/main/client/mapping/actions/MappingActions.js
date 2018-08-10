@@ -60,7 +60,7 @@ export function createJson(columnMappings) {
 
 const isEmptyString = (aString) => aString === "";
 
-export function saveMappings(mappingName = "", columnMappings, lookupTable, history, category = "instance") {
+export function saveMappings(mappingName = "", columnMappings, lookupTable, history = {}, category = "instance") {
     return async (dispatch, getState) => {
         const mappingObj = createJson(columnMappings);
 
@@ -78,7 +78,7 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
                 mappingJson: JSON.stringify(mappingObj)
             };
 
-            let ajax = new Ajax();
+            let ajax = Ajax.instance();
 
             dispatch(selectedTable());
             dispatch(filteredTables());

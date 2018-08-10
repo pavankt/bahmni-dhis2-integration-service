@@ -7,6 +7,10 @@ const responseCodes = {
 
 export default class Ajax {
 
+    static instance() {
+        return new Ajax();
+    }
+
     async post(url, data) {
 
         return await this.request(url, {
