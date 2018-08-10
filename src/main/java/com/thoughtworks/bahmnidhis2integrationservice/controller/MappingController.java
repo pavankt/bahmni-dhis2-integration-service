@@ -21,7 +21,7 @@ public class MappingController {
     @PutMapping(value = "/addMapping")
     @ResponseBody
     public Map<String, String> saveMappings(@RequestBody Map<String, String> params) throws Exception {
-        String response = mappingService.saveMapping(params.get("mappingName"), params.get("category"), params.get("lookupTable"), params.get("mappingJson"));
+        String response = mappingService.saveMapping(params.get("mappingName"),params.get("lookupTable"), params.get("mappingJson"));
 
         Map<String, String> responseObj = new HashMap<>();
 

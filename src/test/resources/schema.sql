@@ -33,9 +33,7 @@ CREATE TABLE "public"."patient_identifier" (
 DROP TABLE IF EXISTS mapping CASCADE;
 CREATE TABLE "public"."mapping"(
   mapping_name text,
-  program_name text,
-  category text,
-  lookup_table text,
+  lookup_table json,
   mapping_json json,
   created_by text,
   created_date date,

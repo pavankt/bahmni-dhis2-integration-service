@@ -48,12 +48,12 @@ public class MappingControllerTest {
     public void shouldSaveMappings() throws Exception {
         String expected = "Successfully Added Mapping";
 
-        when(mappingService.saveMapping(mappingName, category, lookupTable, mappingJson)).thenReturn(expected);
+        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson)).thenReturn(expected);
 
         Map<String, String> actual = mappingController.saveMappings(params);
 
         verify(mappingService, times(1))
-                .saveMapping(mappingName, category, lookupTable, mappingJson);
+                .saveMapping(mappingName, lookupTable, mappingJson);
         assertEquals(expected, actual.get("data"));
     }
 
@@ -61,14 +61,14 @@ public class MappingControllerTest {
     public void shouldThrowErrorOnFail() throws Exception {
         String expected = "Could not able to add Mapping";
 
-        when(mappingService.saveMapping(mappingName, category, lookupTable, mappingJson))
+        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson))
                 .thenThrow(new Exception(expected));
 
         try {
             mappingController.saveMappings(params);
         } catch (Exception e) {
             verify(mappingService, times(1))
-                    .saveMapping(mappingName, category, lookupTable, mappingJson);
+                    .saveMapping(mappingName, lookupTable, mappingJson);
             assertEquals(expected, e.getMessage());
         }
     }

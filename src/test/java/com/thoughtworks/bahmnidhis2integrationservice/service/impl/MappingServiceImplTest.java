@@ -38,25 +38,25 @@ public class MappingServiceImplTest {
     @Test
     public void shouldReturnSuccessMessageOnInsertSuccess() throws Exception {
         String expected = "Successfully Added Mapping";
-        when(mappingDAO.saveMapping(mappingName, category, lookupTable, mappingJson))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson))
                 .thenReturn(expected);
 
-        String actual = mappingService.saveMapping(mappingName, category, lookupTable, mappingJson);
+        String actual = mappingService.saveMapping(mappingName, lookupTable, mappingJson);
 
-        verify(mappingDAO, times(1)).saveMapping(mappingName, category, lookupTable, mappingJson);
+        verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson);
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldThrowErrorOnFail() throws Exception {
         String expected = "Could not able to insert";
-        when(mappingDAO.saveMapping(mappingName, category, lookupTable, mappingJson))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson))
                 .thenThrow(new Exception(expected));
 
         try {
-            mappingService.saveMapping(mappingName, category, lookupTable, mappingJson);
+            mappingService.saveMapping(mappingName, lookupTable, mappingJson);
         } catch (Exception e) {
-            verify(mappingDAO, times(1)).saveMapping(mappingName, category, lookupTable, mappingJson);
+            verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson);
             assertEquals(expected, e.getMessage());
         }
     }

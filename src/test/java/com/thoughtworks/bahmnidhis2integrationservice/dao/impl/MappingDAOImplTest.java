@@ -27,11 +27,10 @@ public class MappingDAOImplTest {
     private JdbcTemplate jdbcTemplate;
 
     private String mappingName = "patient_details";
-    private String category = "instance";
     private String lookupTable = "patient";
     private String mappingJson = "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}";
-    private String sql = String.format("INSERT INTO mapping (mapping_name, category, lookup_table, mapping_json) " +
-            "VALUES ('%s', '%s', '%s', '%s')", mappingName, category, lookupTable, mappingJson);
+    private String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
+            "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
 
     @Before
     public void setUp() throws Exception {
@@ -43,7 +42,7 @@ public class MappingDAOImplTest {
     public void shouldReturnSuccessfulMessageOnSuccessfulInsertion() throws Exception {
         when(jdbcTemplate.update(sql)).thenReturn(1);
 
-        String result = mappingDAO.saveMapping(mappingName, category, lookupTable, mappingJson);
+        String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson);
 
         verify(jdbcTemplate, times(1)).update(sql);
         assertEquals("Successfully Added New Mapping", result);
@@ -54,7 +53,7 @@ public class MappingDAOImplTest {
         when(jdbcTemplate.update(sql)).thenReturn(0);
 
         try {
-            mappingDAO.saveMapping(mappingName, category, lookupTable, mappingJson);
+            mappingDAO.saveMapping(mappingName, lookupTable, mappingJson);
         } catch(Exception e) {
             verify(jdbcTemplate, times(1)).update(sql);
             assertEquals("Could not able to add Mapping", e.getMessage());
@@ -63,7 +62,7 @@ public class MappingDAOImplTest {
 
     @Test
     public void shouldGetExistingMappings() {
-        String sql = "SELECT DISTINCT mapping_name FROM mapping";
+        String sql = "SELECT mapping_name FROM mapping";
         Map<String, Object> mapping1 = new HashMap<>();
         Map<String, Object> mapping2 = new HashMap<>();
 

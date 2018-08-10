@@ -19,9 +19,9 @@ public class MappingDAOImpl implements MappingDAO {
     private final static int SUCCESS = 1;
 
     @Override
-    public String saveMapping(String mappingName, String category, String lookupTable, String mappingJson) throws Exception {
-        String sql = String.format("INSERT INTO mapping (mapping_name, category, lookup_table, mapping_json) " +
-                "VALUES ('%s', '%s', '%s', '%s')", mappingName, category, lookupTable, mappingJson);
+    public String saveMapping(String mappingName, String lookupTable, String mappingJson) throws Exception {
+        String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
+                "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
 
         int result = jdbcTemplate.update(sql);
 
@@ -34,7 +34,7 @@ public class MappingDAOImpl implements MappingDAO {
 
     @Override
     public List<String> getMappingNames() {
-        String sql = "SELECT DISTINCT mapping_name FROM mapping";
+        String sql = "SELECT mapping_name FROM mapping";
         return jdbcTemplate.queryForList(sql).stream().map(mapping -> mapping.get("mapping_name").toString())
                 .collect(Collectors.toList());
     }

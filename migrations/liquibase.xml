@@ -16,15 +16,13 @@
             CREATE TABLE public.mapping(
                 mapping_id SERIAL PRIMARY KEY,
                 mapping_name text,
-                category text,
-                lookup_table text,
+                lookup_table json,
                 mapping_json json,
                 created_by text,
                 created_date date,
                 modified_by text,
                 modified_date date
             );
-
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,6 +1,14 @@
 import { showMessage, hideSpinner } from "../../common/Actions";
 import Ajax from "../../common/Ajax";
 
+const isEmptyString = (aString) => aString === "";
+
+const objectify = (key,value) => (
+    {
+        [key]:value
+    }
+);
+
 export function allTables(tables = []) {
   return {
     type: 'allTables',
@@ -58,7 +66,6 @@ export function createJson(columnMappings) {
     return mappingObj;
 }
 
-const isEmptyString = (aString) => aString === "";
 
 export function saveMappings(mappingName = "", columnMappings, lookupTable, history, category = "instance") {
     return async (dispatch, getState) => {
@@ -73,9 +80,8 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
         } else {
             let body = {
                 mappingName,
-                category,
-                lookupTable,
-                mappingJson: JSON.stringify(mappingObj)
+                lookupTable: JSON.stringify(objectify(category,lookupTable)),
+                mappingJson: JSON.stringify(objectify(category,mappingObj))
             };
 
             let ajax = new Ajax();
