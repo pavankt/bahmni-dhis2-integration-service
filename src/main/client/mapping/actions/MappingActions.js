@@ -85,11 +85,11 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
 
             try {
                 dispatch(hideSpinner(false));
-                let response = await ajax.put("/addMapping", body);
+                let response = await ajax.put("/dhis-integration/addMapping", body);
                 dispatch(showMessage(response.data, "success"));
                 dispatch(addNewMapping(mappingName));
                 dispatch(hideSpinner());
-                history.push("/mapping");
+                history.push("/dhis-integration/mapping");
             } catch (e) {
                 dispatch(showMessage(e.message, "error"));
             }

@@ -15,7 +15,7 @@ class ColumnMappings extends Component {
   }
 
   getColumns() {
-    fetch(`/getColumns?tableName=${this.props.table}`)
+    fetch(`/dhis-integration/getColumns?tableName=${this.props.table}`)
       .then(res => res.json())
       .then(result => this.props.dispatch(tableColumns(result)));
   }

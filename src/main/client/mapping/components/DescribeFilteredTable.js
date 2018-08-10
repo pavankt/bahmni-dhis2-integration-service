@@ -15,7 +15,7 @@ class DescribeFilteredTable extends Component {
   }
 
   componentDidMount() {
-      fetch('/getTables')
+      fetch('/dhis-integration/getTables')
           .then(res => res.json())
           .then(result => this.props.dispatch(allTables(result)));
   }
@@ -42,7 +42,7 @@ class DescribeFilteredTable extends Component {
   _onCancel() {
     this.props.dispatch(selectedTable());
     this.props.dispatch(filteredTables());
-    this.props.history.push('/mapping');
+    this.props.history.push('/dhis-integration/mapping');
   }
 
   _onSave() {

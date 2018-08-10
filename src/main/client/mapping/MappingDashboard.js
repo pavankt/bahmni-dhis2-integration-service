@@ -22,7 +22,7 @@ class MappingDashboard extends Component {
 
     componentDidMount() {
         let props = this.props;
-        fetch('/getMappingNames')
+        fetch('/dhis-integration/getMappingNames')
             .then(res => res.json())
             .then((result) => {
                 props.dispatch(allMappingNames(result));
@@ -49,7 +49,7 @@ class MappingDashboard extends Component {
 
     render() {
         if (this.state.redirectToAddMapping) {
-            return <Redirect to='/mapping/addEditMappings' />
+            return <Redirect to='/dhis-integration/mapping/addEditMappings' />
         }
         return (
           <div>
