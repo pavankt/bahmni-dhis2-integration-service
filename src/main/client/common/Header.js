@@ -9,7 +9,7 @@ export default class Header extends Component {
 
     redirect() {
         const history = this.props.history;
-        history.push(history.location.pathname === '/dhis-integration' ? '/bahmni/home/#/dashboard' : '/dhis-integration');
+        history.push(history.location.pathname === '/dhis-integration/' ? '/bahmni/home/#/dashboard' : '/dhis-integration/');
     }
 
     render() {
