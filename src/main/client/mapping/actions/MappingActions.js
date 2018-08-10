@@ -93,7 +93,7 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
                 dispatch(showMessage("Mapping Name should be unique", "error"));
         } else {
             let body = {
-                mappingName,
+                mappingName : mappingName.trim(),
                 lookupTable: JSON.stringify(objectify(category,lookupTable)),
                 mappingJson: JSON.stringify(objectify(category,mappingObj))
             };

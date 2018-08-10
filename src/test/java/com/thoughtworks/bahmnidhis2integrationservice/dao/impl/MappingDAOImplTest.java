@@ -28,8 +28,8 @@ public class MappingDAOImplTest {
     private JdbcTemplate jdbcTemplate;
 
     private String mappingName = "patient_details";
-    private String lookupTable = "{\"instance\" : \"patient\"}";
-    private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
+    private String lookupTable = "patient";
+    private String mappingJson = "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}";
     private String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
             "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
 
