@@ -16,7 +16,11 @@ describe('Mapping dashboard', function () {
     beforeEach(() => {
         const store = createStore(() => ({
             allMappingNames: ['HTS Service','TB Service'],
-            hideSpinner: false
+            hideSpinner: false,
+            showMessage : {
+                responseMessage : "",
+                responseType: ""
+            }
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
