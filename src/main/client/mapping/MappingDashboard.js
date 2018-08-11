@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {Redirect} from "react-router-dom";
+import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {allMappingNames} from './actions/MappingActions';
-import { hideSpinner } from '../common/Actions';
+import {hideSpinner} from '../common/Actions';
 
 class MappingDashboard extends Component {
     constructor() {
@@ -48,7 +47,7 @@ class MappingDashboard extends Component {
 
     render() {
         if (this.state.redirectToAddMapping) {
-            return <Redirect to='/mapping/addEditMappings' />
+            this.props.history.push('/mapping/addEditMappings');
         }
         return (
           <div>
@@ -83,7 +82,8 @@ class MappingDashboard extends Component {
 MappingDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
