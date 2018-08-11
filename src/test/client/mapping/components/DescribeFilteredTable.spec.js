@@ -36,6 +36,16 @@ describe('DescribeFilteredTable', () => {
         expect(describeRenderer.find('.save')).toHaveLength(1);
     });
 
+    it('should not have overlay className when hideSpinner is true', () => {
+        let describeRenderer = getDescribeRenderer();
+        expect(describeRenderer.find('.overlay')).toHaveLength(0);
+    });
+
+    it('should have overlay className when hideSpinner is false', () => {
+        let describeRenderer = getDescribeRenderer("", false);
+        expect(describeRenderer.find('.overlay')).toHaveLength(1);
+    });
+
     //TODO : Intentionally commented - No problem with test cases has to fix fetch in componentDidMount
 
     // it('should call push on history on cancel click', () => {
@@ -80,7 +90,7 @@ describe('DescribeFilteredTable', () => {
     //     sandbox.restore();
     // });
 
-    function getDescribeRenderer(selectTable = "") {
+    function getDescribeRenderer(selectTable = "", hideSpinner = true) {
         const store = createStore(() => ({
             selectedTable: selectTable,
             allTables: [
@@ -98,7 +108,8 @@ describe('DescribeFilteredTable', () => {
             showMessage: {
                 responseMessage: "",
                 responseType: ""
-            }
+            },
+            hideSpinner
         }), applyMiddleware(thunkMiddleware));
 
         return (render(

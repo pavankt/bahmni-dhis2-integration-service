@@ -116,7 +116,7 @@ describe('#mappingActions', () => {
        it('should dispatch showMessage with AtLeaseOneColumnShouldHaveMapping when mapping name is empty', async () => {
            let expectedActions = [{
                type : "showMessage",
-               responseMessage: "At least one Column should have Mapping",
+               responseMessage: "At least one Bahmni Data Point should have DHIS2 Data Element ID mapped",
                responseType: "error"
            }];
 

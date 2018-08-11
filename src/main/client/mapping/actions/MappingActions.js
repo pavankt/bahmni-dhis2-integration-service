@@ -67,7 +67,7 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
         }else if (hasNoMappings(mappingObj)) {
-            dispatch(showMessage("At least one Column should have Mapping", "error"));
+            dispatch(showMessage("At least one Bahmni Data Point should have DHIS2 Data Element ID mapped", "error"));
         }else if(getState().allMappingNames.includes(mappingName)) {
             dispatch(showMessage("Mapping Name should be unique", "error"));
         } else {

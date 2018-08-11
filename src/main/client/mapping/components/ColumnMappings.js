@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { tableColumns } from '../actions/MappingActions';
+import { hideSpinner } from "../../common/Actions";
 
 class ColumnMappings extends Component {
   constructor() {
@@ -15,9 +16,11 @@ class ColumnMappings extends Component {
   }
 
   getColumns() {
+    this.props.dispatch(hideSpinner(false));
     fetch(`/dhis-integration/getColumns?tableName=${this.props.table}`)
       .then(res => res.json())
       .then(result => this.props.dispatch(tableColumns(result)));
+    this.props.dispatch(hideSpinner());
   }
 
   renderColumns() {

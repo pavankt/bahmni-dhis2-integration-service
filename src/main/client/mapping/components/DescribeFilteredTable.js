@@ -5,6 +5,7 @@ import DisplayTableNames from './DisplayTableNames';
 import ColumnMappings from './ColumnMappings';
 import { selectedTable, filteredTables, allTables, saveMappings } from '../actions/MappingActions';
 import Message from '../../common/Message';
+import Spinner from "../../common/Spinner";
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -55,6 +56,7 @@ class DescribeFilteredTable extends Component {
     return (
       <div className="mapping-div">
         <Message />
+        <Spinner hide={this.props.hideSpinner}/>
         <div>
           Mapping Name
         </div>
@@ -97,12 +99,14 @@ DescribeFilteredTable.propTypes = {
   selectedTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   tables: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  hideSpinner:PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
   selectedTable: state.selectedTable,
-  tables: state.allTables
+  tables: state.allTables,
+  hideSpinner : state.hideSpinner
 });
 
 

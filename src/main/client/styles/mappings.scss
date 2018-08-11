@@ -53,15 +53,40 @@
 }
 
 .filtered-tables {
-  margin-left: 170px;
-  font-family: 'sans-serif';
-  background-color: '#e4e3e375';
-  color: '#000000bd';
+  width: 450px;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10001;
+  color: #333;
+  font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+  font-size: 0.7em;
+  list-style: none;
+  display: block;
+  outline: none;
+  position: absolute;
+  cursor: default;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .table-name {
-  padding-top: 5px;
-  font-size: 17px;
+  font-size: 16px;
+  margin: 0;
+  width: 100%;
+  text-decoration: none;
+  display: block;
+  padding: 2px .4em;
+  line-height: 1.5;
+  min-height: 0;
+  font-weight: normal;
+  color: #333;
+  background: #eee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
+  &:hover {
+    cursor: pointer;
+    color: #E8A000;
+    background: #FFFDF0;
+    border: 1px solid #FFA000;
+  }
 }
 
 .table-input {
@@ -69,7 +94,7 @@
   padding: 5px 15px;
   border: 1px solid #dddddd;
   display: block;
-  margin: 10px 0 25px 0;
+  margin: 10px 0 0 0;
   border-radius: 5px;
   font-size: 16px;
 }
