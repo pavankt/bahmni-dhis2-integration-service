@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.BahmniDhis2IntegrationServiceApplication;
 import com.thoughtworks.bahmnidhis2integrationservice.SystemPropertyActiveProfileResolver;
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,10 @@ public class MappingControllerIT{
         assertEquals(expectedMessage, actualMessage.get("data"));
 
         jdbcTemplate.execute("DROP TABLE IF EXISTS mapping CASCADE; CREATE TABLE public.mapping( mapping_name text, lookup_table json, mapping_json json, created_by text, created_date date, modifed_by text, modifed_date date)");
+    }
+
+    @Test(expected = NoMappingFoundException.class)
+    public void shouldThrowErrorIfNoMappingExist() throws NoMappingFoundException {
+        mappingController.getMapping("someMapping");
     }
 }

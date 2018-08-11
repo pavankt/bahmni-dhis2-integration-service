@@ -1,5 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,5 +82,35 @@ public class MappingControllerTest {
         List<String> allMappings = mappingController.getAllMappingNames();
 
         assertEquals(allMappings,expected);
+    }
+
+    @Test
+    public void shouldReturnExistingMappingName() throws NoMappingFoundException {
+        Map<String, Object> HTSMapping = new HashMap<>();
+
+        HTSMapping.put("mapping_name","HTS Service");
+        HTSMapping.put("lookup_table","{\"instance\" : \"patient\"}");
+        HTSMapping.put("mapping_json","{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
+
+        when(mappingService.getMapping("HTS Service")).thenReturn(HTSMapping);
+
+        assertEquals(HTSMapping, mappingController.getMapping("HTS Service"));
+
+        verify(mappingService, times(1)).getMapping("HTS Service");
+    }
+
+    @Test
+    public void shouldThrowEmptyResultDataAccessExceptionWhenThereIsNoMapping() throws NoMappingFoundException {
+        String mappingName = "someMapping";
+
+        when(
+                mappingService.getMapping(mappingName)
+        ).thenThrow(new NoMappingFoundException(mappingName));
+
+        try{
+            mappingController.getMapping(mappingName);
+        }catch (NoMappingFoundException e){
+            assertEquals(e.getMessage(),"No mapping found with name "+mappingName);
+        }
     }
 }

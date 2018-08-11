@@ -1,5 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +28,11 @@ public class MappingDAOImplTest {
     private JdbcTemplate jdbcTemplate;
 
     private String mappingName = "patient_details";
-    private String lookupTable = "patient";
-    private String mappingJson = "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}";
-    private String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
-            "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
+    private String category = "instance";
+    private String lookupTable = "{\"instance\" : \"patient\"}";
+    private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
+    private String sql = String.format("INSERT INTO mapping (mapping_name, category, lookup_table, mapping_json) " +
+            "VALUES ('%s', '%s', '%s', '%s')", mappingName, category, lookupTable, mappingJson);
 
     @Before
     public void setUp() throws Exception {
@@ -77,5 +79,21 @@ public class MappingDAOImplTest {
         assertEquals(expected, mappingDAO.getMappingNames());
 
         verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldGetExistingMapping() throws NoMappingFoundException {
+        String sql = "SELECT mapping_name, lookup_table, mapping_json FROM mapping WHERE = 'HTS Service'";
+        Map<String, Object> HTSMapping = new HashMap<>();
+
+        HTSMapping.put("mapping_name","HTS Service");
+        HTSMapping.put("lookup_table","{\"instance\" : \"patient\"}");
+        HTSMapping.put("mapping_json","{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
+
+        when(jdbcTemplate.queryForMap(sql)).thenReturn(HTSMapping);
+
+        assertEquals(HTSMapping, mappingDAO.getMapping("HTS Service"));
+
+        verify(jdbcTemplate, times(1)).queryForMap(sql);
     }
 }

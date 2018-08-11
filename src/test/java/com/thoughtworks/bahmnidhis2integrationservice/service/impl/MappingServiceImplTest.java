@@ -1,6 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.service.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.dao.impl.MappingDAOImpl;
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,9 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.setValuesForMemberFields;
 import static org.junit.Assert.assertEquals;
@@ -26,8 +29,8 @@ public class MappingServiceImplTest {
 
     private String mappingName = "pat_details";
     private String category = "instance";
-    private String lookupTable = "patient";
-    private String mappingJson = "{ 'patient_id': 'fdKe67', 'patient_name': 'mnIU7H' }";
+    private String lookupTable = "{\"instance\" : \"patient\"}";
+    private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
 
     @Before
     public void setUp() throws Exception {
@@ -69,5 +72,35 @@ public class MappingServiceImplTest {
         List<String> allMappings = mappingService.getMappingNames();
 
         assertEquals(allMappings,expected);
+    }
+
+    @Test
+    public void shouldGetExistingMapping() throws NoMappingFoundException {
+        Map<String, Object> HTSMapping = new HashMap<>();
+
+        HTSMapping.put("mapping_name","HTS Service");
+        HTSMapping.put("lookup_table","{\"instance\" : \"patient\"}");
+        HTSMapping.put("mapping_json","{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
+
+        when(mappingDAO.getMapping("HTS Service")).thenReturn(HTSMapping);
+
+        assertEquals(HTSMapping, mappingService.getMapping("HTS Service"));
+
+        verify(mappingDAO, times(1)).getMapping("HTS Service");
+    }
+
+    @Test
+    public void shouldThrowEmptyResultDataAccessExceptionWhenThereIsNoMapping() throws NoMappingFoundException {
+        String mappingName = "someMapping";
+
+        when(
+                mappingDAO.getMapping(mappingName)
+        ).thenThrow(new NoMappingFoundException(mappingName));
+
+        try{
+            mappingService.getMapping(mappingName);
+        }catch (NoMappingFoundException e){
+            assertEquals(e.getMessage(),"No mapping found with name "+mappingName);
+        }
     }
 }

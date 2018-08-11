@@ -1,12 +1,15 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.dao.MappingDAO;
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,5 +40,15 @@ public class MappingDAOImpl implements MappingDAO {
         String sql = "SELECT mapping_name FROM mapping";
         return jdbcTemplate.queryForList(sql).stream().map(mapping -> mapping.get("mapping_name").toString())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException {
+        String sql = String.format("SELECT mapping_name, lookup_table, mapping_json FROM mapping WHERE mapping_name= '%s'",mappingName);
+        try{
+            return jdbcTemplate.queryForMap(sql);
+        }catch (EmptyResultDataAccessException e){
+            throw new NoMappingFoundException(mappingName);
+        }
     }
 }

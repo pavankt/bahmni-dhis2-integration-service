@@ -1,5 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
+import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,5 +35,11 @@ public class MappingController {
     @ResponseBody
     public List<String> getAllMappingNames() {
         return mappingService.getMappingNames();
+    }
+
+    @GetMapping(value = "/getMapping")
+    @ResponseBody
+    public Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException {
+        return mappingService.getMapping(mappingName);
     }
 }
