@@ -53,7 +53,7 @@ class MappingDashboard extends Component {
 
     render() {
         if (this.state.redirectToAddMapping) {
-            this.props.history.push('/dhis-integration/mapping/addEditMappings');
+            this.props.history.push('/mapping/addEditMappings');
         }
         return (
           <div>
