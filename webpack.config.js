@@ -13,7 +13,8 @@ module.exports = {
     cache: true,
     output: {
         path: path.resolve(__dirname, './src/main/resources/static/'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/dhis-integration/'
     },
     plugins: [
         new ExtractTextPlugin('styles.css', {allChunks: true}),

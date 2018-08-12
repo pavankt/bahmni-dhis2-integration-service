@@ -30,7 +30,7 @@ describe('Header', () => {
     });
 
     it('should change path to Bahmni home when home button clicked from DHIS2 dashboard', function () {
-        const history = { location: { pathname: '/dhis-integration' }, push: () => {}};
+        const history = { location: { pathname: '/dhis-integration/' }, push: () => {}};
 
         const sandBox = sinon.createSandbox();
 
@@ -55,7 +55,7 @@ describe('Header', () => {
         const sandBox = sinon.createSandbox();
 
         const pushMock = sandBox.mock(history).expects('push')
-            .withArgs('/dhis-integration');
+            .withArgs('/dhis-integration/');
 
         history.push = pushMock;
 
