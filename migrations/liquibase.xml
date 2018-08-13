@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <changeSet id="080820181037" author="Pavan">
+    <changeSet id="130820181606" author="Pavan">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="mapping" schemaName="public"/>
@@ -14,16 +14,15 @@
         <comment>Creating mapping table in public schema</comment>
         <sql>
             CREATE TABLE public.mapping(
-                mapping_name text PRIMARY KEY,
-                category text,
-                lookup_table text,
-                mapping_json json,
-                created_by text,
-                created_date date,
-                modified_by text,
-                modified_date date
+            mapping_id SERIAL PRIMARY KEY,
+            mapping_name text,
+            lookup_table json,
+            mapping_json json,
+            created_by text,
+            created_date date,
+            modified_by text,
+            modified_date date
             );
-
         </sql>
     </changeSet>
 </databaseChangeLog>
