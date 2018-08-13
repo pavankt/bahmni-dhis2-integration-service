@@ -19,7 +19,6 @@ public class HomeController {
 	@GetMapping(value = "/session")
 	@ResponseBody
 	public List<String> sessionPrivileges() {
-		System.out.println("Privileges from HomeController" + PrivilegeUtil.getAvailablePrivileges());
 		return PrivilegeUtil.getAvailablePrivileges();
 	}
 

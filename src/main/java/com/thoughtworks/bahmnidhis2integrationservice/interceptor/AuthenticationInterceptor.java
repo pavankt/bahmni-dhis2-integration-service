@@ -45,11 +45,9 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(REPORTING_COOKIE_NAME)) {
                 authenticationResponse = authenticator.authenticate(cookie.getValue());
-                break;
             }
         }
-        System.out.println("Context path: " + request.getContextPath());
-        System.out.println("Authenticator response: " + authenticationResponse);
+
         switch (authenticationResponse) {
             case AUTHORIZED:
                 return true;
@@ -65,7 +63,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     private boolean redirectToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
         httpServletResponse.getWriter().write("Please login to continue");
-        System.out.println("Redirect starting");
 
         StringBuffer redirectUrl = new StringBuffer();
         redirectUrl.append(appProperties.getBahmniLoginUrl());
@@ -76,7 +73,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         redirectUrl.append(paramChar)
                 .append("from=")
                 .append(URLEncoder.encode(httpServletRequest.getRequestURL() + "?" + httpServletRequest.getQueryString(), "UTF-8"));
-        System.out.println("Encoded entire url: " + redirectUrl.toString());
         httpServletResponse.sendRedirect(redirectUrl.toString());
         return false;
     }
