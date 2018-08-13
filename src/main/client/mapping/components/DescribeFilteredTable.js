@@ -62,7 +62,7 @@ class DescribeFilteredTable extends Component {
     return (
       <div className="mapping-div">
         <Message />
-        <Spinner hide={this.props.hideSpinner}/>
+        <Spinner hide={this.props.hideSpinner} />
         <div>
           Mapping Name
         </div>
@@ -86,11 +86,11 @@ class DescribeFilteredTable extends Component {
         {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
         {(this.props.selectedTable) && <ColumnMappings /> }
         <div className="footer">
-        {(this.props.selectedTable) &&
+          {(this.props.selectedTable) && (
           <button type="button" className="save" onClick={this._onSave}>
               Save
           </button>
-        }
+)}
           <button type="button" className="cancel" onClick={this._onCancel}>
               Cancel
           </button>

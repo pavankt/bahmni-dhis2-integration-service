@@ -1,5 +1,4 @@
 import {hideSpinner, showHomeButton, showMessage} from '../../../main/client/common/Reducers';
-import {showHome} from "../../../main/client/common/Actions";
 
 describe('Reducers', () => {
     describe('HideSpinnerReducer', () => {

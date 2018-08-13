@@ -5,10 +5,10 @@ import {
 } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
-import Header from "../../../main/client/common/Header";
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import Header from "../../../main/client/common/Header";
 
 configure({ adapter: new Adapter() });
 
@@ -22,9 +22,9 @@ describe('Header', () => {
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
-            <Provider store={store}>
-              <Header dispatch={() => {}}/>
-            </Provider>);
+          <Provider store={store}>
+            <Header dispatch={() => {}} />
+          </Provider>);
     });
 
     it('should have app-link className', function () {
@@ -50,9 +50,9 @@ describe('Header', () => {
         history.push = pushMock;
 
         rendered = mount(
-            <Provider store={store}>
-          <Header history={history} dispatch={() => {}}/>
-            </Provider>
+          <Provider store={store}>
+            <Header history={history} dispatch={() => {}} />
+          </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');
@@ -72,9 +72,9 @@ describe('Header', () => {
         history.push = pushMock;
 
         rendered = mount(
-            <Provider store={store}>
-                <Header history={history} dispatch={() => {}}/>
-            </Provider>
+          <Provider store={store}>
+            <Header history={history} dispatch={() => {}} />
+          </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');

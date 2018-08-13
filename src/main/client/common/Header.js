@@ -18,11 +18,11 @@ class Header extends Component {
         return (
           <div className='opt-header-wrapper'>
             <header className='center header-wrap-dhis'>
-                {this.props.showHomeButton &&
-                <button type='submit' className='back-btn' onClick={this.redirect}>
-                    <i className='fa fa-home'/>
-                </button>
-                }
+              {this.props.showHomeButton && (
+              <button type='submit' className='back-btn' onClick={this.redirect}>
+                <i className='fa fa-home' />
+              </button>
+)}
             </header>
           </div>
         )
