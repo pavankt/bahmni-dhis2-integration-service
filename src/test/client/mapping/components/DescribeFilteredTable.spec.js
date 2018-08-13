@@ -29,7 +29,8 @@ describe('DescribeFilteredTable', () => {
             showMessage: {
                 responseMessage: "",
                 responseType: ""
-            }
+            },
+            currentMapping: ""
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -127,7 +128,8 @@ describe('DescribeFilteredTable', () => {
             showMessage: {
                 responseMessage: "",
                 responseType: ""
-            }
+            },
+            currentMapping: ""
         }), applyMiddleware(thunkMiddleware));
 
         return (render(

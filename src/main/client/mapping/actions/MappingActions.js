@@ -1,6 +1,8 @@
 import { showMessage, hideSpinner } from "../../common/Actions";
 import Ajax from "../../common/Ajax";
 
+let ajax = new Ajax();
+
 const isEmptyString = (aString) => aString === "";
 
 const objectify = (key,value) => (
@@ -52,6 +54,20 @@ export function addNewMapping(mappingName) {
     }
 }
 
+export function mappingName(mappingName) {
+    return {
+        type : 'currentMapping',
+        mappingName
+    }
+}
+
+export function mappingJson(mappingJson) {
+    return {
+        type : 'mappingJson',
+        mappingJson
+    }
+}
+
 export function hasNoMappings(mappings) {
     let elementIds = Object.values(mappings);
     return elementIds.filter(element => element !== "").length === 0;
@@ -84,8 +100,6 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
                 mappingJson: JSON.stringify(objectify(category,mappingObj))
             };
 
-            let ajax = new Ajax();
-
             dispatch(selectedTable());
             dispatch(filteredTables());
 
@@ -101,4 +115,31 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
             }
         }
     };
+}
+
+
+function isJSON(type) {
+    return type !== undefined && type.toLowerCase() === 'json';
+}
+
+let parseResponse = (res)=>{
+    let keys = Object.keys(res);
+
+    keys.forEach((key)=>{
+        if(isJSON(res[key].type))
+            res[key].value = JSON.parse(res[key].value)
+    });
+
+    return res;
+}
+
+export function getMapping(mappingNameToEdit, history) {
+    return async (dispatch)=> {
+        let response = parseResponse(await ajax.get('/getMapping',{"mappingName" : mappingNameToEdit}));
+        console.log(response.lookup_table.value.instance);
+        dispatch(selectedTable(response.lookup_table.value.instance));
+        dispatch(mappingName(response.mapping_name));
+        dispatch(mappingJson(response.mapping_json.value));
+        history.push('/mapping/addEditMappings');
+    }
 }

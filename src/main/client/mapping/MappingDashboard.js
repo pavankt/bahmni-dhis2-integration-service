@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
-import {allMappingNames} from './actions/MappingActions';
+import {allMappingNames, getMapping} from './actions/MappingActions';
 import {hideSpinner} from '../common/Actions';
+
+function editMapping(mappingName) {
+    this.props.dispatch(getMapping(mappingName, this.props.history));
+}
 
 class MappingDashboard extends Component {
     constructor() {
@@ -12,6 +16,7 @@ class MappingDashboard extends Component {
             redirectToAddMapping: false
         };
         this.renderMappingNames = this.renderMappingNames.bind(this);
+        editMapping = editMapping.bind(this);
     }
 
     componentWillMount() {
@@ -36,7 +41,7 @@ class MappingDashboard extends Component {
                   {mappingName}
                 </td>
                 <td className="edit-mapping-button">
-                  <button type="submit" className="center">
+                  <button type="submit" className="center" onClick={()=>{editMapping(mappingName)}}>
                             Edit
                   </button>
                 </td>

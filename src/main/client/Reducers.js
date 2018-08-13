@@ -4,7 +4,8 @@ import {
     allTables,
     filteredTables,
     selectedTable,
-    selectedTableColumns
+    selectedTableColumns,
+    currentMapping
 } from './mapping/reducers/MappingReducer';
 
 import { hideSpinner,
@@ -18,7 +19,8 @@ const reducers = combineReducers({
   selectedTableColumns,
   allMappingNames,
   hideSpinner,
-  showMessage
+  showMessage,
+  currentMapping
 });
 
 export default reducers;

@@ -44,3 +44,12 @@ export function allMappingNames(state = [], action = {}){
             return state;
     }
 }
+
+export function currentMapping(state = '', action = {}) {
+    switch (action.type) {
+        case 'currentMapping':
+            return action.mappingName;
+        default:
+            return state;
+    }
+}

@@ -23,7 +23,11 @@ class DescribeFilteredTable extends Component {
   componentWillReceiveProps(nextProps) {
       if (nextProps.selectedTable !== this.props.selectedTable) {
           this.refs.tablesSearch.value = nextProps.selectedTable;
+      }else{
+          this.refs.tablesSearch.value = this.props.selectedTable;
       }
+
+      this.refs.mappingName.value = nextProps.currentMapping;
   }
 
   searchTables() {
@@ -49,6 +53,7 @@ class DescribeFilteredTable extends Component {
     let mappingName = this.refs.mappingName.value;
     let columnMappings = document.getElementsByClassName('mapping-row');
     this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedTable, this.props.history));
+    this.props.dispatch(selectedTable());
   }
 
   render() {
@@ -94,12 +99,14 @@ DescribeFilteredTable.propTypes = {
   selectedTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   tables: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  currentMapping: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
   selectedTable: state.selectedTable,
-  tables: state.allTables
+  tables: state.allTables,
+  currentMapping: state.currentMapping
 });
 
 
