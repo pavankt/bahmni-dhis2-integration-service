@@ -12,3 +12,10 @@ export function showMessage(responseMessage = "", responseType = "") {
         responseType
     };
 }
+
+export function showHome(show = true) {
+    return {
+        type : "showHome",
+        show
+    }
+}

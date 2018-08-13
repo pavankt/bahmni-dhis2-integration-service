@@ -32,7 +32,7 @@ class MappingDashboard extends Component {
 
     renderMappingNames() {
         return (
-            this.props.mappingNames.map(mappingName => (
+            this.props.mappingNames.sort().map(mappingName => (
               <tr key={mappingName} className="table-row">
                 <td className="mapping-name">
                   {mappingName}

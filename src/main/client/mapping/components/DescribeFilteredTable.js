@@ -6,6 +6,7 @@ import ColumnMappings from './ColumnMappings';
 import { selectedTable, filteredTables, allTables, saveMappings } from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
+import { showHome } from "../../common/Actions";
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -16,6 +17,7 @@ class DescribeFilteredTable extends Component {
   }
 
   componentDidMount() {
+      this.props.dispatch(showHome(false));
       fetch('/dhis-integration/getTables')
           .then(res => res.json())
           .then(result => this.props.dispatch(allTables(result)));
@@ -25,6 +27,10 @@ class DescribeFilteredTable extends Component {
       if (nextProps.selectedTable !== this.props.selectedTable) {
           this.refs.tablesSearch.value = nextProps.selectedTable;
       }
+  }
+
+  componentWillUnmount() {
+      this.props.dispatch(showHome());
   }
 
   searchTables() {
@@ -79,17 +85,16 @@ class DescribeFilteredTable extends Component {
         />
         {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
         {(this.props.selectedTable) && <ColumnMappings /> }
-        {(this.props.selectedTable) && (
         <div className="footer">
+        {(this.props.selectedTable) &&
           <button type="button" className="save" onClick={this._onSave}>
               Save
           </button>
+        }
           <button type="button" className="cancel" onClick={this._onCancel}>
               Cancel
           </button>
         </div>
-)
-          }
       </div>
     );
   }

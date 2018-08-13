@@ -8,7 +8,8 @@ import {
 } from './mapping/reducers/MappingReducer';
 
 import { hideSpinner,
-    showMessage
+    showMessage,
+    showHomeButton
 } from './common/Reducers';
 
 const reducers = combineReducers({
@@ -18,7 +19,8 @@ const reducers = combineReducers({
   selectedTableColumns,
   allMappingNames,
   hideSpinner,
-  showMessage
+  showMessage,
+  showHomeButton
 });
 
 export default reducers;

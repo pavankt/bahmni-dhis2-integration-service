@@ -29,7 +29,14 @@ describe('DescribeFilteredTable', () => {
         expect(describeRenderer.find('input')).toHaveLength(2);
     });
 
-    it('should have a footer, cancel and save className', () => {
+    it('should have a footer and cancel className', () => {
+        let describeRenderer = getDescribeRenderer();
+        expect(describeRenderer.find('.footer')).toHaveLength(1);
+        expect(describeRenderer.find('.cancel')).toHaveLength(1);
+        expect(describeRenderer.find('.save')).toHaveLength(0);
+    });
+
+    it('should have a save className when there is selected table', () => {
         let describeRenderer = getDescribeRenderer("program");
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);

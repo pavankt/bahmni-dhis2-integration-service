@@ -1,20 +1,30 @@
 import 'jsdom-global/register';
 import React from 'react';
 import {
-    configure, shallow
+    configure, mount, render
 } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import Header from "../../../main/client/common/Header";
+import {Provider} from 'react-redux';
+import {applyMiddleware, createStore} from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
 configure({ adapter: new Adapter() });
 
 
 describe('Header', () => {
-    let rendered;
+    let rendered, store;
 
     beforeEach(() => {
-        rendered = shallow(<Header />);
+        store = createStore(() => ({
+            showHomeButton : true
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+            <Provider store={store}>
+              <Header dispatch={() => {}}/>
+            </Provider>);
     });
 
     it('should have app-link className', function () {
@@ -39,8 +49,10 @@ describe('Header', () => {
 
         history.push = pushMock;
 
-        rendered = shallow(
-          <Header history={history} />
+        rendered = mount(
+            <Provider store={store}>
+          <Header history={history} dispatch={() => {}}/>
+            </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');
@@ -59,8 +71,10 @@ describe('Header', () => {
 
         history.push = pushMock;
 
-        rendered = shallow(
-          <Header history={history} />
+        rendered = mount(
+            <Provider store={store}>
+                <Header history={history} dispatch={() => {}}/>
+            </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');
