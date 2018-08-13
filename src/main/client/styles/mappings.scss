@@ -1,72 +1,106 @@
 .mapping-table {
   width: 100%;
-  margin-top: 0px;
+  margin-top: 0;
+}
+
+.column-mapping-section {
+  margin: 10px 0 15px;
+  position: relative;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+  border: 1px solid #699;
+  border-radius: 3px;
+  background: #fff;
 }
 
 .mapping-table-div{
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .mapping-row-header {
-  border: 1px solid black;
   height: 40px;
   background: #699;
   width: 80%;
+  font-family: OpenSans,Arial,sans-serif;
+  color: #FFF;
+  font-size: 16px;
+  position: relative;
 }
 
 .mapping-row {
-  border: 1px solid black;
+  border: 1px solid #dddddd;
   height: 35px;
 }
 
 .mapping-header {
-  background-color: rgb(204, 204, 204);
-  border: 2px solid black;
+  border: 1px solid #699;
   min-width: 300px;
 }
 
 .mapping-column-name {
-  background-color: rgb(238, 238, 238);
   padding-left: 10px;
-  border: 1px solid black;
+  border: 1px solid #dddddd;
 }
 
 .mapping-data-element {
-  background-color: rgb(238, 238, 238);
   padding: 5px;
 }
 
 .mapping-input {
   width: 100%;
   padding: 0;
-  border: 1px solid black;
+  border: 1px solid #dddddd;
   height: 30px;
 }
 
 .filtered-tables {
-  margin-left: 170px;
-  font-family: 'sans-serif';
-  background-color: '#e4e3e375';
-  color: '#000000bd';
+  width: 450px;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10001;
+  color: #333;
+  font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+  font-size: 0.7em;
+  list-style: none;
+  display: block;
+  outline: none;
+  position: absolute;
+  cursor: default;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .table-name {
-  padding-top: 5px;
-  font-size: 17px;
+  font-size: 16px;
+  margin: 0;
+  width: 100%;
+  text-decoration: none;
+  display: block;
+  padding: 2px .4em;
+  line-height: 1.5;
+  min-height: 0;
+  font-weight: normal;
+  color: #333;
+  background: #eee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
+  &:hover {
+    cursor: pointer;
+    color: #E8A000;
+    background: #FFFDF0;
+    border: 1px solid #FFA000;
+  }
 }
 
 .table-input {
-  width: 430px;
-  height: 38px;
-  padding-left: 5px;
-  border: 1px solid black;
-  font-size: 17px;
-  margin-top: 5px;
+  width: 450px;
+  padding: 5px 15px;
+  border: 1px solid #dddddd;
+  display: block;
+  margin: 10px 0 0 0;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .mapping-div{
-  margin-top: 50px;
-  margin-left: 150px;
+  margin: 5% 10%;
 }
 
 .add-mapping-button{
@@ -126,6 +160,15 @@
   border: 1px solid #dddddd;
 }
 
+.mapping-name-input {
+  width: 350px;
+  padding: 5px 15px;
+  border: 1px solid #dddddd;
+  display: block;
+  margin: 10px 0 25px 0;
+  border-radius: 5px;
+}
+
 .edit-mapping-button{
   padding: 5px 100px;
   border: 1px solid #dddddd;
@@ -137,4 +180,29 @@
 
 .table-row:nth-child(even){
   background: #f3f3f3;
+}
+
+.footer {
+  background: #f3f3f3;
+  height: 90px;
+}
+
+.save {
+  float: right;
+  margin: 30px 30px 30px 0;
+  border: 1px solid #88af28;
+  padding: 5px 0;
+  width: 80px;
+  color: #fff;
+  background-image: linear-gradient(#a1d030, #88af28);
+}
+
+.cancel {
+  float: right;
+  margin: 30px;
+  border: 1px solid #dddddd;
+  padding: 5px 0;
+  width: 80px;
+  color: black;
+  background-image: linear-gradient(#dddddd, #f3f3f3);
 }

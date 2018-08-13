@@ -15,3 +15,12 @@ export function showMessage(state = { 'responseMessage': '', 'responseType': '' 
             return state;
     }
 }
+
+export function showHomeButton(state = true, action = {}) {
+    switch (action.type) {
+    case 'showHome':
+        return action.show;
+    default :
+        return state;
+    }
+}

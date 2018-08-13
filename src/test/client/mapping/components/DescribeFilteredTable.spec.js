@@ -10,7 +10,6 @@ import DescribeFilteredTable from '../../../../main/client/mapping/components/De
 configure({adapter: new Adapter()});
 
 describe('DescribeFilteredTable', () => {
-    let rendered;
 
     it('should render only ColumnMapping component when selectedTable have value', () => {
         const store = createStore(() => ({
@@ -43,6 +42,7 @@ describe('DescribeFilteredTable', () => {
           </Provider>
         );
 
+        let rendered = getDescribeRenderer("pat_identifier");
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
         expect(rendered.find('.tables-list')).toHaveLength(0);
     });
@@ -59,11 +59,28 @@ describe('DescribeFilteredTable', () => {
         expect(describeRenderer.find('input')).toHaveLength(2);
     });
 
-    it('should have a footer, cancel and save className', () => {
+    it('should have a footer and cancel className', () => {
         let describeRenderer = getDescribeRenderer();
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);
+        expect(describeRenderer.find('.save')).toHaveLength(0);
+    });
+
+    it('should have a save className when there is selected table', () => {
+        let describeRenderer = getDescribeRenderer("program");
+        expect(describeRenderer.find('.footer')).toHaveLength(1);
+        expect(describeRenderer.find('.cancel')).toHaveLength(1);
         expect(describeRenderer.find('.save')).toHaveLength(1);
+    });
+
+    it('should not have overlay className when hideSpinner is true', () => {
+        let describeRenderer = getDescribeRenderer();
+        expect(describeRenderer.find('.overlay')).toHaveLength(0);
+    });
+
+    it('should have overlay className when hideSpinner is false', () => {
+        let describeRenderer = getDescribeRenderer("", false);
+        expect(describeRenderer.find('.overlay')).toHaveLength(1);
     });
 
     //TODO : Intentionally commented - No problem with test cases has to fix fetch in componentDidMount
@@ -110,9 +127,9 @@ describe('DescribeFilteredTable', () => {
     //     sandbox.restore();
     // });
 
-    function getDescribeRenderer(history = {}) {
+    function getDescribeRenderer(selectTable = "", hideSpinner = true) {
         const store = createStore(() => ({
-            selectedTable: '',
+            selectedTable: selectTable,
             allTables: [
                 'patient_identifier',
                 'hiv_self_testing',
@@ -129,7 +146,8 @@ describe('DescribeFilteredTable', () => {
                 responseMessage: "",
                 responseType: ""
             },
-            currentMapping: ""
+            hideSpinner,
+            currentMapping: ''
         }), applyMiddleware(thunkMiddleware));
 
         return (render(
@@ -137,7 +155,7 @@ describe('DescribeFilteredTable', () => {
             <DescribeFilteredTable
               dispatch={() => {
                 }}
-              history={history}
+              history={{}}
             />
           </Provider>
         ));

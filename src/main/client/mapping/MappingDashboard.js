@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {allMappingNames, getMapping} from './actions/MappingActions';
 import {hideSpinner} from '../common/Actions';
+import Message from '../common/Message';
 
 function editMapping(mappingName) {
     this.props.dispatch(getMapping(mappingName, this.props.history));
@@ -25,7 +26,7 @@ class MappingDashboard extends Component {
 
     componentDidMount() {
         let props = this.props;
-        fetch('/getMappingNames')
+        fetch('/dhis-integration/getMappingNames')
             .then(res => res.json())
             .then((result) => {
                 props.dispatch(allMappingNames(result));
@@ -35,7 +36,7 @@ class MappingDashboard extends Component {
 
     renderMappingNames() {
         return (
-            this.props.mappingNames.map(mappingName => (
+            this.props.mappingNames.sort().map(mappingName => (
               <tr key={mappingName} className="table-row">
                 <td className="mapping-name">
                   {mappingName}
@@ -52,10 +53,11 @@ class MappingDashboard extends Component {
 
     render() {
         if (this.state.redirectToAddMapping) {
-            this.props.history.push('/mapping/addEditMappings');
+            this.props.history.push('/dhis-integration/mapping/addEditMappings');
         }
         return (
           <div>
+            <Message />
             <Spinner hide={this.props.hideSpinner} />
             <div className="center mapping-names-table">
               <button

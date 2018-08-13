@@ -1,4 +1,4 @@
-import { hideSpinner, showMessage } from '../../../main/client/common/Actions';
+import {hideSpinner, showHome, showMessage} from '../../../main/client/common/Actions';
 
 describe('Actions', () => {
     describe('HideSpinnerAction', () => {
@@ -41,5 +41,25 @@ describe('Actions', () => {
 
            expect(expected).toEqual(showMessage("test message", "error"));
         });
-    })
+    });
+
+    describe('showHomeAction', () => {
+        it('should return showHome value as true as default', () => {
+            const expected = {
+                type: "showHome",
+                show: true
+            };
+            let result = showHome();
+            expect(expected).toEqual(result);
+        });
+
+        it('should return given value as showHome value', () => {
+            const expected = {
+                type: "showHome",
+                show: false
+            };
+            let result = showHome(false);
+            expect(expected).toEqual(result);
+        })
+    });
 });

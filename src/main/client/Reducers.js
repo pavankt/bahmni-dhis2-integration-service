@@ -9,7 +9,8 @@ import {
 } from './mapping/reducers/MappingReducer';
 
 import { hideSpinner,
-    showMessage
+    showMessage,
+    showHomeButton
 } from './common/Reducers';
 
 const reducers = combineReducers({
@@ -20,7 +21,8 @@ const reducers = combineReducers({
   allMappingNames,
   hideSpinner,
   showMessage,
-  currentMapping
+  currentMapping,
+  showHomeButton
 });
 
 export default reducers;

@@ -19,15 +19,15 @@ class App extends Component {
           <div>
             <Spinner hide={this.props.hideSpinner} />
             <div className="app-link">
-              <Link to="/mapping" className="mapping-link">
+              <Link to="/dhis-integration/mapping" className="mapping-link">
                 <i className="fa fa-map-signs" />
                         Manage Mapping
               </Link>
-              <Link to="/sync" className="sync-link">
+              <Link to="/dhis-integration/sync" className="sync-link">
                 <i className="fa fa-upload" />
                         Sync to DHIS
               </Link>
-              <Link to="/logs" className="log-link">
+              <Link to="/dhis-integration/logs" className="log-link">
                 <i className="fa fa-book" />
                         Logs
               </Link>

@@ -1,20 +1,30 @@
 import 'jsdom-global/register';
 import React from 'react';
 import {
-    configure, shallow
+    configure, mount, render
 } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
+import {Provider} from 'react-redux';
+import {applyMiddleware, createStore} from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import Header from "../../../main/client/common/Header";
 
 configure({ adapter: new Adapter() });
 
 
 describe('Header', () => {
-    let rendered;
+    let rendered, store;
 
     beforeEach(() => {
-        rendered = shallow(<Header />);
+        store = createStore(() => ({
+            showHomeButton : true
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+          <Provider store={store}>
+            <Header dispatch={() => {}} />
+          </Provider>);
     });
 
     it('should have app-link className', function () {
@@ -30,17 +40,19 @@ describe('Header', () => {
     });
 
     it('should change path to Bahmni home when home button clicked from DHIS2 dashboard', function () {
-        const history = { location: { pathname: '/' }, push: () => {}};
+        const history = { location: { pathname: '/dhis-integration/' }, push: () => {}};
 
         const sandBox = sinon.createSandbox();
 
         const pushMock = sandBox.mock(history).expects('push')
-            .withArgs('/bahmni/home');
+            .withArgs('/bahmni/home/#/dashboard');
 
         history.push = pushMock;
 
-        rendered = shallow(
-          <Header history={history} />
+        rendered = mount(
+          <Provider store={store}>
+            <Header history={history} dispatch={() => {}} />
+          </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');
@@ -55,12 +67,14 @@ describe('Header', () => {
         const sandBox = sinon.createSandbox();
 
         const pushMock = sandBox.mock(history).expects('push')
-            .withArgs('/');
+            .withArgs('/dhis-integration/');
 
         history.push = pushMock;
 
-        rendered = shallow(
-          <Header history={history} />
+        rendered = mount(
+          <Provider store={store}>
+            <Header history={history} dispatch={() => {}} />
+          </Provider>
         );
 
         rendered.find('.back-btn').first().simulate('click');

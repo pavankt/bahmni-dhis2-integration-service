@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { tableColumns } from '../actions/MappingActions';
+import { hideSpinner } from "../../common/Actions";
 
 class ColumnMappings extends Component {
   constructor() {
@@ -15,14 +16,16 @@ class ColumnMappings extends Component {
   }
 
   getColumns() {
-    fetch(`/getColumns?tableName=${this.props.table}`)
+    this.props.dispatch(hideSpinner(false));
+    fetch(`/dhis-integration/getColumns?tableName=${this.props.table}`)
       .then(res => res.json())
       .then(result => this.props.dispatch(tableColumns(result)));
+    this.props.dispatch(hideSpinner());
   }
 
   renderColumns() {
     return this.props.columns.map(column => (
-      <tr key={column} className="mapping-row">
+      <tr key={column} className="mapping-row table-row">
         <td className="mapping-column-name">
           {column}
         </td>
@@ -39,17 +42,19 @@ class ColumnMappings extends Component {
         <span>
 Please provide DHIS2 data element mapping for patient instance
         </span>
-        <table className="mapping-table">
-          <tr className="mapping-row-header">
-            <th className="mapping-header">
-                Bahmni Data Point
-            </th>
-            <th className="mapping-header">
-                DHIS2 Data Element ID
-            </th>
-          </tr>
-          {this.renderColumns()}
-        </table>
+        <section className="column-mapping-section">
+          <table className="mapping-table">
+            <tr className="mapping-row-header">
+              <th className="mapping-header">
+                    Bahmni Data Point
+              </th>
+              <th className="mapping-header">
+                    DHIS2 Data Element ID
+              </th>
+            </tr>
+            {this.renderColumns()}
+          </table>
+        </section>
       </div>
     );
   }

@@ -15,11 +15,11 @@ return (
   <BrowserRouter history={browserHistory}>
     <switch>
       <Route component={Header} />
-      <Route exact path="/" component={App} />
-      <Route exact path="/mapping" component={MappingDashboard} />
-      <Route exact path="/sync" component={SyncDashboard} />
-      <Route exact path="/logs" component={LogDashboard} />
-      <Route exact path="/mapping/addEditMappings" component={DescribeFilteredTable} />
+      <Route exact path="/dhis-integration/" component={App} />
+      <Route exact path="/dhis-integration/mapping" component={MappingDashboard} />
+      <Route exact path="/dhis-integration/sync" component={SyncDashboard} />
+      <Route exact path="/dhis-integration/logs" component={LogDashboard} />
+      <Route exact path="/dhis-integration/mapping/addEditMappings" component={DescribeFilteredTable} />
     </switch>
   </BrowserRouter>);
 }

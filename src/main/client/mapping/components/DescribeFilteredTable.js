@@ -5,6 +5,8 @@ import DisplayTableNames from './DisplayTableNames';
 import ColumnMappings from './ColumnMappings';
 import { selectedTable, filteredTables, allTables, saveMappings } from '../actions/MappingActions';
 import Message from '../../common/Message';
+import Spinner from "../../common/Spinner";
+import { showHome } from "../../common/Actions";
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -15,7 +17,8 @@ class DescribeFilteredTable extends Component {
   }
 
   componentDidMount() {
-      fetch('/getTables')
+      this.props.dispatch(showHome(false));
+      fetch('/dhis-integration/getTables')
           .then(res => res.json())
           .then(result => this.props.dispatch(allTables(result)));
   }
@@ -28,6 +31,10 @@ class DescribeFilteredTable extends Component {
       }
 
       this.refs.mappingName.value = nextProps.currentMapping;
+  }
+
+  componentWillUnmount() {
+      this.props.dispatch(showHome());
   }
 
   searchTables() {
@@ -46,7 +53,7 @@ class DescribeFilteredTable extends Component {
   _onCancel() {
     this.props.dispatch(selectedTable());
     this.props.dispatch(filteredTables());
-    this.props.history.push('/mapping');
+    this.props.history.push('/dhis-integration/mapping');
   }
 
   _onSave() {
@@ -60,13 +67,14 @@ class DescribeFilteredTable extends Component {
     return (
       <div className="mapping-div">
         <Message />
+        <Spinner hide={this.props.hideSpinner} />
         <div>
           Mapping Name
         </div>
         <input
           type="text"
           ref="mappingName"
-          className="mapping-name"
+          className="mapping-name mapping-name-input"
           placeholder="Enter Mapping Name"
         />
         <span>
@@ -81,14 +89,16 @@ class DescribeFilteredTable extends Component {
           className="table-input"
         />
         {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
-        {(this.props.selectedTable) && <ColumnMappings />}
+        {(this.props.selectedTable) && <ColumnMappings /> }
         <div className="footer">
-          <span className="cancel" onClick={this._onCancel}>
-            Cancel
-          </span>
-          <span className="save" onClick={this._onSave}>
-            Save
-          </span>
+          {(this.props.selectedTable) && (
+          <button type="button" className="save" onClick={this._onSave}>
+              Save
+          </button>
+)}
+          <button type="button" className="cancel" onClick={this._onCancel}>
+              Cancel
+          </button>
         </div>
       </div>
     );
@@ -100,12 +110,14 @@ DescribeFilteredTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
   tables: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
+  hideSpinner:PropTypes.bool.isRequired,
   currentMapping: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
   selectedTable: state.selectedTable,
   tables: state.allTables,
+  hideSpinner : state.hideSpinner,
   currentMapping: state.currentMapping
 });
 

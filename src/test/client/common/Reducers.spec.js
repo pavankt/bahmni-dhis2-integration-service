@@ -1,4 +1,4 @@
-import { hideSpinner, showMessage } from '../../../main/client/common/Reducers';
+import {hideSpinner, showHomeButton, showMessage} from '../../../main/client/common/Reducers';
 
 describe('Reducers', () => {
     describe('HideSpinnerReducer', () => {
@@ -38,5 +38,26 @@ describe('Reducers', () => {
             let action = { type: "showMessage", responseMessage: "message", responseType: "success" };
             expect(showMessage(state, action)).toEqual({ 'responseMessage': "message", 'responseType': "success" });
         });
+    });
+
+    describe('ShowHomeButtonReducer', () => {
+        it('should return true with default params', () => {
+            expect(showHomeButton()).toBeTruthy();
+        });
+
+        it('should return showHomeButton value as action.show value when action type is showHome', () => {
+            const action = {
+                type: 'showHome',
+                show: true
+            };
+            expect(showHomeButton(false, action)).toBeTruthy();
+        });
+
+        it('should return state value when action.type is not showHome', () => {
+            const action = {
+                type: 'hideHome'
+            };
+            expect(showHomeButton(false, action)).toBeFalsy();
+        })
     });
 });
