@@ -143,15 +143,6 @@
 					<prefix>/opt/bahmni-dhis2-integration-service</prefix>
 					<release>1</release>
                     <mappings>
-                    <mapping>
-                        <directory>/opt/bahmni-dhis2-integration-service/resources</directory>
-                        <filemode>755</filemode>
-                        <sources>
-                            <source>
-                                <location>target/classes/static</location>
-                            </source>
-                        </sources>
-                    </mapping>
        	            <mapping>
                         <directory>/opt/bahmni-dhis2-integration-service/lib</directory>
                         <filemode>755</filemode>
