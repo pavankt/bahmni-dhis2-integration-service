@@ -148,7 +148,7 @@ describe('DescribeFilteredTable', () => {
                 responseType: ""
             },
             hideSpinner,
-            currentMapping: ''
+            currentMapping: ""
         }), applyMiddleware(thunkMiddleware));
 
         return (render(

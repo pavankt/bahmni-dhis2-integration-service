@@ -1,6 +1,8 @@
 import {hideSpinner, showMessage} from "../../common/Actions";
 import Ajax from "../../common/Ajax";
 
+let ajax = new Ajax();
+
 const isEmptyString = (aString) => aString === "";
 
 const objectify = (key,value) => (
@@ -138,7 +140,6 @@ export function getMapping(mappingNameToEdit, history) {
     return async (dispatch)=> {
         let ajax = Ajax.instance();
         let response = parseResponse(await ajax.get('/dhis-integration/getMapping',{"mappingName" : mappingNameToEdit}));
-        console.log("json---->", response.mapping_json.value);
         dispatch(selectedTable(response.lookup_table.value.instance));
         dispatch(currentMapping(response.mapping_name));
         dispatch(mappingJson(response.mapping_json.value));
