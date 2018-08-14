@@ -15,6 +15,9 @@ public class PrivilegeUtil {
   @Setter
   private static List<String> availablePrivileges;
 
+  private PrivilegeUtil() {
+  }
+
   public static boolean hasPrivilege(String priv) {
     return availablePrivileges
             .stream()

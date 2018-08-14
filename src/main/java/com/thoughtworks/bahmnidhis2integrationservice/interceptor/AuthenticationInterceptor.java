@@ -47,7 +47,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 authenticationResponse = authenticator.authenticate(cookie.getValue());
             }
         }
-
         switch (authenticationResponse) {
             case AUTHORIZED:
                 return true;

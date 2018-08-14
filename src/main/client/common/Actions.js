@@ -1,4 +1,4 @@
-import Ajax from "./Ajax";
+import Ajax from './Ajax';
 
 export function hideSpinner(hide = true) {
     return {
