@@ -24,3 +24,12 @@ export function showHomeButton(state = true, action = {}) {
         return state;
     }
 }
+
+export function privileges(state = [], action = {}) {
+    switch(action.type) {
+        case 'privileges' :
+            return action.privileges;
+        default :
+            return state;
+    }
+}

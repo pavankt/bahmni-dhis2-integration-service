@@ -52,7 +52,7 @@ export default class Ajax {
 
         if(response.status === responseCodes.OK) {
             return responseJson;
-        }else if(response.status === responseCodes.INTERNAL_SERVER_ERROR) {
+        } else if(response.status === responseCodes.INTERNAL_SERVER_ERROR) {
             throw "Could not able to connect to server";
         } else if (response.status === responseCodes.NOT_FOUND) {
             throw "Could not able to get the details";

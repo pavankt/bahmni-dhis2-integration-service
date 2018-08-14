@@ -20,7 +20,8 @@ describe('App', () => {
 
     beforeEach(() => {
         const store = createStore(() => ({
-            hideSpinner : false
+            hideSpinner : false,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -66,7 +67,8 @@ describe('App', () => {
 
     it('should not have overlay className when hideSpinner is true', () => {
         const store = createStore(() => ({
-            hideSpinner : true
+            hideSpinner : true,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -82,7 +84,8 @@ describe('App', () => {
 
     it('should dispatch hideSpinner', () => {
         const store = createStore(() => ({
-            hideSpinner : true
+            hideSpinner : true,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
         }), applyMiddleware(thunkMiddleware));
 
         let sandbox = sinon.createSandbox();

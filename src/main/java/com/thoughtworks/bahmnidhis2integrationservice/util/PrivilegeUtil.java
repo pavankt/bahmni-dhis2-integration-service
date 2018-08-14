@@ -16,6 +16,8 @@ public class PrivilegeUtil {
   private static List<String> availablePrivileges;
 
   public static boolean hasPrivilege(String priv) {
+    System.out.println("Has Privilege checks for " + priv + " presence in " + availablePrivileges
+      + " and found the count as " + (availablePrivileges.stream().filter(priv::equals).count() > 0));
     return availablePrivileges
             .stream()
             .filter(priv::equals)
@@ -26,7 +28,9 @@ public class PrivilegeUtil {
     setAvailablePrivileges(privileges
             .stream()
             .map(Privilege::getName)
+            .filter(privilege -> privilege.startsWith(APP_DHIS2SYNC))
             .collect(Collectors.toList()));
+    System.out.println("\n\n\nAvailable privileges " + getAvailablePrivileges());
   }
 
   public static class Privileges extends ArrayList<Privilege> {
