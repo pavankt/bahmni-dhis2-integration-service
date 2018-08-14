@@ -19,7 +19,7 @@ public class MappingController {
     @Autowired
     private MappingServiceImpl mappingService;
 
-    @PutMapping(value = "/addMapping")
+    @PutMapping(value = "/saveMapping")
     @ResponseBody
     public Map<String, String> saveMappings(@RequestBody Map<String, String> params) throws Exception {
         String response = mappingService.saveMapping(params.get("mappingName"),params.get("lookupTable"), params.get("mappingJson"));

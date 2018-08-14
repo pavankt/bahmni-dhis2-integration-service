@@ -196,6 +196,14 @@ describe('#mappingActions', () => {
                {
                    type: "hideSpinner",
                    hideSpinner: true
+               },
+               {
+                   type: "currentMapping",
+                   mappingName: ""
+               },
+               {
+                   type: "mappingJson",
+                   mappingJson: {}
                }
            ];
 
@@ -204,7 +212,8 @@ describe('#mappingActions', () => {
                  responseMessage: "",
                  responseType: ""
                },
-               allMappingNames: ["Mapping Name"]
+               allMappingNames: ["Mapping Name"],
+               currentMapping : ""
             });
 
            document.body.innerHTML =
@@ -304,8 +313,8 @@ describe('#mappingActions', () => {
             } catch (e) {
                 expect(store.getActions()).toEqual(expectedActions);
                 putMock.verify();
-                sandbox.restore();
             }
+           sandbox.restore();
        });
     });
 });

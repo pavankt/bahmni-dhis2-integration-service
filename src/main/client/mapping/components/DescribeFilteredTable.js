@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import DisplayTableNames from './DisplayTableNames';
 import ColumnMappings from './ColumnMappings';
-import { selectedTable, filteredTables, allTables, saveMappings } from '../actions/MappingActions';
+import {allTables, filteredTables, currentMapping, saveMappings, selectedTable} from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
-import { showHome } from "../../common/Actions";
+import {showHome} from "../../common/Actions";
+
+let isEmptyObject = (object)=> Object.keys(object).length === 0;
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -53,6 +55,7 @@ class DescribeFilteredTable extends Component {
   _onCancel() {
     this.props.dispatch(selectedTable());
     this.props.dispatch(filteredTables());
+    this.props.dispatch(currentMapping());
     this.props.history.push('/dhis-integration/mapping');
   }
 
@@ -118,7 +121,8 @@ const mapStateToProps = (state) => ({
   selectedTable: state.selectedTable,
   tables: state.allTables,
   hideSpinner : state.hideSpinner,
-  currentMapping: state.currentMapping
+  currentMapping: state.currentMapping,
+  mappingJson : state.mappingJson
 });
 
 

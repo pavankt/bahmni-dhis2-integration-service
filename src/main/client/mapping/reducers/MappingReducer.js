@@ -53,3 +53,12 @@ export function currentMapping(state = '', action = {}) {
             return state;
     }
 }
+
+export function mappingJson(state = {}, action = {}) {
+    switch (action.type) {
+        case 'mappingJson':
+            return action.mappingJson;
+        default:
+            return state;
+    }
+}

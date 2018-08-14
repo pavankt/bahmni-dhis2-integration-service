@@ -27,6 +27,7 @@ describe('Mapping dashboard', function () {
           <Provider store={store}>
             <MappingDashboard dispatch={() => {
                 }}
+                history={{}}
             />
           </Provider>
         );

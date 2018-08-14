@@ -5,7 +5,8 @@ import {
     filteredTables,
     selectedTable,
     selectedTableColumns,
-    currentMapping
+    currentMapping,
+    mappingJson
 } from './mapping/reducers/MappingReducer';
 
 import { hideSpinner,
@@ -22,7 +23,8 @@ const reducers = combineReducers({
   hideSpinner,
   showMessage,
   currentMapping,
-  showHomeButton
+  showHomeButton,
+  mappingJson
 });
 
 export default reducers;

@@ -29,7 +29,8 @@ describe('DescribeFilteredTable', () => {
                 responseMessage: "",
                 responseType: ""
             },
-            currentMapping: ""
+            currentMapping: "",
+            hideSpinner: false
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(

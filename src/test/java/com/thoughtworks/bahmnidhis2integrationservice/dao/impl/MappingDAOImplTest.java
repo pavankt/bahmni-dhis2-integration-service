@@ -28,11 +28,10 @@ public class MappingDAOImplTest {
     private JdbcTemplate jdbcTemplate;
 
     private String mappingName = "patient_details";
-    private String category = "instance";
     private String lookupTable = "{\"instance\" : \"patient\"}";
     private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
-    private String sql = String.format("INSERT INTO mapping (mapping_name, category, lookup_table, mapping_json) " +
-            "VALUES ('%s', '%s', '%s', '%s')", mappingName, category, lookupTable, mappingJson);
+    private String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
+            "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
 
     @Before
     public void setUp() throws Exception {
@@ -83,7 +82,7 @@ public class MappingDAOImplTest {
 
     @Test
     public void shouldGetExistingMapping() throws NoMappingFoundException {
-        String sql = "SELECT mapping_name, lookup_table, mapping_json FROM mapping WHERE = 'HTS Service'";
+        String sql = "SELECT mapping_name, lookup_table, mapping_json FROM mapping WHERE mapping_name= 'HTS Service'";
         Map<String, Object> HTSMapping = new HashMap<>();
 
         HTSMapping.put("mapping_name","HTS Service");

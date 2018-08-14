@@ -9,10 +9,21 @@ class ColumnMappings extends Component {
     super();
     this.renderColumns = this.renderColumns.bind(this);
     this.getColumns = this.getColumns.bind(this);
+    this.insertValues = this.insertValues.bind(this);
   }
+
+  isNotEmpty = (object)=> (
+     object !== undefined && Object.keys(object).length !== 0
+  );
 
   componentDidMount() {
     this.getColumns();
+  }
+
+  componentDidUpdate(){
+     if(this.isNotEmpty(this.props.mappingJson)){
+         this.insertValues();
+      }
   }
 
   getColumns() {
@@ -20,7 +31,7 @@ class ColumnMappings extends Component {
     fetch(`/dhis-integration/getColumns?tableName=${this.props.table}`)
       .then(res => res.json())
       .then(result => this.props.dispatch(tableColumns(result)));
-    this.props.dispatch(hideSpinner());
+      this.props.dispatch(hideSpinner());
   }
 
   renderColumns() {
@@ -30,7 +41,7 @@ class ColumnMappings extends Component {
           {column}
         </td>
         <td className="mapping-data-element">
-          <input type="text" className="mapping-input" />
+          <input type="text" className="mapping-input" ref={column}/>
         </td>
       </tr>
     ));
@@ -58,6 +69,13 @@ Please provide DHIS2 data element mapping for patient instance
       </div>
     );
   }
+
+    insertValues() {
+        let instanceJson = this.props.mappingJson.instance;
+        Object.keys(instanceJson).forEach((columnName)=>{
+            this.refs[columnName].value = instanceJson[columnName];
+        });
+    }
 }
 
 ColumnMappings.propTypes = {
@@ -68,7 +86,8 @@ ColumnMappings.propTypes = {
 
 const mapStateToProps = (state) => ({
   table: state.selectedTable,
-  columns: state.selectedTableColumns
+  columns: state.selectedTableColumns,
+  mappingJson: state.mappingJson
 });
 
 export default connect(mapStateToProps)(ColumnMappings);
