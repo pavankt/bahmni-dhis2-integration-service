@@ -8,12 +8,9 @@ import { privileges } from './common/constants';
 import Message from './common/Message';
 
 class App extends Component {
-    componentWillMount() {
-        this.props.dispatch(hideSpinner(false));
-    }
 
     componentDidMount() {
-        console.log("app did mount");
+        this.props.dispatch(hideSpinner(false));
         this.props.dispatch(getPrivileges());
         this.props.dispatch(hideSpinner());
     }
@@ -21,26 +18,27 @@ class App extends Component {
     render() {
         return (
           <div>
-            <Message/>
+            <Message />
             <Spinner hide={this.props.hideSpinner} />
             <div className="app-link">
-                {this.props.privileges.includes(privileges.MAPPING) &&
-                <Link to="/dhis-integration/mapping" className="mapping-link">
+              {this.props.privileges.includes(privileges.MAPPING) && (
+              <Link to="/dhis-integration/mapping" className="mapping-link">
                 <i className="fa fa-map-signs" />
                         Manage Mapping
-              </Link>}
-                {this.props.privileges.includes(privileges.UPLOAD) &&
-                <Link to="/dhis-integration/sync" className="sync-link">
-                    <i className="fa fa-upload"/>
+              </Link>
+)}
+              {this.props.privileges.includes(privileges.UPLOAD) && (
+              <Link to="/dhis-integration/sync" className="sync-link">
+                <i className="fa fa-upload" />
                     Sync to DHIS
-                </Link>
-                }
-                {this.props.privileges.includes(privileges.LOG) &&
-                <Link to="/dhis-integration/logs" className="log-link">
-                    <i className="fa fa-book"/>
+              </Link>
+)}
+              {this.props.privileges.includes(privileges.LOG) && (
+              <Link to="/dhis-integration/logs" className="log-link">
+                <i className="fa fa-book" />
                     Logs
-                </Link>
-                }
+              </Link>
+)}
             </div>
           </div>
         );

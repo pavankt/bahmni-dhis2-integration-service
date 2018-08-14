@@ -21,7 +21,11 @@ describe('App', () => {
     beforeEach(() => {
         const store = createStore(() => ({
             hideSpinner : false,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "",
+                responseType : ""
+            }
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -68,7 +72,11 @@ describe('App', () => {
     it('should not have overlay className when hideSpinner is true', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "",
+                responseType : ""
+            }
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -82,22 +90,29 @@ describe('App', () => {
         expect(rendered.find('.overlay')).toHaveLength(0);
     });
 
-    it('should dispatch hideSpinner', () => {
+    it('should dispatch hideSpinner and getPrivileges on didMount', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "",
+                responseType : ""
+            }
         }), applyMiddleware(thunkMiddleware));
 
         let sandbox = sinon.createSandbox();
 
-        const spinner = sandbox.mock(Actions);
+        const actions = sandbox.mock(Actions);
 
-        let spinnerFalse = spinner.expects('hideSpinner')
+        let spinnerFalse = actions.expects('hideSpinner')
             .withArgs(false)
             .returns({ type: '' });
 
-        let spinnerTrue = spinner.expects('hideSpinner')
+        let spinnerTrue = actions.expects('hideSpinner')
             .returns({ type: '' });
+
+        let getPrivileges = actions.expects('getPrivileges')
+            .returns({ type: "privileges" });
 
         mount(
           <Router>
@@ -109,6 +124,70 @@ describe('App', () => {
 
         spinnerFalse.verify();
         spinnerTrue.verify();
+        getPrivileges.verify();
         sandbox.restore();
+    });
+
+    it('should not have message-container className when responseMessage is empty', () => {
+        const store = createStore(() => ({
+            hideSpinner : true,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "",
+                responseType : ""
+            }
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+          <Router>
+            <Provider store={store}>
+              <App dispatch={() => {}} />
+            </Provider>
+          </Router>
+        );
+
+        expect(rendered.find('.message-container')).toHaveLength(0);
+    });
+
+    it('should not have success-message-container className when responseMessage is not empty and type is success', () => {
+        const store = createStore(() => ({
+            hideSpinner : true,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "message",
+                responseType : "success"
+            }
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+          <Router>
+            <Provider store={store}>
+              <App dispatch={() => {}} />
+            </Provider>
+          </Router>
+        );
+
+        expect(rendered.find('.success-message-container')).toHaveLength(1);
+    });
+
+    it('should not have error-message-container className when responseMessage is not empty and type is error', () => {
+        const store = createStore(() => ({
+            hideSpinner : true,
+            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            showMessage: {
+                responseMessage : "message",
+                responseType : "error"
+            }
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+          <Router>
+            <Provider store={store}>
+              <App dispatch={() => {}} />
+            </Provider>
+          </Router>
+        );
+
+        expect(rendered.find('.error-message-container')).toHaveLength(1);
     });
 });

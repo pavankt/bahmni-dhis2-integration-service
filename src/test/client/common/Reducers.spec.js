@@ -1,4 +1,8 @@
-import {hideSpinner, showHomeButton, showMessage} from '../../../main/client/common/Reducers';
+import {hideSpinner,
+    showHomeButton,
+    showMessage,
+    privileges
+} from '../../../main/client/common/Reducers';
 
 describe('Reducers', () => {
     describe('HideSpinnerReducer', () => {
@@ -58,6 +62,27 @@ describe('Reducers', () => {
                 type: 'hideHome'
             };
             expect(showHomeButton(false, action)).toBeFalsy();
+        })
+    });
+
+    describe('privilegesReducer', () => {
+        it('should return empty array with default params', () => {
+            expect(privileges()).toEqual([]);
+        });
+
+        it('should return privileges as action.privileges when action type is privileges', () => {
+            const action = {
+                type: 'privileges',
+                privileges: ["mapping"]
+            };
+            expect(privileges([], action)).toEqual(["mapping"]);
+        });
+
+        it('should return state value when action.type is not showHome', () => {
+            const action = {
+                type: 'noPrev'
+            };
+            expect(showHomeButton([], action)).toEqual([]);
         })
     });
 });
