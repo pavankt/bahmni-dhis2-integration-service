@@ -1,8 +1,6 @@
 import {hideSpinner, showMessage} from "../../common/Actions";
 import Ajax from "../../common/Ajax";
 
-let ajax = new Ajax();
-
 const isEmptyString = (aString) => aString === "";
 
 const objectify = (key,value) => (

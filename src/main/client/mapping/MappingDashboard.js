@@ -6,10 +6,6 @@ import {allMappingNames, getMapping, mappingJson} from './actions/MappingActions
 import {hideSpinner} from '../common/Actions';
 import Message from '../common/Message';
 
-function editMapping(mappingName) {
-    this.props.dispatch(getMapping(mappingName, this.props.history));
-}
-
 class MappingDashboard extends Component {
     constructor() {
         super();
