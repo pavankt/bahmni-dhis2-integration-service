@@ -14,7 +14,7 @@ import static com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil.
 public class OpenMRSAuthenticator {
 
     private static final String WHOAMI_URL = "/bahmnicore/whoami";
-    public static final String OPENMRS_SESSION_ID_COOKIE_NAME = "JSESSIONID";
+    private static final String OPENMRS_SESSION_ID_COOKIE_NAME = "JSESSIONID";
 
     @Autowired
     private AppProperties appProperties;
@@ -33,7 +33,7 @@ public class OpenMRSAuthenticator {
         return AuthenticationResponse.NOT_AUTHENTICATED;
     }
 
-    public ResponseEntity<PrivilegeUtil.Privileges> callOpenMRS(String sessionId) {
+    private ResponseEntity<PrivilegeUtil.Privileges> callOpenMRS(String sessionId) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", OPENMRS_SESSION_ID_COOKIE_NAME + "=" + sessionId);
         try {
