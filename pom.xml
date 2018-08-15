@@ -152,15 +152,6 @@
                                 <location>target/bahmni-dhis2-integration-service-0.0.1-SNAPSHOT.jar</location>
                             </source>
                         </sources>
-                    </mapping>	
-		    		<mapping>
-                        <directory>/opt/bahmni-dhis2-integration-service/conf</directory>
-                        <filemode>755</filemode>
-                        <sources>
-                           <source>
-                                <location>conf/liquibase-scdf.xml</location>
-                            </source>
-                        </sources>
                     </mapping>
 					<mapping>
 						<directory>/opt/bahmni-dhis2-integration-service/migrations</directory>
@@ -172,27 +163,55 @@
 						</sources>
 					</mapping>
 					<mapping>
-						<directory>/opt/bahmni-dhis2-integration-service/bin</directory>
+						<directory>/opt/bahmni-dhis2-integration-service/etc</directory>
 						<filemode>755</filemode>
 						<sources>
 							<source>
-								<location>scripts/builds/rpm/bahmni-dhis2-integration-service.sh</location>
+								<location>resources/bahmni-dhis.conf</location>
+							</source>
+							<source>
+								<location>resources/bahmni-dhis2-integration-service-ssl.conf</location>
+							</source>
+							<source>
+								<location>resources/run-liquibase.sh</location>
+							</source>
+							<source>
+								<location>resources/bahmni-dhis.properties</location>
 							</source>
 						</sources>
 					</mapping>
+						<mapping>
+							<directory>/opt/bahmni-dhis2-integration-service/bin</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>scripts/rpm</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/opt/bahmni-dhis2-integration-service/migrations</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>migrations/liquibase.xml</location>
+								</source>
+							</sources>
+						</mapping>
                     </mappings>
                     <preinstallScriptlet>
-						<script>echo "installing ${project.name} now"</script>
+						<scriptFile>scripts/preinstall.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
 					</preinstallScriptlet>
 					<postinstallScriptlet>
-						<scriptFile>scripts/builds/postinstall.sh</scriptFile>
+						<scriptFile>scripts/postinstall.sh</scriptFile>
 						<fileEncoding>utf-8</fileEncoding>
-						<filter>true</filter>
 					</postinstallScriptlet>
 					<preremoveScriptlet>
-						<scriptFile>scripts/builds/postuninstall.sh</scriptFile>
+						<scriptFile>scripts/preuninstall.sh</scriptFile>
 						<fileEncoding>utf-8</fileEncoding>
 					</preremoveScriptlet>
+
 				</configuration>
 			</plugin>			
 
