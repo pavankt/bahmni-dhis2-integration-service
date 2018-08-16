@@ -16,8 +16,8 @@ public class MappingServiceImpl implements MappingService {
     private MappingDAOImpl mappingDAO;
 
     @Override
-    public String saveMapping(String mappingName, String lookupTable, String mappingJson) throws Exception {
-        return mappingDAO.saveMapping(mappingName, lookupTable, mappingJson);
+    public String saveMapping(String mappingName, String lookupTable, String mappingJson, String currentMapping) throws Exception {
+        return mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
     }
 
     @Override

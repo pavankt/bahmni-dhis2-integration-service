@@ -33,6 +33,8 @@ public class MappingDAOImplTest {
     private String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
             "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
 
+    private String currentMapping = "";
+
     @Before
     public void setUp() throws Exception {
         mappingDAO = new MappingDAOImpl();
@@ -43,7 +45,21 @@ public class MappingDAOImplTest {
     public void shouldReturnSuccessfulMessageOnSuccessfulInsertion() throws Exception {
         when(jdbcTemplate.update(sql)).thenReturn(1);
 
-        String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson);
+        String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+
+        verify(jdbcTemplate, times(1)).update(sql);
+        assertEquals("Successfully Added New Mapping", result);
+    }
+
+    @Test
+    public void shouldUpdateTableWhenCurrentMappingHasValue() throws Exception {
+        currentMapping = "pro_details";
+        sql = String.format("UPDATE mapping " +
+                "SET mapping_name='%s', lookup_table='%s', mapping_json='%s' " +
+                "WHERE mapping_name='%s'", mappingName, lookupTable, mappingJson, currentMapping);
+        when(jdbcTemplate.update(sql)).thenReturn(1);
+
+        String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
 
         verify(jdbcTemplate, times(1)).update(sql);
         assertEquals("Successfully Added New Mapping", result);
@@ -54,7 +70,7 @@ public class MappingDAOImplTest {
         when(jdbcTemplate.update(sql)).thenReturn(0);
 
         try {
-            mappingDAO.saveMapping(mappingName, lookupTable, mappingJson);
+            mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
         } catch(Exception e) {
             verify(jdbcTemplate, times(1)).update(sql);
             assertEquals("Could not able to add Mapping", e.getMessage());

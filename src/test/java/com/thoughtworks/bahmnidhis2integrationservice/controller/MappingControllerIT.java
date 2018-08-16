@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,6 +54,7 @@ public class MappingControllerIT{
         params.put("mappingName", "HTS Service");
         params.put("lookupTable", "{\"instance\" : \"patient\"}");
         params.put("mappingJson", "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}");
+        params.put("currentMapping", "");
 
         String expectedMessage = "Successfully Added New Mapping";
 
@@ -60,7 +62,44 @@ public class MappingControllerIT{
 
         assertEquals(expectedMessage, actualMessage.get("data"));
 
-        jdbcTemplate.execute("DROP TABLE IF EXISTS mapping CASCADE; CREATE TABLE public.mapping( mapping_name text, lookup_table json, mapping_json json, created_by text, created_date date, modifed_by text, modifed_date date)");
+        truncateMapping();
+    }
+
+    @Test
+    @Sql(scripts = {"classpath:mappingData/mapping.sql"})
+    public void shouldUpdateMappingNameWithCurrentMappingOnEdit() throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("mappingName", "Edit Service Name");
+        params.put("lookupTable", "{\"instance\" : \"patient\"}");
+        params.put("mappingJson", "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}");
+        params.put("currentMapping", "HTS Service");
+
+        String expectedMessage = "Successfully Added New Mapping";
+
+        Map<String, String> actualMessage = mappingController.saveMappings(params);
+
+        List<String> allMappingNames = jdbcTemplate.queryForList("SELECT mapping_name FROM mapping").stream()
+                .map(mapping -> mapping.get("mapping_name").toString())
+                .collect(Collectors.toList());
+
+        assertEquals(expectedMessage, actualMessage.get("data"));
+        assertEquals(allMappingNames.size(), 2);
+        System.out.println(allMappingNames);
+        assertTrue(Arrays.asList("TB Service","Edit Service Name").containsAll(allMappingNames));
+
+        truncateMapping();
+    }
+
+    private void truncateMapping() {
+        jdbcTemplate.execute("DROP TABLE IF EXISTS mapping CASCADE; " +
+                "CREATE TABLE public.mapping(" +
+                "mapping_name text," +
+                "lookup_table json, " +
+                "mapping_json json, " +
+                "created_by text, " +
+                "created_date date, " +
+                "modifed_by text, " +
+                "modifed_date date)");
     }
 
     @Test(expected = NoMappingFoundException.class)

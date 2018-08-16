@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MappingService {
-    String saveMapping(String mappingName, String lookupTable, String mappingJson) throws Exception;
+    String saveMapping(String mappingName, String lookupTable, String mappingJson, String currentMapping) throws Exception;
     List<String> getMappingNames();
 
     Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException;

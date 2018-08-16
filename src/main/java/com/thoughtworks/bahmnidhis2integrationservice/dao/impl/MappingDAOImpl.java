@@ -22,9 +22,13 @@ public class MappingDAOImpl implements MappingDAO {
     private final static int SUCCESS = 1;
 
     @Override
-    public String saveMapping(String mappingName, String lookupTable, String mappingJson) throws Exception {
-        String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
-                "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson);
+    public String saveMapping(String mappingName, String lookupTable, String mappingJson, String currentMapping) throws Exception {
+        String sql = "".equals(currentMapping) ?
+                String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
+                "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson)
+                :String.format("UPDATE mapping " +
+                    "SET mapping_name='%s', lookup_table='%s', mapping_json='%s' " +
+                    "WHERE mapping_name='%s'", mappingName, lookupTable, mappingJson, currentMapping);
 
         int result = jdbcTemplate.update(sql);
 

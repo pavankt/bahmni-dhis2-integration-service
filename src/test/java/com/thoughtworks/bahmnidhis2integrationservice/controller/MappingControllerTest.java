@@ -28,9 +28,9 @@ public class MappingControllerTest {
     private MappingServiceImpl mappingService;
 
     private String mappingName = "patient_details";
-    private String category = "instance";
     private String lookupTable = "patient";
     private String mappingJson = "{'patient_id': 'Asj8X', 'patient_name': 'jghTk9'}";
+    private String currentMapping = "pat_details";
 
 
     private Map<String, String> params = new HashMap<>();
@@ -40,21 +40,21 @@ public class MappingControllerTest {
         mappingController = new MappingController();
         setValuesForMemberFields(mappingController, "mappingService", mappingService);
         params.put("mappingName", mappingName);
-        params.put("category", category);
         params.put("lookupTable", lookupTable);
         params.put("mappingJson", mappingJson);
+        params.put("currentMapping", currentMapping);
     }
 
     @Test
     public void shouldSaveMappings() throws Exception {
         String expected = "Successfully Added Mapping";
 
-        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson)).thenReturn(expected);
+        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping)).thenReturn(expected);
 
         Map<String, String> actual = mappingController.saveMappings(params);
 
         verify(mappingService, times(1))
-                .saveMapping(mappingName, lookupTable, mappingJson);
+                .saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
         assertEquals(expected, actual.get("data"));
     }
 
@@ -62,14 +62,14 @@ public class MappingControllerTest {
     public void shouldThrowErrorOnFail() throws Exception {
         String expected = "Could not able to add Mapping";
 
-        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson))
+        when(mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping))
                 .thenThrow(new Exception(expected));
 
         try {
             mappingController.saveMappings(params);
         } catch (Exception e) {
             verify(mappingService, times(1))
-                    .saveMapping(mappingName, lookupTable, mappingJson);
+                    .saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
             assertEquals(expected, e.getMessage());
         }
     }

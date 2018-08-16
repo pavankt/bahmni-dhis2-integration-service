@@ -28,9 +28,9 @@ public class MappingServiceImplTest {
     private MappingDAOImpl mappingDAO;
 
     private String mappingName = "pat_details";
-    private String category = "instance";
     private String lookupTable = "{\"instance\" : \"patient\"}";
     private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
+    private String currentMapping = "";
 
     @Before
     public void setUp() throws Exception {
@@ -41,25 +41,25 @@ public class MappingServiceImplTest {
     @Test
     public void shouldReturnSuccessMessageOnInsertSuccess() throws Exception {
         String expected = "Successfully Added Mapping";
-        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping))
                 .thenReturn(expected);
 
-        String actual = mappingService.saveMapping(mappingName, lookupTable, mappingJson);
+        String actual = mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
 
-        verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson);
+        verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldThrowErrorOnFail() throws Exception {
         String expected = "Could not able to insert";
-        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping))
                 .thenThrow(new Exception(expected));
 
         try {
-            mappingService.saveMapping(mappingName, lookupTable, mappingJson);
+            mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
         } catch (Exception e) {
-            verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson);
+            verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
             assertEquals(expected, e.getMessage());
         }
     }
