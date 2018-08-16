@@ -1,4 +1,5 @@
 import Ajax from './Ajax';
+import { privileges as appPrivileges } from './constants';
 
 export function hideSpinner(hide = true) {
     return {
@@ -35,12 +36,15 @@ export function getPrivileges() {
         dispatch(hideSpinner(false));
         try {
             let response = await ajax.get('/dhis-integration/session');
-            response.length === 0 ?
+            if (response.length === 0) {
+                window.location.pathname = '/home';
+            }
+            (response.length === 1 && response.includes(appPrivileges.APP)) ?
                 dispatch(showMessage("You do not have permissions assigned. Contact admin to assign privileges for your user",
                     "error"))
                 :dispatch(privileges(response));
         } catch (e) {
-            dispatch(showMessage("Could not get Privileges", "error"));
+            window.location.pathname = '/home';
         }
         dispatch(hideSpinner());
     };

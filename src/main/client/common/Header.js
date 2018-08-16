@@ -11,7 +11,11 @@ class Header extends Component {
 
     redirect() {
         const history = this.props.history;
-        history.push(history.location.pathname === '/dhis-integration/' ? '/bahmni/home/#/dashboard' : '/dhis-integration/');
+        if (history.location.pathname !== '/dhis-integration/' ) {
+            history.push('/dhis-integration/');
+        } else {
+            window.location.pathname = '/home';
+        }
     }
 
     render() {

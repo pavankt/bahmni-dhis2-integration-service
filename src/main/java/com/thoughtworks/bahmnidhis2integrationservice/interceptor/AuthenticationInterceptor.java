@@ -38,7 +38,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return redirectToLogin(request, response);
+            return true;
         }
         AuthenticationResponse authenticationResponse = AuthenticationResponse.NOT_AUTHENTICATED;
 
@@ -55,24 +55,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                         "Privileges is required to access DHIS2 sync");
                 return false;
             default:
-                return redirectToLogin(request, response);
+                return true;
         }
-    }
-
-    private boolean redirectToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-        httpServletResponse.getWriter().write("Please login to continue");
-
-        StringBuffer redirectUrl = new StringBuffer();
-        redirectUrl.append(appProperties.getBahmniLoginUrl());
-        char paramChar = '?';
-        if(redirectUrl.toString().contains("?")) {
-            paramChar = '&';
-        }
-        redirectUrl.append(paramChar)
-                .append("from=")
-                .append(URLEncoder.encode(httpServletRequest.getRequestURL() + "?" + httpServletRequest.getQueryString(), "UTF-8"));
-        httpServletResponse.sendRedirect(redirectUrl.toString());
-        return false;
     }
 }

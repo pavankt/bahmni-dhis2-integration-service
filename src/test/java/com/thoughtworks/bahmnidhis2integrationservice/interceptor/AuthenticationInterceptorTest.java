@@ -97,14 +97,12 @@ public class AuthenticationInterceptorTest {
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, new Object());
 
     verify(authenticator, times(0)).authenticate(any());
-    verify(printWriter).write("Please login to continue");
-    verify(httpServletResponseMock).sendRedirect("/bahmni/home/#/login?showLoginMessage&from=http%3A%2F%2Flocalhost%2Fdhis-integration%2Fbundle.js%3Fnull");
-    Assert.assertFalse(response);
+    Assert.assertTrue(response);
   }
 
   @Test
   @SneakyThrows
-  public void shouldRedirectForBahmniLoginIfReportingSessionIdIsInvalidatedByOpenMRS() {
+  public void shouldReturnTrueIfReportingSessionIdIsInvalidatedByOpenMRS() {
     String COOKIE_VALUE = "SOME_REPORTING_SESSION_ID";
     Cookie cookie = new Cookie(REPORTING_COOKIE_NAME, COOKIE_VALUE);
     Cookie[] cookies = new Cookie[1];
@@ -114,15 +112,10 @@ public class AuthenticationInterceptorTest {
     when(authenticator.authenticate(COOKIE_VALUE)).thenReturn(NOT_AUTHENTICATED);
     when(httpServletResponseMock.getWriter()).thenReturn(printWriter);
 
-    when(appProperties.getBahmniLoginUrl()).thenReturn("/bahmni/home/#/login?showLoginMessage");
-
-    when(httpServletRequestMock.getRequestURL()).thenReturn(new StringBuffer("http://localhost/dhis-integration/bundle.js"));
-    when(httpServletRequestMock.getQueryString()).thenReturn(null);
-
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, new Object());
 
     verify(authenticator, times(1)).authenticate(COOKIE_VALUE);
-    Assert.assertFalse(response);
+    Assert.assertTrue(response);
 
   }
 

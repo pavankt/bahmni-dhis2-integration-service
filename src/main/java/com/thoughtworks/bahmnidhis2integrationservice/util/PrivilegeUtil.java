@@ -13,7 +13,7 @@ public class PrivilegeUtil {
 
   @Getter
   @Setter
-  private static List<String> availablePrivileges;
+  private static List<String> availablePrivileges = new ArrayList<>();
 
   public static boolean hasPrivilege(String priv) {
     return availablePrivileges
