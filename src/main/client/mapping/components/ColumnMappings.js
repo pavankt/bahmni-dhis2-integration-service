@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getTableColumns } from '../actions/MappingActions';
+import {connect} from 'react-redux';
 
 class ColumnMappings extends Component {
   constructor() {
@@ -11,25 +10,19 @@ class ColumnMappings extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getTableColumns(this.props.table));
+      this.insertValues();
   }
 
-  componentDidUpdate(){
-     if(this.isNotEmpty(this.props.mappingJson) && this.props.columns.length !== 0){
-         this.insertValues();
-      }
+  componentDidUpdate() {
+      this.insertValues();
   }
 
-  isNotEmpty = (object)=> (
-    object !== undefined && Object.keys(object).length !== 0
-  );
-  
   insertValues() {
       let instanceJson = this.props.mappingJson;
       this.props.columns.map(column => {
           let mapping = instanceJson[column];
           this.refs[column].value = mapping !== undefined ? mapping : '';
-})
+      });
   }
 
     renderColumns() {
@@ -70,14 +63,11 @@ Please provide DHIS2 data element mapping for patient instance
 }
 
 ColumnMappings.propTypes = {
-  table: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
   mappingJson: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  table: state.selectedTable,
   columns: state.selectedTableColumns,
   mappingJson: state.mappingJson
 });

@@ -11,16 +11,14 @@ configure({adapter: new Adapter()});
 
 describe('DescribeFilteredTable', () => {
 
-    it('should render only ColumnMapping component when selectedTable have value', () => {
+    it('should render ColumnMapping component when selectedTable have value', () => {
         let rendered = getDescribeRenderer("pat_identifier", false);
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
-        expect(rendered.find('.tables-list')).toHaveLength(0);
     });
 
-    it('should render only Filtered component when selectedTable is empty', () => {
+    it('should render DisplayColumns', () => {
         let describeRenderer = getDescribeRenderer();
 
-        expect(describeRenderer.find('.mapping-table-div')).toHaveLength(0);
         expect(describeRenderer.find('.tables-list')).toHaveLength(1);
     });
 

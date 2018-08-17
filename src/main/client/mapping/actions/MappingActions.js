@@ -146,7 +146,7 @@ export function getMapping(mappingNameToEdit, history) {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
             let response = parseResponse(await ajax.get('/dhis-integration/getMapping', {"mappingName": mappingNameToEdit}));
-            dispatch(selectedTable(response.lookup_table.value.instance));
+            await getColumns(response.lookup_table.value.instance, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
             dispatch(mappingJson(response.mapping_json.value.instance));
             history.push('/dhis-integration/mapping/addEditMappings');
@@ -178,12 +178,19 @@ export function getTableColumns(tableName) {
         try {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
-            let response = await ajax.get('/dhis-integration/getColumns', {tableName});
-            dispatch(tableColumns(response));
+            await getColumns(tableName, dispatch, ajax);
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
         } finally {
             dispatch(hideSpinner());
         }
     }
+}
+
+async function getColumns(tableName, dispatch, ajax) {
+    dispatch(selectedTable(tableName));
+    dispatch(mappingJson());
+    dispatch(filteredTables());
+    let response = await ajax.get('/dhis-integration/getColumns', {tableName});
+    dispatch(tableColumns(response));
 }

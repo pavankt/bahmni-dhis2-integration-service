@@ -45,10 +45,6 @@ class DescribeFilteredTable extends Component {
 
   searchTables() {
     const searchText = this.refs.tablesSearch.value;
-    if (searchText.length === 0) {
-        this.props.dispatch(selectedTable());
-        this.props.dispatch(filteredTables());
-    }
 
     if (searchText.length > 2) {
       const result = this.props.tables.filter(tableName => tableName.includes(searchText));
@@ -95,7 +91,7 @@ class DescribeFilteredTable extends Component {
           onKeyUp={this.searchTables}
           className="table-input"
         />
-        {(this.props.selectedTable.length === 0) && <DisplayTableNames />}
+        <DisplayTableNames />
         {(this.props.selectedTable) && <ColumnMappings /> }
         <div className="footer">
           {(this.props.selectedTable) && (

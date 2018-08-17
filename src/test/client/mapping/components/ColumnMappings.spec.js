@@ -1,15 +1,11 @@
 import 'jsdom-global/register';
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
-import {
-    render, configure, mount
-} from 'enzyme';
+import {configure, render} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-import sinon from 'sinon';
 import ColumnMappings from '../../../../main/client/mapping/components/ColumnMappings';
-import * as MappingActions from '../../../../main/client/mapping/actions/MappingActions';
 
 configure({adapter: new Adapter()});
 
@@ -19,7 +15,6 @@ describe('ColumnMappings', () => {
 
     beforeEach(() => {
         const store = createStore(() => ({
-            selectedTable: 'patient_identifier',
             selectedTableColumns: ['pat_id', 'pat_name'],
             mappingJson: {}
         }), applyMiddleware(thunkMiddleware));
@@ -60,31 +55,4 @@ describe('ColumnMappings', () => {
         expect(rendered.find('section')).toHaveLength(1);
         expect(rendered.find('.column-mapping-section')).toHaveLength(1);
     });
-
-    it('should call getTableColumns on did mount', () => {
-        let sandbox = sinon.createSandbox();
-
-        let tableColumns = sandbox.mock(MappingActions).expects("getTableColumns")
-            .returns({ type: '' });
-
-        const store = createStore(() => ({
-            selectedTable: 'patient_identifier',
-            selectedTableColumns: ['pat_id', 'pat_name'],
-            mappingJson: {
-                pat_id: "dhI8Ye",
-                pat_name: "t6RT6Q"
-            }
-        }), applyMiddleware(thunkMiddleware));
-
-        rendered = mount(
-          <Provider store={store}>
-            <ColumnMappings dispatch={() => {
-                }}
-            />
-          </Provider>
-        );
-
-        tableColumns.verify();
-        sandbox.restore();
-    })
 });

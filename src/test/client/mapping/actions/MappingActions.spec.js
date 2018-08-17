@@ -336,6 +336,7 @@ describe('#mappingActions', () => {
         it('should dispatch mapping details', async () => {
             let ajax = new Ajax();
             let mappingNameToEdit = "HTS Service";
+            let tableColumns = ["pat_id", "program_id", "program_status"];
             let expectedActions = [
                 {
                     type: "hideSpinner",
@@ -344,6 +345,18 @@ describe('#mappingActions', () => {
                 {
                     type: "selectedTable",
                     selectedTable: "patient_details"
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {}
+                },
+                {
+                    type: "filteredTables",
+                    filteredTables: []
+                },
+                {
+                    type: "selectedTableColumns",
+                    selectedTableColumns: tableColumns
                 },
                 {
                     type: "currentMapping",
@@ -374,7 +387,8 @@ describe('#mappingActions', () => {
             };
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
-            let ajaxGetMock = sandbox.mock(ajax)
+            let ajaxMock = sandbox.mock(ajax);
+            let ajaxGetMock = ajaxMock
                 .expects("get")
                 .withArgs("/dhis-integration/getMapping", {"mappingName": mappingNameToEdit})
                 .returns(Promise.resolve({
@@ -395,6 +409,11 @@ describe('#mappingActions', () => {
                         "type": "json"
                     }
                 }));
+            let getColumnsMock = ajaxMock
+                .expects("get")
+                .withArgs("/dhis-integration/getColumns", { tableName: "patient_details" })
+                .returns(Promise.resolve(tableColumns));
+
             let pushMock = sandbox.mock(history).expects("push")
                 .withArgs("/dhis-integration/mapping/addEditMappings");
             history.push = pushMock;
@@ -404,6 +423,7 @@ describe('#mappingActions', () => {
             expect(store.getActions()).toEqual(expectedActions);
 
             ajaxGetMock.verify();
+            getColumnsMock.verify();
             pushMock.verify();
             sandbox.restore();
         });
@@ -551,6 +571,18 @@ describe('#mappingActions', () => {
                 {
                     type: "hideSpinner",
                     hideSpinner : false
+                },
+                {
+                    type: "selectedTable",
+                    selectedTable: "pat_details"
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {}
+                },
+                {
+                    type: "filteredTables",
+                    filteredTables: []
                 },
                 {
                     type: "selectedTableColumns",
