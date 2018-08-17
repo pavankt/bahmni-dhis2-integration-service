@@ -1,5 +1,7 @@
 import {hideSpinner, showMessage} from "../../common/Actions";
+import { auditLogEventDetails } from '../../common/constants';
 import Ajax from "../../common/Ajax";
+import auditLog from '../../common/AuditLog';
 
 const isEmptyString = (aString) => aString === "";
 
@@ -106,6 +108,7 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
                 let ajax = Ajax.instance();
                 let response = await ajax.put("/dhis-integration/saveMapping", body);
                 afterOnSaveMappingSuccessResponse(dispatch, response, history);
+                auditLog(auditLogEventDetails.SAVE_MAPPING);
             } catch (e) {
                 dispatch(hideSpinner());
                 dispatch(showMessage(e.message, "error"));
