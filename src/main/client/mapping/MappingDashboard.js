@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {getAllMappings, getMapping} from './actions/MappingActions';
 import Message from '../common/Message';
+import { auditLogEventDetails } from '../common/constants';
+import auditLog from '../common/AuditLog';
 
 class MappingDashboard extends Component {
     constructor() {
@@ -15,6 +17,7 @@ class MappingDashboard extends Component {
 
     componentDidMount() {
         this.props.dispatch(getAllMappings());
+        auditLog(auditLogEventDetails.OPEN_DHIS_MANAGE_MAPPING);
     }
 
     editMapping(mappingName) {

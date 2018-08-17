@@ -108,7 +108,7 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
                 let ajax = Ajax.instance();
                 let response = await ajax.put("/dhis-integration/saveMapping", body);
                 afterOnSaveMappingSuccessResponse(dispatch, response, history);
-                auditLog(auditLogEventDetails.SAVE_MAPPING);
+                auditLog(auditLogEventDetails.SAVE_DHIS_MAPPING);
             } catch (e) {
                 dispatch(hideSpinner());
                 dispatch(showMessage(e.message, "error"));

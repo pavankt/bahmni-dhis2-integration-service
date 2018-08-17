@@ -13,7 +13,7 @@ class App extends Component {
     componentDidMount() {
         this.props.dispatch(hideSpinner(false));
         this.props.dispatch(getPrivileges());
-        auditLog(auditLogEventDetails.OPEN_DHIS_SYNC);
+        auditLog(auditLogEventDetails.OPEN_DHIS_SYNC_APP);
         this.props.dispatch(hideSpinner());
     }
 
