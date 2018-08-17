@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import DisplayTableNames from './DisplayTableNames';
 import ColumnMappings from './ColumnMappings';
-import {allTables, filteredTables, currentMapping, saveMappings, selectedTable} from '../actions/MappingActions';
+import {
+    allTables,
+    currentMapping,
+    filteredTables,
+    mappingJson,
+    saveMappings,
+    selectedTable
+} from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
 import {showHome} from "../../common/Actions";
-
-let isEmptyObject = (object)=> Object.keys(object).length === 0;
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -55,6 +60,7 @@ class DescribeFilteredTable extends Component {
     this.props.dispatch(selectedTable());
     this.props.dispatch(filteredTables());
     this.props.dispatch(currentMapping());
+    this.props.dispatch(mappingJson());
     this.props.history.push('/dhis-integration/mapping');
   }
 

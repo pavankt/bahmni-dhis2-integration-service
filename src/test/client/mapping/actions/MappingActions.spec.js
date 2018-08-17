@@ -196,6 +196,10 @@ describe('#mappingActions', () => {
                {
                    type: "selectedTable",
                    selectedTable: ""
+               },
+               {
+                   type: "filteredTables",
+                   filteredTables : []
                }
            ];
 

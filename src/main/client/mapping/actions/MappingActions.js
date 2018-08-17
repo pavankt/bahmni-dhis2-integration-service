@@ -120,6 +120,7 @@ function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
     dispatch(mappingJson());
     dispatch(hideSpinner());
     dispatch(selectedTable());
+    dispatch(filteredTables());
     history.push("/dhis-integration/mapping");
 }
 

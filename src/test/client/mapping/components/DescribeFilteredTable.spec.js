@@ -68,6 +68,9 @@ describe('DescribeFilteredTable', () => {
     //     let filteredTables = mappingActions.expects("filteredTables")
     //         .returns({ type: "" });
     //
+    //     let mappingJson = mappingActions.expects("mappingJson")
+    //         .returns({ type: "" });
+    //
     //     history.push = pushMock;
     //
     //     let describeRenderer = getDescribeMount(history);
@@ -76,6 +79,7 @@ describe('DescribeFilteredTable', () => {
     //     pushMock.verify();
     //     selectedTable.verify();
     //     filteredTables.verify();
+    //     mappingJson.verify();
     //     sandbox.restore();
     // });
 

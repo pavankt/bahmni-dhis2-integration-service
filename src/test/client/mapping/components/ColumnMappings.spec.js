@@ -7,8 +7,8 @@ import {
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-import ColumnMappings from '../../../../main/client/mapping/components/ColumnMappings';
 import sinon from 'sinon';
+import ColumnMappings from '../../../../main/client/mapping/components/ColumnMappings';
 import * as MappingActions from '../../../../main/client/mapping/actions/MappingActions';
 
 configure({adapter: new Adapter()});
@@ -77,11 +77,11 @@ describe('ColumnMappings', () => {
         }), applyMiddleware(thunkMiddleware));
 
         rendered = mount(
-            <Provider store={store}>
-                <ColumnMappings dispatch={() => {
+          <Provider store={store}>
+            <ColumnMappings dispatch={() => {
                 }}
-                />
-            </Provider>
+            />
+          </Provider>
         );
 
         tableColumns.verify();

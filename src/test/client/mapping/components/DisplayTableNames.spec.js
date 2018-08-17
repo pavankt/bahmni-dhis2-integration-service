@@ -48,19 +48,24 @@ describe('DisplayTableNames', () => {
       expect(liElements.at(1).text()).toEqual('program');
     });
 
-    it('should dispatch selectedTable on click on li element', () => {
+    it('should dispatch selectedTable and mappingJson on click on li element', () => {
       const sandBox = sinon.createSandbox();
 
-      const selectedTableMock = sandBox.mock(MappingActions).expects('selectedTable')
+        let mappingActions = sandBox.mock(MappingActions);
+        const selectedTableMock = mappingActions.expects('selectedTable')
         .withArgs('pat_identifier')
         .returns({
           type: 'selectedTable',
           selectedTable: 'pat_identifier'
         });
 
+        let mappingJson = mappingActions.expects('mappingJson')
+            .returns({ type: '' });
+
       rendered.find('li').first().simulate('click', { target: { dataset: { tableName: 'pat_identifier' } } });
 
       selectedTableMock.verify();
+      mappingJson.verify();
 
       sandBox.restore();
     });

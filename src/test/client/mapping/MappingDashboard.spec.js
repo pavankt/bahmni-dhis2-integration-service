@@ -5,9 +5,9 @@ import {render, configure, mount} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
+import sinon from 'sinon';
 import MappingDashboard from '../../../main/client/mapping/MappingDashboard';
 import * as MappingActions from '../../../main/client/mapping/actions/MappingActions';
-import sinon from 'sinon';
 
 configure({adapter: new Adapter()});
 
@@ -27,9 +27,10 @@ describe('Mapping dashboard', function () {
 
         rendered = render(
           <Provider store={store}>
-            <MappingDashboard dispatch={() => {
+            <MappingDashboard
+              dispatch={() => {
                 }}
-                history={{}}
+              history={{}}
             />
           </Provider>
         );
@@ -64,11 +65,12 @@ describe('Mapping dashboard', function () {
             .returns({ type: '' });
 
         rendered = mount(
-            <Provider store={store}>
-                <MappingDashboard dispatch={() => {}}
-                                  history={history}
-                />
-            </Provider>
+          <Provider store={store}>
+            <MappingDashboard
+              dispatch={() => {}}
+              history={history}
+            />
+          </Provider>
         );
 
         rendered.find('.edit-button').first().simulate('click');
@@ -89,11 +91,12 @@ describe('Mapping dashboard', function () {
         history.push = pushMock;
 
         rendered = mount(
-            <Provider store={store}>
-                <MappingDashboard dispatch={() => {}}
-                                  history={history}
-                />
-            </Provider>
+          <Provider store={store}>
+            <MappingDashboard
+              dispatch={() => {}}
+              history={history}
+            />
+          </Provider>
         );
 
         rendered.find('.add-mapping-button').first().simulate('click');

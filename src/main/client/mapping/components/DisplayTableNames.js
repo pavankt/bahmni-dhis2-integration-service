@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as MappingActions from '../actions/MappingActions';
+import { mappingJson, selectedTable } from '../actions/MappingActions';
 
 class DisplayTableNames extends Component {
     constructor() {
@@ -11,7 +11,8 @@ class DisplayTableNames extends Component {
     }
 
     onSelect(_event) {
-        this.props.dispatch(MappingActions.selectedTable(_event.target.dataset.tableName));
+        this.props.dispatch(mappingJson());
+        this.props.dispatch(selectedTable(_event.target.dataset.tableName));
     }
 
     getListItems() {
