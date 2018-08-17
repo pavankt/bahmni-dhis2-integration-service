@@ -1,20 +1,22 @@
 import 'jsdom-global/register';
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
-import {render, configure} from 'enzyme';
+import {render, configure, mount} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import MappingDashboard from '../../../main/client/mapping/MappingDashboard';
+import * as MappingActions from '../../../main/client/mapping/actions/MappingActions';
+import sinon from 'sinon';
 
 configure({adapter: new Adapter()});
 
 describe('Mapping dashboard', function () {
 
-    let rendered;
+    let rendered, store;
 
     beforeEach(() => {
-        const store = createStore(() => ({
+        store = createStore(() => ({
             allMappingNames: ['HTS Service','TB Service'],
             hideSpinner: false,
             showMessage : {
@@ -51,5 +53,52 @@ describe('Mapping dashboard', function () {
 
     it('should have a section header with class name "section-title" button', function () {
         expect(rendered.find('.edit-mapping-button')).toHaveLength(2);
+    });
+
+    it('should dispatch getMappings on edit click', () => {
+        let history = {};
+        let sandbox = sinon.createSandbox();
+        let mappingMock = sandbox.mock(MappingActions)
+            .expects("getMapping")
+            .withArgs("HTS Service", history)
+            .returns({ type: '' });
+
+        rendered = mount(
+            <Provider store={store}>
+                <MappingDashboard dispatch={() => {}}
+                                  history={history}
+                />
+            </Provider>
+        );
+
+        rendered.find('.edit-button').first().simulate('click');
+
+        mappingMock.verify();
+        sandbox.restore();
+    });
+
+    it('should call history push on redirect to addEditMapping', () => {
+        let history = {
+            push : () => {}
+        };
+        let sandbox = sinon.createSandbox();
+        let pushMock = sandbox.mock(history)
+            .expects("push")
+            .withArgs("/dhis-integration/mapping/addEditMappings");
+
+        history.push = pushMock;
+
+        rendered = mount(
+            <Provider store={store}>
+                <MappingDashboard dispatch={() => {}}
+                                  history={history}
+                />
+            </Provider>
+        );
+
+        rendered.find('.add-mapping-button').first().simulate('click');
+
+        pushMock.verify();
+        sandbox.restore();
     });
 });

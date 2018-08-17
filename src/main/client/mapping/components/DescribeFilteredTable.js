@@ -26,13 +26,12 @@ class DescribeFilteredTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-      if (nextProps.selectedTable !== this.props.selectedTable) {
-          this.refs.tablesSearch.value = nextProps.selectedTable;
-      }else{
-          this.refs.tablesSearch.value = this.props.selectedTable;
+      this.refs.tablesSearch.value = nextProps.selectedTable !== this.props.selectedTable ?
+           nextProps.selectedTable
+          :this.props.selectedTable;
+      if(nextProps.currentMapping !== "") {
+          this.refs.mappingName.value = nextProps.currentMapping;
       }
-
-      this.refs.mappingName.value = nextProps.currentMapping;
   }
 
   componentWillUnmount() {
@@ -62,8 +61,7 @@ class DescribeFilteredTable extends Component {
   _onSave() {
     let mappingName = this.refs.mappingName.value;
     let columnMappings = document.getElementsByClassName('mapping-row');
-    this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedTable, this.props.history));
-    this.props.dispatch(selectedTable());
+    this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedTable, this.props.history, this.props.currentMapping));
   }
 
   render() {

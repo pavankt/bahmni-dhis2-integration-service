@@ -40,8 +40,8 @@ export function tableColumns(columns = []) {
 
 export function allMappingNames(mappingNames = []){
   return{
-    type: 'renderedMappingNames',
-    renderedMappingNames: mappingNames
+    type: 'allMappings',
+    allMappings: mappingNames
   }
 }
 
@@ -81,7 +81,7 @@ export function createJson(columnMappings) {
 }
 
 
-export function saveMappings(mappingName = "", columnMappings, lookupTable, history = {}, category = "instance") {
+export function saveMappings(mappingName = "", columnMappings, lookupTable, history = {}, currentMappingName, category = "instance") {
     return async (dispatch, getState) => {
         const mappingObj = createJson(columnMappings);
 
@@ -89,33 +89,38 @@ export function saveMappings(mappingName = "", columnMappings, lookupTable, hist
             dispatch(showMessage("Should have Mapping Name", "error"));
         }else if (hasNoMappings(mappingObj)) {
             dispatch(showMessage("At least one Bahmni Data Point should have DHIS2 Data Element ID mapped", "error"));
-        }else if(getState().allMappingNames.includes(mappingName.trim()) && (getState().currentMapping === "" || mappingName !== getState().currentMapping)) {
+        }else if(getState().allMappingNames.includes(mappingName.trim()) &&
+            (getState().currentMapping === "" || mappingName !== getState().currentMapping)) {
                 dispatch(showMessage("Mapping Name should be unique", "error"));
         } else {
             let body = {
                 mappingName : mappingName.trim(),
                 lookupTable: JSON.stringify(objectify(category,lookupTable)),
-                mappingJson: JSON.stringify(objectify(category,mappingObj))
+                mappingJson: JSON.stringify(objectify(category,mappingObj)),
+                currentMapping : currentMappingName
             };
 
-            dispatch(selectedTable());
-            dispatch(filteredTables());
+            dispatch(hideSpinner(false));
 
             try {
-                dispatch(hideSpinner(false));
                 let ajax = Ajax.instance();
                 let response = await ajax.put("/dhis-integration/saveMapping", body);
-                dispatch(showMessage(response.data, "success"));
-                dispatch(addNewMapping(mappingName));
-                dispatch(hideSpinner());
-                history.push("/dhis-integration/mapping");
-                dispatch(currentMapping());
-                dispatch(mappingJson())
+                afterOnSaveMappingSuccessResponse(dispatch, response, history);
             } catch (e) {
+                dispatch(hideSpinner());
                 dispatch(showMessage(e.message, "error"));
             }
         }
     };
+}
+
+function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
+    dispatch(showMessage(response.data, "success"));
+    dispatch(currentMapping());
+    dispatch(mappingJson());
+    dispatch(hideSpinner());
+    dispatch(selectedTable());
+    history.push("/dhis-integration/mapping");
 }
 
 
@@ -125,10 +130,10 @@ function isJSON(type) {
 
 let parseResponse = (res)=>{
     let keys = Object.keys(res);
-
     keys.forEach((key)=>{
-        if(isJSON(res[key].type))
+        if(isJSON(res[key].type)) {
             res[key].value = JSON.parse(res[key].value)
+        }
     });
 
     return res;
@@ -136,11 +141,48 @@ let parseResponse = (res)=>{
 
 export function getMapping(mappingNameToEdit, history) {
     return async (dispatch)=> {
-        let ajax = Ajax.instance();
-        let response = parseResponse(await ajax.get('/dhis-integration/getMapping',{"mappingName" : mappingNameToEdit}));
-        dispatch(selectedTable(response.lookup_table.value.instance));
-        dispatch(currentMapping(response.mapping_name));
-        dispatch(mappingJson(response.mapping_json.value));
-        history.push('/dhis-integration/mapping/addEditMappings');
+        try {
+            dispatch(hideSpinner(false));
+            let ajax = Ajax.instance();
+            let response = parseResponse(await ajax.get('/dhis-integration/getMapping', {"mappingName": mappingNameToEdit}));
+            dispatch(selectedTable(response.lookup_table.value.instance));
+            dispatch(currentMapping(response.mapping_name));
+            dispatch(mappingJson(response.mapping_json.value.instance));
+            history.push('/dhis-integration/mapping/addEditMappings');
+        } catch (e) {
+            dispatch(showMessage(e.message, "error"))
+        } finally {
+            dispatch(hideSpinner());
+        }
+    }
+}
+
+export function getAllMappings() {
+    return async dispatch => {
+        try {
+            dispatch(hideSpinner(false));
+            let ajax = Ajax.instance();
+            let response = await ajax.get('/dhis-integration/getMappingNames');
+            dispatch(allMappingNames(response));
+        } catch (e) {
+            dispatch(showMessage(e.message, "error"))
+        } finally {
+            dispatch(hideSpinner());
+        }
+    }
+}
+
+export function getTableColumns(tableName) {
+    return async dispatch => {
+        try {
+            dispatch(hideSpinner(false));
+            let ajax = Ajax.instance();
+            let response = await ajax.get('/dhis-integration/getColumns', {tableName});
+            dispatch(tableColumns(response));
+        } catch (e) {
+            dispatch(showMessage(e.message, "error"))
+        } finally {
+            dispatch(hideSpinner());
+        }
     }
 }

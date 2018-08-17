@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { tableColumns } from '../actions/MappingActions';
-import { hideSpinner } from "../../common/Actions";
+import { getTableColumns } from '../actions/MappingActions';
 
 class ColumnMappings extends Component {
   constructor() {
     super();
     this.renderColumns = this.renderColumns.bind(this);
-    this.getColumns = this.getColumns.bind(this);
     this.insertValues = this.insertValues.bind(this);
   }
 
@@ -17,21 +15,13 @@ class ColumnMappings extends Component {
   );
 
   componentDidMount() {
-    this.getColumns();
+    this.props.dispatch(getTableColumns(this.props.table));
   }
 
   componentDidUpdate(){
      if(this.isNotEmpty(this.props.mappingJson)){
          this.insertValues();
       }
-  }
-
-  getColumns() {
-    this.props.dispatch(hideSpinner(false));
-    fetch(`/dhis-integration/getColumns?tableName=${this.props.table}`)
-      .then(res => res.json())
-      .then(result => this.props.dispatch(tableColumns(result)));
-      this.props.dispatch(hideSpinner());
   }
 
   renderColumns() {
@@ -71,7 +61,7 @@ Please provide DHIS2 data element mapping for patient instance
   }
 
     insertValues() {
-        let instanceJson = this.props.mappingJson.instance;
+        let instanceJson = this.props.mappingJson;
         Object.keys(instanceJson).forEach((columnName)=>{
             this.refs[columnName].value = instanceJson[columnName];
         });
@@ -81,7 +71,8 @@ Please provide DHIS2 data element mapping for patient instance
 ColumnMappings.propTypes = {
   table: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  mappingJson: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({

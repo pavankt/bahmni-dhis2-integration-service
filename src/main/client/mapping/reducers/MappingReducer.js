@@ -36,8 +36,8 @@ export function selectedTableColumns(state = [], action = {}) {
 
 export function allMappingNames(state = [], action = {}){
     switch (action.type) {
-        case 'renderedMappingNames':
-            return action.renderedMappingNames;
+        case 'allMappings':
+            return action.allMappings;
         case 'addNewMapping':
             return state.concat(action.mappingName);
         default:

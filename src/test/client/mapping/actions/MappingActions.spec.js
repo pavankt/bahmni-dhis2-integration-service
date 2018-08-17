@@ -76,15 +76,15 @@ describe('#mappingActions', () => {
     describe('allMappingNames', () => {
         it('should return an empty array', () => {
             expect(MappingActions.allMappingNames()).toEqual({
-                type: 'renderedMappingNames',
-                renderedMappingNames: []
+                type: 'allMappings',
+                allMappings: []
             });
         });
 
         it('should return selected table columns in an array', () => {
             expect(MappingActions.allMappingNames(['pat_id', 'pat_name', 'age'])).toEqual({
-                type: 'renderedMappingNames',
-                renderedMappingNames: ['pat_id', 'pat_name', 'age']
+                type: 'allMappings',
+                allMappings: ['pat_id', 'pat_name', 'age']
             });
         });
     });
@@ -173,14 +173,6 @@ describe('#mappingActions', () => {
            let ajax = new Ajax();
            let expectedActions = [
                {
-                 type: "selectedTable",
-                 selectedTable : ""
-               },
-               {
-                 type: "filteredTables",
-                 filteredTables : []
-               },
-               {
                  type: "hideSpinner",
                  hideSpinner: false
                },
@@ -190,20 +182,20 @@ describe('#mappingActions', () => {
                    responseType: "success"
                },
                {
-                   type: "addNewMapping",
-                   mappingName: mappingName
-               },
-               {
-                   type: "hideSpinner",
-                   hideSpinner: true
-               },
-               {
                    type: "currentMapping",
                    mappingName: ""
                },
                {
                    type: "mappingJson",
                    mappingJson: {}
+               },
+               {
+                   type: "hideSpinner",
+                   hideSpinner: true
+               },
+               {
+                   type: "selectedTable",
+                   selectedTable: ""
                }
            ];
 
@@ -316,5 +308,313 @@ describe('#mappingActions', () => {
             }
            sandbox.restore();
        });
+    });
+
+    describe('currentMapping', () => {
+        it('should return object with type and mappingName', () => {
+            expect(MappingActions.currentMapping("new mapping"))
+                .toEqual({ type: "currentMapping", mappingName: "new mapping" })
+        })
+    });
+
+    describe('mappingJson', () => {
+        it('should return object with type and mappingJson', () => {
+            let mappingJson = {
+              "patient_id" : "FH7RTu",
+              "patient_name" : "ZS8Srt7"
+            };
+            expect(MappingActions.mappingJson(mappingJson))
+                .toEqual({ type: "mappingJson", mappingJson })
+        })
+    });
+
+    describe('getMapping', () => {
+        it('should dispatch mapping details', async () => {
+            let ajax = new Ajax();
+            let mappingNameToEdit = "HTS Service";
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "selectedTable",
+                    selectedTable: "patient_details"
+                },
+                {
+                    type: "currentMapping",
+                    mappingName: mappingNameToEdit
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {
+                        patient_identifier: "fYj7U",
+                        patient_name: "ert76HK"
+                    }
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTable: "",
+                currentMapping: "",
+                mappingJson: {}
+            });
+
+            let history = {
+                push: () => {
+                }
+            };
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getMapping", {"mappingName": mappingNameToEdit})
+                .returns(Promise.resolve({
+                    "mapping_name": "HTS Service",
+                    "lookup_table": {
+                        "value" : '{' +
+                            '"instance": "patient_details"' +
+                        '}',
+                        "type": "json"
+                    },
+                    "mapping_json": {
+                        "value": '{' +
+                            '"instance": {' +
+                                '"patient_identifier": "fYj7U",' +
+                                '"patient_name": "ert76HK"' +
+                            '}' +
+                        '}',
+                        "type": "json"
+                    }
+                }));
+            let pushMock = sandbox.mock(history).expects("push")
+                .withArgs("/dhis-integration/mapping/addEditMappings");
+            history.push = pushMock;
+
+            await store.dispatch(MappingActions.getMapping(mappingNameToEdit, history));
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            ajaxGetMock.verify();
+            pushMock.verify();
+            sandbox.restore();
+        });
+
+        it('should dispatch show message on fail', async () => {
+            let ajax = new Ajax();
+            let message = "Could not get mappings";
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "showMessage",
+                    responseMessage: message,
+                    responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTable: "",
+                currentMapping: "",
+                mappingJson: {}
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getMapping", {"mappingName": "some name"})
+                .returns(Promise.reject({
+                    message
+                }));
+
+            try {
+                await store.dispatch(MappingActions.getMapping("some name", {}));
+            } catch (e) {
+                expect(store.getActions()).toEqual(expectedActions);
+
+                ajaxGetMock.verify();
+            } finally {
+                sandbox.restore();
+            }
+        });
+    });
+
+    describe('getAllMappings', () => {
+        it('should get all mapping names', async () => {
+            let ajax = new Ajax();
+            let mappings = [
+                "HTS Service",
+                "TB Service"
+            ];
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner : false
+                },
+                {
+                    type: "allMappings",
+                    allMappings: mappings
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTable: "",
+                currentMapping: "",
+                mappingJson: {}
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getMappingNames")
+                .returns(Promise.resolve(mappings));
+
+            await store.dispatch(MappingActions.getAllMappings());
+
+            expect(store.getActions()).toEqual(expectedActions);
+            ajaxGetMock.verify();
+            sandbox.restore();
+        });
+
+        it('should dispatch show message when getAllMappings fail', async () => {
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "showMessage",
+                    responseMessage: "Could not get mappings",
+                    responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTable: "",
+                currentMapping: "",
+                mappingJson: {}
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getMappingNames")
+                .returns(Promise.reject({
+                    message : "Could not get mappings"
+                }));
+
+            try {
+                await store.dispatch(MappingActions.getAllMappings());
+            } catch (e) {
+                expect(store.getActions()).toEqual(expectedActions);
+                ajaxGetMock.verify();
+            } finally {
+                sandbox.restore();
+            }
+        });
+    });
+
+    describe('getTableColumns', () => {
+        it('should get all columns of the table', async () => {
+            let ajax = new Ajax();
+            let columns = [
+                "pat_identifier",
+                "pat_name"
+            ];
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner : false
+                },
+                {
+                    type: "selectedTableColumns",
+                    selectedTableColumns: columns
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTableColumns: []
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getColumns")
+                .returns(Promise.resolve(columns));
+
+            await store.dispatch(MappingActions.getTableColumns("pat_details"));
+
+            expect(store.getActions()).toEqual(expectedActions);
+            ajaxGetMock.verify();
+            sandbox.restore();
+        });
+
+        it('should dispatch show message when getAllMappings fail', async () => {
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "showMessage",
+                    responseMessage: "Could not get table columns",
+                    responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTable: ""
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/getColumns")
+                .returns(Promise.reject({
+                    message : "Could not get table columns"
+                }));
+
+            try {
+                await store.dispatch(MappingActions.getTableColumns("pat_details"));
+            } catch (e) {
+                expect(store.getActions()).toEqual(expectedActions);
+                ajaxGetMock.verify();
+            } finally {
+                sandbox.restore();
+            }
+        });
     });
 });

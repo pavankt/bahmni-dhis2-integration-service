@@ -3,7 +3,9 @@ import {
     filteredTables,
     selectedTable,
     selectedTableColumns,
-    allMappingNames
+    allMappingNames,
+    currentMapping,
+    mappingJson
 } from '../../../../main/client/mapping/reducers/MappingReducer';
 
 describe('#mappingReducers', () => {
@@ -106,8 +108,8 @@ describe('#mappingReducers', () => {
     describe('allMappingNames', () => {
         beforeEach(() => {
             action = {
-                type: 'renderedMappingNames',
-                renderedMappingNames: []
+                type: 'allMappings',
+                allMappings: []
             };
         });
 
@@ -117,7 +119,7 @@ describe('#mappingReducers', () => {
         });
 
         it('should return action.renderedMappingNames when "action.type" is renderedMappingNames', () => {
-            action.renderedMappingNames = ['patient_identifier', 'tb-service'];
+            action.allMappings = ['patient_identifier', 'tb-service'];
             expect(allMappingNames(state, action)).toEqual(['patient_identifier', 'tb-service']);
         });
 
@@ -135,4 +137,48 @@ describe('#mappingReducers', () => {
                .toEqual([ "first name", "second name", "new mapping" ]);
         });
     });
+
+    describe('currentMapping', () => {
+        it('should return state with default params', () => {
+            expect(currentMapping()).toEqual("");
+        });
+
+        it('should return state when "action.type" is anything other than "currentMapping"', () => {
+            state = "HTS Service";
+            expect(currentMapping(state)).toEqual(state);
+        });
+
+        it('should return action.currentMapping when "action.type" is currentMapping', () => {
+            let action = {
+                type : "currentMapping",
+                mappingName : "HTS Service"
+            };
+            expect(currentMapping("", action)).toEqual("HTS Service");
+        });
+    });
+
+    describe('mappingJson', () => {
+        it('should return state with default params', () => {
+            expect(mappingJson()).toEqual({});
+        });
+
+        it('should return state when "action.type" is anything other than "mappingJson"', () => {
+            state = {
+                "pat_id" : "patHn67"
+            };
+            expect(mappingJson(state)).toEqual(state);
+        });
+
+        it('should return action.mappingJson when "action.type" is mappingJson', () => {
+            let action = {
+                type : "mappingJson",
+                mappingJson : {
+                    "pro_id" : "ASG67J",
+                    "rpo_name" : "9Yu6TR"
+                }
+            };
+            expect(mappingJson({}, action)).toEqual(action.mappingJson);
+        });
+    });
+
 });

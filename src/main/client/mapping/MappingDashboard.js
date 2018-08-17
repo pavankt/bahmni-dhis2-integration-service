@@ -2,36 +2,27 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
-import {allMappingNames, getMapping, mappingJson} from './actions/MappingActions';
-import {hideSpinner} from '../common/Actions';
+import {getAllMappings, getMapping} from './actions/MappingActions';
 import Message from '../common/Message';
 
 class MappingDashboard extends Component {
     constructor() {
         super();
-        this.state = {
-            redirectToAddMapping: false
-        };
         this.renderMappingNames = this.renderMappingNames.bind(this);
         this.editMapping = this.editMapping.bind(this);
-    }
-
-    componentWillMount() {
-        this.props.dispatch(hideSpinner(false));
+        this.redirectToAddEditMapping = this.redirectToAddEditMapping.bind(this);
     }
 
     componentDidMount() {
-        let props = this.props;
-        fetch('/dhis-integration/getMappingNames')
-            .then(res => res.json())
-            .then((result) => {
-                props.dispatch(allMappingNames(result));
-            });
-        props.dispatch(hideSpinner());
+        this.props.dispatch(getAllMappings());
     }
 
     editMapping(mappingName) {
         this.props.dispatch(getMapping(mappingName, this.props.history));
+    }
+
+    redirectToAddEditMapping() {
+        this.props.history.push('/dhis-integration/mapping/addEditMappings');
     }
 
     renderMappingNames() {
@@ -42,7 +33,7 @@ class MappingDashboard extends Component {
                   {mappingName}
                 </td>
                 <td className="edit-mapping-button">
-                  <button type="submit" className="center" onClick={()=>{this.editMapping(mappingName)}}>
+                  <button type="submit" className="center edit-button" onClick={()=>{this.editMapping(mappingName)}}>
                             Edit
                   </button>
                 </td>
@@ -52,9 +43,6 @@ class MappingDashboard extends Component {
     }
 
     render() {
-        if (this.state.redirectToAddMapping) {
-            this.props.history.push('/mapping/addEditMappings');
-        }
         return (
           <div>
             <Message />
@@ -63,9 +51,7 @@ class MappingDashboard extends Component {
               <button
                 type="submit"
                 className="add-mapping-button"
-                onClick={() => {
-                            this.setState({redirectToAddMapping: true})
-                        }}
+                onClick={this.redirectToAddEditMapping}
               >
                 <i className="fa fa-plus-circle plus-sign" aria-hidden="true" />
                         Add Mapping

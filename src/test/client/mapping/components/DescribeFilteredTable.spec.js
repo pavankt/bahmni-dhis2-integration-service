@@ -12,38 +12,7 @@ configure({adapter: new Adapter()});
 describe('DescribeFilteredTable', () => {
 
     it('should render only ColumnMapping component when selectedTable have value', () => {
-        const store = createStore(() => ({
-            selectedTable: 'patient_identifier',
-            allTables: [
-                'patient_identifier',
-                'hiv_self_testing',
-                'bed_patient_assignment_default',
-                'patient_encounter_details_default',
-                'patient_allergy_status_default'
-            ],
-            selectedTableColumns: [
-                'id',
-                'name'
-            ],
-            showMessage: {
-                responseMessage: "",
-                responseType: ""
-            },
-            currentMapping: "",
-            hideSpinner: false
-        }), applyMiddleware(thunkMiddleware));
-
-        rendered = render(
-          <Provider store={store}>
-            <DescribeFilteredTable
-              dispatch={() => {
-                }}
-              history={{}}
-            />
-          </Provider>
-        );
-
-        let rendered = getDescribeRenderer("pat_identifier");
+        let rendered = getDescribeRenderer("pat_identifier", false);
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
         expect(rendered.find('.tables-list')).toHaveLength(0);
     });
@@ -148,7 +117,8 @@ describe('DescribeFilteredTable', () => {
                 responseType: ""
             },
             hideSpinner,
-            currentMapping: ""
+            currentMapping: "",
+            mappingJson: {}
         }), applyMiddleware(thunkMiddleware));
 
         return (render(
