@@ -4,14 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from './common/Spinner';
 import { hideSpinner, getPrivileges } from './common/Actions';
-import { privileges } from './common/constants';
+import { privileges, auditLogEventDetails } from './common/constants';
 import Message from './common/Message';
+import auditLog from './common/AuditLog';
 
 class App extends Component {
 
     componentDidMount() {
         this.props.dispatch(hideSpinner(false));
         this.props.dispatch(getPrivileges());
+        auditLog(auditLogEventDetails.OPEN_DHIS_SYNC);
         this.props.dispatch(hideSpinner());
     }
 
