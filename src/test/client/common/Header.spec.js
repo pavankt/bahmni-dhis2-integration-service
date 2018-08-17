@@ -39,28 +39,6 @@ describe('Header', () => {
         expect(rendered.find('.fa-home')).toHaveLength(1);
     });
 
-    it('should change path to Bahmni home when home button clicked from DHIS2 dashboard', function () {
-        const history = { location: { pathname: '/dhis-integration/' }, push: () => {}};
-
-        const sandBox = sinon.createSandbox();
-
-        const pushMock = sandBox.mock(history).expects('push')
-            .withArgs('/bahmni/home/#/dashboard');
-
-        history.push = pushMock;
-
-        rendered = mount(
-          <Provider store={store}>
-            <Header history={history} dispatch={() => {}} />
-          </Provider>
-        );
-
-        rendered.find('.back-btn').first().simulate('click');
-
-        pushMock.verify();
-        sandBox.restore();
-    });
-
     it('should change path to DHIS2 dashboard when home button clicked from any other page', function () {
         const history = { location: { pathname: '/mapping' }, push: () => {}};
 

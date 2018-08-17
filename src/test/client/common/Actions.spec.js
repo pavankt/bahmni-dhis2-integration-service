@@ -146,7 +146,7 @@ describe('Actions', () => {
                     responseType: ""
                 }
             });
-            let privileges = [];
+            let privileges = ["app:dhis2sync"];
             sandbox.stub(Ajax, "instance").returns(ajax);
             let privilegesMock = sandbox.mock(ajax).expects("get")
                 .withArgs('/dhis-integration/session')
@@ -160,46 +160,6 @@ describe('Actions', () => {
                 {
                     type: "showMessage",
                     responseMessage: "You do not have permissions assigned. Contact admin to assign privileges for your user",
-                    responseType: "error"
-                },
-                {
-                    type: "hideSpinner",
-                    hideSpinner: true
-                }
-            ];
-
-            await store.dispatch(getPrivileges());
-
-            expect(store.getActions()).toEqual(expectedActions);
-
-            privilegesMock.verify();
-
-            sandbox.restore();
-        });
-
-        it('should dispatch show message with could not get privileges when server responded with error', async () => {
-            let sandbox = sinon.createSandbox();
-            let ajax = new Ajax();
-            let store = mockStore({
-                hideSpinner: true,
-                showMessage: {
-                    responseMessage: "",
-                    responseType: ""
-                }
-            });
-            sandbox.stub(Ajax, "instance").returns(ajax);
-            let privilegesMock = sandbox.mock(ajax).expects("get")
-                .withArgs('/dhis-integration/session')
-                .returns(Promise.reject());
-
-            let expectedActions = [
-                {
-                    type: "hideSpinner",
-                    hideSpinner: false
-                },
-                {
-                    type: "showMessage",
-                    responseMessage: "Could not get Privileges",
                     responseType: "error"
                 },
                 {
