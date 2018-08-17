@@ -15,8 +15,4 @@ public class AppProperties {
     public String getOpenmrsRootUrl() {
         return env.getProperty("openmrs.service.rootUrl");
     }
-
-    public String getBahmniLoginUrl() {
-        return env.getProperty("bahmni.login.url");
-    }
 }

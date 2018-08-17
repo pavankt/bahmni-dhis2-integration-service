@@ -35,26 +35,25 @@ public class AuthenticationInterceptorTest {
   @Mock
   private OpenMRSAuthenticator authenticator;
 
-  @Mock
-  private PrintWriter printWriter;
-
   private AuthenticationInterceptor authenticationInterceptor;
 
-  public static final String REPORTING_COOKIE_NAME = "reporting_session";
+  private Cookie[] cookies;
+
+  private static final String REPORTING_COOKIE_NAME = "reporting_session";
+  private static final String COOKIE_VALUE = "SOME_REPORTING_SESSION_ID";
+
 
   @Before
   public void setUp() throws Exception {
     authenticationInterceptor = new AuthenticationInterceptor(authenticator, appProperties);
+    Cookie cookie = new Cookie(REPORTING_COOKIE_NAME, COOKIE_VALUE);
+    cookies = new Cookie[1];
+    cookies[0] = cookie;
   }
 
   @Test
   @SneakyThrows
   public void shouldAuthenticateIfReportingSessionIdIsValidatedByOpenMRS() {
-    String COOKIE_VALUE = "SOME_REPORTING_SESSION_ID";
-    Cookie cookie = new Cookie(REPORTING_COOKIE_NAME, COOKIE_VALUE);
-    Cookie[] cookies = new Cookie[1];
-    cookies[0] = cookie;
-
     when(httpServletRequestMock.getCookies()).thenReturn(cookies);
     when(authenticator.authenticate(COOKIE_VALUE)).thenReturn(AUTHORIZED);
 
@@ -68,11 +67,6 @@ public class AuthenticationInterceptorTest {
   @Test
   @SneakyThrows
   public void shouldNotAuthenticateIfReportingSessionIdIsValidatedByOpenMRSButDoesNotHavePrivileges() {
-    String COOKIE_VALUE = "SOME_REPORTING_SESSION_ID";
-    Cookie cookie = new Cookie(REPORTING_COOKIE_NAME, COOKIE_VALUE);
-    Cookie[] cookies = new Cookie[1];
-    cookies[0] = cookie;
-
     when(httpServletRequestMock.getCookies()).thenReturn(cookies);
     when(authenticator.authenticate(COOKIE_VALUE)).thenReturn(UNAUTHORIZED);
 
@@ -85,14 +79,8 @@ public class AuthenticationInterceptorTest {
 
   @Test
   @SneakyThrows
-  public void shouldNotAuthenticateWithoutReportingSessionIdByOpenMRSAndRedirectToBahmniHomePage() {
+  public void shouldNotAuthenticateWithoutReportingSessionIdByOpenMRSAndRedirectToUI() {
     when(httpServletRequestMock.getCookies()).thenReturn(null);
-    when(httpServletResponseMock.getWriter()).thenReturn(printWriter);
-
-    when(appProperties.getBahmniLoginUrl()).thenReturn("/bahmni/home/#/login?showLoginMessage");
-
-    when(httpServletRequestMock.getRequestURL()).thenReturn(new StringBuffer("http://localhost/dhis-integration/bundle.js"));
-    when(httpServletRequestMock.getQueryString()).thenReturn(null);
 
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, new Object());
 
@@ -103,20 +91,13 @@ public class AuthenticationInterceptorTest {
   @Test
   @SneakyThrows
   public void shouldReturnTrueIfReportingSessionIdIsInvalidatedByOpenMRS() {
-    String COOKIE_VALUE = "SOME_REPORTING_SESSION_ID";
-    Cookie cookie = new Cookie(REPORTING_COOKIE_NAME, COOKIE_VALUE);
-    Cookie[] cookies = new Cookie[1];
-    cookies[0] = cookie;
-
     when(httpServletRequestMock.getCookies()).thenReturn(cookies);
     when(authenticator.authenticate(COOKIE_VALUE)).thenReturn(NOT_AUTHENTICATED);
-    when(httpServletResponseMock.getWriter()).thenReturn(printWriter);
 
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, new Object());
 
     verify(authenticator, times(1)).authenticate(COOKIE_VALUE);
     Assert.assertTrue(response);
-
   }
 
   @Test
@@ -125,6 +106,5 @@ public class AuthenticationInterceptorTest {
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, null);
 
     Assert.assertFalse(response);
-
   }
 }
