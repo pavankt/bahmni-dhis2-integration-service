@@ -1,8 +1,11 @@
+import {audit} from './constants';
+
 const responseCodes = {
-  "INTERNAL_SERVER_ERROR": 500,
-  "NOT_FOUND": 404,
-  "BAD_REQUEST": 400,
-  "OK": 200
+    "INTERNAL_SERVER_ERROR": 500,
+    "FORBIDDEN": 403,
+    "NOT_FOUND": 404,
+    "BAD_REQUEST": 400,
+    "OK": 200
 };
 
 export default class Ajax {
@@ -48,12 +51,17 @@ export default class Ajax {
     async request(url, params) {
         let response = await fetch(url, params);
 
-        let responseJson = await response.json();
+        let responseJson = response;
+        if (url !== audit.URI) {
+            responseJson = await response.json();
+        }
 
-        if(response.status === responseCodes.OK) {
+        if (response.status === responseCodes.OK) {
             return responseJson;
-        } else if(response.status === responseCodes.INTERNAL_SERVER_ERROR) {
+        } else if (response.status === responseCodes.INTERNAL_SERVER_ERROR) {
             throw "Could not able to connect to server";
+        } else if (response.status === responseCodes.FORBIDDEN) {
+            throw "Session Timed Out. Login again.";
         } else if (response.status === responseCodes.NOT_FOUND) {
             throw "Could not able to get the details";
         }
