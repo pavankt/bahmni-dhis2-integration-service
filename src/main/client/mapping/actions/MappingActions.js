@@ -18,17 +18,17 @@ export function allTables(tables = []) {
   };
 }
 
-export function filteredTables(tables = []) {
+export function filteredInstanceTables(tables = []) {
   return {
-    type: 'filteredTables',
-    filteredTables: tables
+    type: 'filteredInstanceTables',
+    filteredInstanceTables: tables
   };
 }
 
-export function selectedTable(table = '') {
+export function selectedInstanceTable(table = '') {
   return {
-    type: 'selectedTable',
-    selectedTable: table
+    type: 'selectedInstanceTable',
+    selectedInstanceTable: table
   };
 }
 
@@ -122,8 +122,8 @@ function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
     dispatch(currentMapping());
     dispatch(mappingJson());
     dispatch(hideSpinner());
-    dispatch(selectedTable());
-    dispatch(filteredTables());
+    dispatch(selectedInstanceTable());
+    dispatch(filteredInstanceTables());
     history.push("/dhis-integration/mapping");
 }
 
@@ -191,9 +191,8 @@ export function getTableColumns(tableName) {
 }
 
 async function getColumns(tableName, dispatch, ajax) {
-    dispatch(selectedTable(tableName));
+    dispatch(selectedInstanceTable(tableName));
     dispatch(mappingJson());
-    dispatch(filteredTables());
     let response = await ajax.get('/dhis-integration/getColumns', {tableName});
     dispatch(tableColumns(response));
 }

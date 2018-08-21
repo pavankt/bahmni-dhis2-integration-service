@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
-class ColumnMappings extends Component {
+export default class ColumnMappings extends Component {
   constructor() {
     super();
     this.renderColumns = this.renderColumns.bind(this);
@@ -66,10 +65,3 @@ ColumnMappings.propTypes = {
   columns: PropTypes.array.isRequired,
   mappingJson: PropTypes.object.isRequired
 };
-
-const mapStateToProps = (state) => ({
-  columns: state.selectedTableColumns,
-  mappingJson: state.mappingJson
-});
-
-export default connect(mapStateToProps)(ColumnMappings);

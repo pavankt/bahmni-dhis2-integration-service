@@ -24,8 +24,10 @@ describe('DisplayTableNames', () => {
 
     rendered = mount(
       <Provider store={store}>
-        <DisplayTableNames dispatch={() => {
-        }}
+        <DisplayTableNames
+          dispatch={() => {}}
+          filteredTables={['pat_identifier', 'program']}
+          filteredTablesAction={()=>{}}
         />
       </Provider>
     );
@@ -42,7 +44,7 @@ describe('DisplayTableNames', () => {
       expect(liElements).toHaveLength(2);
     });
 
-    it('should have filteredTables as li elements', () => {
+    it('should have filteredInstanceTables as li elements', () => {
       const liElements = rendered.find('li');
       expect(liElements.first().text()).toEqual('pat_identifier');
       expect(liElements.at(1).text()).toEqual('program');
@@ -55,8 +57,8 @@ describe('DisplayTableNames', () => {
         const getTableColumn = mappingActions.expects('getTableColumns')
         .withArgs('pat_identifier')
         .returns({
-          type: 'selectedTable',
-          selectedTable: 'pat_identifier'
+          type: 'selectedInstanceTable',
+          selectedInstanceTable: 'pat_identifier'
         });
 
       rendered.find('li').first().simulate('click', { target: { dataset: { tableName: 'pat_identifier' } } });

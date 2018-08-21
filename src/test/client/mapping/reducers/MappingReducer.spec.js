@@ -1,7 +1,7 @@
 import {
     allTables,
-    filteredTables,
-    selectedTable,
+    filteredInstanceTables,
+    selectedInstanceTable,
     selectedTableColumns,
     allMappingNames,
     currentMapping,
@@ -36,49 +36,49 @@ describe('#mappingReducers', () => {
     });
 
 
-    describe('filteredTables', () => {
+    describe('filteredInstanceTables', () => {
         beforeEach(() => {
             action = {
-                type: 'filteredTables',
-                filteredTables: []
+                type: 'filteredInstanceTables',
+                filteredInstanceTables: []
             };
         });
 
-        it('should return state when "action.type" is anything other than "filteredTables"', () => {
+        it('should return state when "action.type" is anything other than "filteredInstanceTables"', () => {
             state = ['someValue'];
-            expect(filteredTables(state)).toEqual(['someValue']);
+            expect(filteredInstanceTables(state)).toEqual(['someValue']);
         });
 
-        it('should return action.filteredTables when "action.type" is filteredTables', () => {
-            action.filteredTables = ['patient_identifier'];
-            expect(filteredTables(state, action)).toEqual(['patient_identifier']);
+        it('should return action.filteredInstanceTables when "action.type" is filteredInstanceTables', () => {
+            action.filteredInstanceTables = ['patient_identifier'];
+            expect(filteredInstanceTables(state, action)).toEqual(['patient_identifier']);
         });
 
-        it('should return state when "action.type" is anything other than "filteredTables"', () => {
-            expect(filteredTables()).toEqual([]);
+        it('should return state when "action.type" is anything other than "filteredInstanceTables"', () => {
+            expect(filteredInstanceTables()).toEqual([]);
         });
     });
 
-    describe('selectedTable', () => {
+    describe('selectedInstanceTable', () => {
         beforeEach(() => {
             action = {
-                type: 'selectedTable',
-                selectedTable: ''
+                type: 'selectedInstanceTable',
+                selectedInstanceTable: ''
             };
         });
 
-        it('should return state when "action.type" is anything other than "selectedTable"', () => {
+        it('should return state when "action.type" is anything other than "selectedInstanceTable"', () => {
             state = 'someValue';
-            expect(selectedTable(state)).toEqual('someValue');
+            expect(selectedInstanceTable(state)).toEqual('someValue');
         });
 
-        it('should return action.selectedTable when "action.type" is selectedTable', () => {
-            action.selectedTable = 'patient_identifier';
-            expect(selectedTable(state, action)).toEqual('patient_identifier');
+        it('should return action.selectedInstanceTable when "action.type" is selectedInstanceTable', () => {
+            action.selectedInstanceTable = 'patient_identifier';
+            expect(selectedInstanceTable(state, action)).toEqual('patient_identifier');
         });
 
-        it('should return state when "action.type" is anything other than "selectedTable"', () => {
-            expect(selectedTable()).toEqual('');
+        it('should return state when "action.type" is anything other than "selectedInstanceTable"', () => {
+            expect(selectedInstanceTable()).toEqual('');
         });
     });
 

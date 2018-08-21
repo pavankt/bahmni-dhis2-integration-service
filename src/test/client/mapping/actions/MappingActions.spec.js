@@ -25,34 +25,34 @@ describe('#mappingActions', () => {
         });
     });
 
-    describe('#filteredTables', () => {
+    describe('#filteredInstanceTables', () => {
         it('should return empty tables ', () => {
-            expect(MappingActions.filteredTables()).toEqual({
-                type: 'filteredTables',
-                filteredTables: []
+            expect(MappingActions.filteredInstanceTables()).toEqual({
+                type: 'filteredInstanceTables',
+                filteredInstanceTables: []
             });
         });
 
         it('should return table name in an array', () => {
-            expect(MappingActions.filteredTables(['patient_identifier', 'program', 'some_table'])).toEqual({
-                type: 'filteredTables',
-                filteredTables: ['patient_identifier', 'program', 'some_table']
+            expect(MappingActions.filteredInstanceTables(['patient_identifier', 'program', 'some_table'])).toEqual({
+                type: 'filteredInstanceTables',
+                filteredInstanceTables: ['patient_identifier', 'program', 'some_table']
             });
         });
     });
 
-    describe('selectedTable', () => {
+    describe('selectedInstanceTable', () => {
         it('should return a table name', () => {
-            expect(MappingActions.selectedTable()).toEqual({
-                type: 'selectedTable',
-                selectedTable: ''
+            expect(MappingActions.selectedInstanceTable()).toEqual({
+                type: 'selectedInstanceTable',
+                selectedInstanceTable: ''
             });
         });
 
-        it('should return tableName as value for the selectedTable field in the return object', () => {
-            expect(MappingActions.selectedTable('tb_service')).toEqual({
-                type: 'selectedTable',
-                selectedTable: 'tb_service'
+        it('should return tableName as value for the selectedInstanceTable field in the return object', () => {
+            expect(MappingActions.selectedInstanceTable('tb_service')).toEqual({
+                type: 'selectedInstanceTable',
+                selectedInstanceTable: 'tb_service'
             });
         });
     });
@@ -194,12 +194,12 @@ describe('#mappingActions', () => {
                    hideSpinner: true
                },
                {
-                   type: "selectedTable",
-                   selectedTable: ""
+                   type: "selectedInstanceTable",
+                   selectedInstanceTable: ""
                },
                {
-                   type: "filteredTables",
-                   filteredTables : []
+                   type: "filteredInstanceTables",
+                   filteredInstanceTables : []
                }
            ];
 
@@ -343,16 +343,12 @@ describe('#mappingActions', () => {
                     hideSpinner: false
                 },
                 {
-                    type: "selectedTable",
-                    selectedTable: "patient_details"
+                    type: "selectedInstanceTable",
+                    selectedInstanceTable: "patient_details"
                 },
                 {
                     type: "mappingJson",
                     mappingJson: {}
-                },
-                {
-                    type: "filteredTables",
-                    filteredTables: []
                 },
                 {
                     type: "selectedTableColumns",
@@ -376,7 +372,7 @@ describe('#mappingActions', () => {
             ];
 
             let store = mockStore({
-                selectedTable: "",
+                selectedInstanceTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -448,7 +444,7 @@ describe('#mappingActions', () => {
             ];
 
             let store = mockStore({
-                selectedTable: "",
+                selectedInstanceTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -497,7 +493,7 @@ describe('#mappingActions', () => {
             ];
 
             let store = mockStore({
-                selectedTable: "",
+                selectedInstanceTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -535,7 +531,7 @@ describe('#mappingActions', () => {
             ];
 
             let store = mockStore({
-                selectedTable: "",
+                selectedInstanceTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -573,16 +569,12 @@ describe('#mappingActions', () => {
                     hideSpinner : false
                 },
                 {
-                    type: "selectedTable",
-                    selectedTable: "pat_details"
+                    type: "selectedInstanceTable",
+                    selectedInstanceTable: "pat_details"
                 },
                 {
                     type: "mappingJson",
                     mappingJson: {}
-                },
-                {
-                    type: "filteredTables",
-                    filteredTables: []
                 },
                 {
                     type: "selectedTableColumns",
@@ -631,7 +623,7 @@ describe('#mappingActions', () => {
             ];
 
             let store = mockStore({
-                selectedTable: ""
+                selectedInstanceTable: ""
             });
 
             let sandbox = sinon.createSandbox();

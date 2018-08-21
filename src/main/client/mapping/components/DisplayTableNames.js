@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import {getTableColumns} from '../actions/MappingActions';
 
-class DisplayTableNames extends Component {
+export default class DisplayTableNames extends Component {
     constructor() {
         super();
         this.onSelect = this.onSelect.bind(this);
@@ -11,7 +10,8 @@ class DisplayTableNames extends Component {
     }
 
     onSelect(_event) {
-        this.props.dispatch(getTableColumns(_event.target.dataset.tableName));
+       this.props.dispatch(getTableColumns(_event.target.dataset.tableName));
+       this.props.filteredTablesAction();
     }
 
     getListItems() {
@@ -44,11 +44,6 @@ class DisplayTableNames extends Component {
 
 DisplayTableNames.propTypes = {
     filteredTables: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    filteredTablesAction: PropTypes.func.isRequired
 };
-
-const mapStateToProps = (state) => ({
-    filteredTables: state.filteredTables
-});
-
-export default connect(mapStateToProps)(DisplayTableNames);

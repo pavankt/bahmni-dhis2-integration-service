@@ -1,39 +1,36 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import DisplayTableNames from './DisplayTableNames';
-import ColumnMappings from './ColumnMappings';
 import {
     allTables,
     currentMapping,
-    filteredTables,
+    filteredInstanceTables,
     mappingJson,
     saveMappings,
-    selectedTable
+    selectedInstanceTable
 } from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
 import {showHome} from "../../common/Actions";
+import InstanceMapper from "./InstanceMapper";
 
 class DescribeFilteredTable extends Component {
   constructor() {
     super();
-    this.searchTables = this.searchTables.bind(this);
     this._onCancel = this._onCancel.bind(this);
     this._onSave = this._onSave.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
       this.props.dispatch(showHome(false));
       fetch('/dhis-integration/getTables')
           .then(res => res.json())
-          .then(result => this.props.dispatch(allTables(result)));
+          .then(result => {
+              this.props.dispatch(allTables(result));
+          });
   }
 
   componentWillReceiveProps(nextProps) {
-      this.refs.tablesSearch.value = nextProps.selectedTable !== this.props.selectedTable ?
-           nextProps.selectedTable
-          :this.props.selectedTable;
       if(nextProps.currentMapping !== "") {
           this.refs.mappingName.value = nextProps.currentMapping;
       }
@@ -43,18 +40,9 @@ class DescribeFilteredTable extends Component {
       this.props.dispatch(showHome());
   }
 
-  searchTables() {
-    const searchText = this.refs.tablesSearch.value;
-
-    if (searchText.length > 2) {
-      const result = this.props.tables.filter(tableName => tableName.includes(searchText));
-      this.props.dispatch(filteredTables(result));
-    }
-  }
-
   _onCancel() {
-    this.props.dispatch(selectedTable());
-    this.props.dispatch(filteredTables());
+    this.props.dispatch(selectedInstanceTable());
+    this.props.dispatch(filteredInstanceTables());
     this.props.dispatch(currentMapping());
     this.props.dispatch(mappingJson());
     this.props.history.push('/dhis-integration/mapping');
@@ -63,7 +51,7 @@ class DescribeFilteredTable extends Component {
   _onSave() {
     let mappingName = this.refs.mappingName.value;
     let columnMappings = document.getElementsByClassName('mapping-row');
-    this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedTable, this.props.history, this.props.currentMapping));
+    this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedInstanceTable, this.props.history, this.props.currentMapping));
   }
 
   render() {
@@ -80,27 +68,17 @@ class DescribeFilteredTable extends Component {
           className="mapping-name mapping-name-input"
           placeholder="Enter Mapping Name"
         />
-        <span>
-          Please select patient instance table
-        </span>
-        <input
-          type="text"
-          ref="tablesSearch"
-          name="tableName"
-          placeholder="Enter at least 3 characters of the table name to search"
-          onKeyUp={this.searchTables}
-          className="table-input"
-        />
-        <DisplayTableNames />
-        {(this.props.selectedTable) && <ColumnMappings /> }
+
+        <InstanceMapper />
+
         <div className="footer">
-          {(this.props.selectedTable) && (
+          {(this.props.selectedInstanceTable) && (
           <button type="button" className="save" onClick={this._onSave}>
-              Save
+            Save
           </button>
 )}
           <button type="button" className="cancel" onClick={this._onCancel}>
-              Cancel
+            Cancel
           </button>
         </div>
       </div>
@@ -109,7 +87,7 @@ class DescribeFilteredTable extends Component {
 }
 
 DescribeFilteredTable.propTypes = {
-  selectedTable: PropTypes.string.isRequired,
+  selectedInstanceTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   tables: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
@@ -118,7 +96,7 @@ DescribeFilteredTable.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  selectedTable: state.selectedTable,
+  selectedInstanceTable: state.selectedInstanceTable,
   tables: state.allTables,
   hideSpinner : state.hideSpinner,
   currentMapping: state.currentMapping,

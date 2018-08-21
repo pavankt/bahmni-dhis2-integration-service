@@ -21,8 +21,10 @@ describe('ColumnMappings', () => {
 
         rendered = render(
           <Provider store={store}>
-            <ColumnMappings dispatch={() => {
+            <ColumnMappings
+              dispatch={() => {
                 }}
+              columns={['pat_id', 'pat_name']}
             />
           </Provider>
         );

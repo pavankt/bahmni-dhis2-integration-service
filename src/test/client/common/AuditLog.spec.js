@@ -1,5 +1,5 @@
-import auditLog from '../../../main/client/common/AuditLog';
 import sinon from 'sinon';
+import auditLog from '../../../main/client/common/AuditLog';
 import Ajax from '../../../main/client/common/Ajax';
 import {audit, auditLogEventDetails} from '../../../main/client/common/constants';
 

@@ -11,7 +11,7 @@ configure({adapter: new Adapter()});
 
 describe('DescribeFilteredTable', () => {
 
-    it('should render ColumnMapping component when selectedTable have value', () => {
+    it('should render ColumnMapping component when selectedInstanceTable have value', () => {
         let rendered = getDescribeRenderer("pat_identifier", false);
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
     });
@@ -61,9 +61,9 @@ describe('DescribeFilteredTable', () => {
     //     let pushMock = sandbox.mock(history).expects("push")
     //         .withArgs('/mapping');
     //     let mappingActions = sandbox.mock(MappingActions);
-    //     let selectedTable = mappingActions.expects("selectedTable")
+    //     let selectedInstanceTable = mappingActions.expects("selectedInstanceTable")
     //         .returns({ type: "" });
-    //     let filteredTables = mappingActions.expects("filteredTables")
+    //     let filteredInstanceTables = mappingActions.expects("filteredInstanceTables")
     //         .returns({ type: "" });
     //
     //     let mappingJson = mappingActions.expects("mappingJson")
@@ -75,8 +75,8 @@ describe('DescribeFilteredTable', () => {
     //     describeRenderer.find('.cancel').first().simulate('click');
     //
     //     pushMock.verify();
-    //     selectedTable.verify();
-    //     filteredTables.verify();
+    //     selectedInstanceTable.verify();
+    //     filteredInstanceTables.verify();
     //     mappingJson.verify();
     //     sandbox.restore();
     // });
@@ -101,7 +101,7 @@ describe('DescribeFilteredTable', () => {
 
     function getDescribeRenderer(selectTable = "", hideSpinner = true) {
         const store = createStore(() => ({
-            selectedTable: selectTable,
+            selectedInstanceTable: selectTable,
             allTables: [
                 'patient_identifier',
                 'hiv_self_testing',
@@ -113,7 +113,7 @@ describe('DescribeFilteredTable', () => {
                 'id',
                 'name'
             ],
-            filteredTables: [],
+            filteredInstanceTables: [],
             showMessage: {
                 responseMessage: "",
                 responseType: ""
@@ -136,7 +136,7 @@ describe('DescribeFilteredTable', () => {
 
     // function getDescribeMount(history = {}) {
     //     const store = createStore(() => ({
-    //         selectedTable: '',
+    //         selectedInstanceTable: '',
     //         allTables: [
     //             'patient_identifier',
     //             'hiv_self_testing',
@@ -148,7 +148,7 @@ describe('DescribeFilteredTable', () => {
     //             'id',
     //             'name'
     //         ],
-    //         filteredTables: [],
+    //         filteredInstanceTables: [],
     //         showMessage: {
     //             responseMessage: "",
     //             responseType: ""

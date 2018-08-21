@@ -7,19 +7,19 @@ export function allTables(state = [], action = {}) {
   }
 }
 
-export function filteredTables(state = [], action = {}) {
+export function filteredInstanceTables(state = [], action = {}) {
   switch (action.type) {
-    case 'filteredTables':
-      return action.filteredTables;
+    case 'filteredInstanceTables':
+      return action.filteredInstanceTables;
     default:
       return state;
   }
 }
 
-export function selectedTable(state = '', action = {}) {
+export function selectedInstanceTable(state = '', action = {}) {
   switch (action.type) {
-    case 'selectedTable':
-      return action.selectedTable;
+    case 'selectedInstanceTable':
+      return action.selectedInstanceTable;
     default:
       return state;
   }

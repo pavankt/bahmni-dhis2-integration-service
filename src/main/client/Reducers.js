@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import {
     allMappingNames,
     allTables,
-    filteredTables,
-    selectedTable,
+    filteredInstanceTables,
+    selectedInstanceTable,
     selectedTableColumns,
     currentMapping,
     mappingJson
@@ -16,8 +16,8 @@ import { hideSpinner,
 } from './common/Reducers';
 
 const reducers = combineReducers({
-  filteredTables,
-  selectedTable,
+  filteredInstanceTables,
+  selectedInstanceTable,
   allTables,
   selectedTableColumns,
   allMappingNames,
