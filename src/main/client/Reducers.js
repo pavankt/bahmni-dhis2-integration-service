@@ -4,7 +4,9 @@ import {
     allTables,
     filteredInstanceTables,
     selectedInstanceTable,
-    selectedTableColumns,
+    selectedEnrollmentsTable,
+    selectedInstanceTableColumns,
+    selectedEnrollmentTableColumns,
     currentMapping,
     mappingJson
 } from './mapping/reducers/MappingReducer';
@@ -18,8 +20,10 @@ import { hideSpinner,
 const reducers = combineReducers({
   filteredInstanceTables,
   selectedInstanceTable,
+  selectedEnrollmentsTable,
   allTables,
-  selectedTableColumns,
+  selectedInstanceTableColumns,
+  selectedEnrollmentTableColumns,
   allMappingNames,
   hideSpinner,
   showMessage,

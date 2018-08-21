@@ -17,9 +17,9 @@ export default class ColumnMappings extends Component {
   }
 
   insertValues() {
-      let instanceJson = this.props.mappingJson;
+      let mappingJson = this.props.mappingJson;
       this.props.columns.map(column => {
-          let mapping = instanceJson[column];
+          let mapping = mappingJson[column];
           this.refs[column].value = mapping !== undefined ? mapping : '';
       });
   }

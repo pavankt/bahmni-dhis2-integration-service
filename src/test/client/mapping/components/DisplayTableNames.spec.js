@@ -28,6 +28,7 @@ describe('DisplayTableNames', () => {
           dispatch={() => {}}
           filteredTables={['pat_identifier', 'program']}
           filteredTablesAction={()=>{}}
+          category=""
         />
       </Provider>
     );

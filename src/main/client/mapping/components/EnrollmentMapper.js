@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
 
-class InstanceMapper extends Component {
+class EnrollmentMapper extends Component {
 
     constructor(){
         super();
@@ -14,10 +14,10 @@ class InstanceMapper extends Component {
         };
     }
     componentWillReceiveProps(nextProps){
-        this.refs.tablesSearch.value = nextProps.selectedInstanceTable !== this.props.selectedInstanceTable ?
-            nextProps.selectedInstanceTable
-            :this.props.selectedInstanceTable;
-     }
+        this.refs.tablesSearch.value = nextProps.selectedEnrollmentsTable !== this.props.selectedEnrollmentsTable ?
+            nextProps.selectedEnrollmentsTable
+            :this.props.selectedEnrollmentsTable;
+    }
 
     searchTables() {
         const searchText = this.refs.tablesSearch.value;
@@ -52,23 +52,23 @@ class InstanceMapper extends Component {
             <DisplayTableNames
               filteredTables={this.state.filteredTables}
               dispatch={this.props.dispatch}
-              category="instance"
+              category="enrollments"
               filteredTablesAction={()=>{this.setState({filteredTables:[]})}}
             />
 
-            {(this.props.selectedInstanceTable) && (
+            {(this.props.selectedEnrollmentsTable) && (
             <ColumnMappings
               columns={this.props.columns}
-              mappingJson={this.props.mappingJson.instance}
+              mappingJson={this.props.mappingJson.enrollment}
             />
-)}
+                )}
           </div>
-)
+        )
     }
 }
 
-InstanceMapper.propTypes = {
-    selectedInstanceTable: PropTypes.string.isRequired,
+EnrollmentMapper.propTypes = {
+    selectedEnrollmentsTable: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     tables: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired,
@@ -76,10 +76,10 @@ InstanceMapper.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    selectedInstanceTable: state.selectedInstanceTable,
+    selectedEnrollmentsTable: state.selectedEnrollmentsTable,
     tables: state.allTables,
-    columns: state.selectedInstanceTableColumns,
+    columns: state.selectedEnrollmentTableColumns,
     mappingJson: state.mappingJson
 });
 
-export default connect(mapStateToProps)(InstanceMapper);
+export default connect(mapStateToProps)(EnrollmentMapper);

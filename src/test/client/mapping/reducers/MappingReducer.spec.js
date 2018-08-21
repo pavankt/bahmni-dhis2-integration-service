@@ -2,7 +2,7 @@ import {
     allTables,
     filteredInstanceTables,
     selectedInstanceTable,
-    selectedTableColumns,
+    selectedInstanceTableColumns,
     allMappingNames,
     currentMapping,
     mappingJson
@@ -82,26 +82,26 @@ describe('#mappingReducers', () => {
         });
     });
 
-    describe('selectedTableColumns', () => {
+    describe('selectedInstanceTableColumns', () => {
         beforeEach(() => {
             action = {
-                type: 'selectedTableColumns',
-                selectedTableColumns: []
+                type: 'selectedInstanceTableColumns',
+                selectedInstanceTableColumns: []
             };
         });
 
-        it('should return state when "action.type" is anything other than "selectedTableColumns"', () => {
+        it('should return state when "action.type" is anything other than "selectedInstanceTableColumns"', () => {
             state = ['someValue'];
-            expect(selectedTableColumns(state)).toEqual(['someValue']);
+            expect(selectedInstanceTableColumns(state)).toEqual(['someValue']);
         });
 
-        it('should return action.selectedTableColumns when "action.type" is selectedTableColumns', () => {
-            action.selectedTableColumns = ['patient_identifier', 'tb-service'];
-            expect(selectedTableColumns(state, action)).toEqual(['patient_identifier', 'tb-service']);
+        it('should return action.selectedInstanceTableColumns when "action.type" is selectedInstanceTableColumns', () => {
+            action.selectedInstanceTableColumns = ['patient_identifier', 'tb-service'];
+            expect(selectedInstanceTableColumns(state, action)).toEqual(['patient_identifier', 'tb-service']);
         });
 
-        it('should return state when "action.type" is anything other than "selectedTableColumns"', () => {
-            expect(selectedTableColumns()).toEqual([]);
+        it('should return state when "action.type" is anything other than "selectedInstanceTableColumns"', () => {
+            expect(selectedInstanceTableColumns()).toEqual([]);
         });
     });
 
@@ -159,7 +159,7 @@ describe('#mappingReducers', () => {
 
     describe('mappingJson', () => {
         it('should return state with default params', () => {
-            expect(mappingJson()).toEqual({});
+            expect(mappingJson()).toEqual({instance:{},enrollment:{}});
         });
 
         it('should return state when "action.type" is anything other than "mappingJson"', () => {

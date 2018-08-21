@@ -144,7 +144,7 @@ describe('DescribeFilteredTable', () => {
     //             'patient_encounter_details_default',
     //             'patient_allergy_status_default'
     //         ],
-    //         selectedTableColumns: [
+    //         selectedInstanceTableColumns: [
     //             'id',
     //             'name'
     //         ],

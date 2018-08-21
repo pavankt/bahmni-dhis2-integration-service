@@ -32,13 +32,26 @@ export function selectedInstanceTable(table = '') {
   };
 }
 
-export function tableColumns(columns = []) {
+export function selectedEnrollmentsTable(table = '') {
   return {
-    type: 'selectedTableColumns',
-    selectedTableColumns: columns
+    type: 'selectedEnrollmentsTable',
+    selectedEnrollmentsTable: table
   };
 }
 
+export function instanceTableColumns(columns = []) {
+  return {
+    type: 'selectedInstanceTableColumns',
+    selectedInstanceTableColumns: columns
+  };
+}
+
+export function enrollmentTableColumns(columns = []) {
+  return {
+    type: 'selectedEnrollmentTableColumns',
+    selectedEnrollmentTableColumns: columns
+  };
+}
 
 export function allMappingNames(mappingNames = []){
   return{
@@ -61,7 +74,7 @@ export function currentMapping(mappingName = "") {
     }
 }
 
-export function mappingJson(mappingJson = {}) {
+export function mappingJson(mappingJson = {instance:{}, enrollment:{}}) {
     return {
         type : 'mappingJson',
         mappingJson
@@ -149,9 +162,9 @@ export function getMapping(mappingNameToEdit, history) {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
             let response = parseResponse(await ajax.get('/dhis-integration/getMapping', {"mappingName": mappingNameToEdit}));
-            await getColumns(response.lookup_table.value.instance, dispatch, ajax);
+            await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
-            dispatch(mappingJson(response.mapping_json.value.instance));
+            dispatch(mappingJson(response.mapping_json.value));
             history.push('/dhis-integration/mapping/addEditMappings');
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
@@ -176,12 +189,12 @@ export function getAllMappings() {
     }
 }
 
-export function getTableColumns(tableName) {
+export function getTableColumns(tableName, category) {
     return async dispatch => {
         try {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
-            await getColumns(tableName, dispatch, ajax);
+            await dispatchTableDetails(tableName, category, dispatch, ajax);
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
         } finally {
@@ -190,9 +203,30 @@ export function getTableColumns(tableName) {
     }
 }
 
-async function getColumns(tableName, dispatch, ajax) {
-    dispatch(selectedInstanceTable(tableName));
-    dispatch(mappingJson());
+async function getColumnNames(ajax, tableName) {
     let response = await ajax.get('/dhis-integration/getColumns', {tableName});
-    dispatch(tableColumns(response));
+    return response;
+}
+
+async function dispatchInstanceTableDetails(tableName, dispatch, ajax) {
+    let response = await getColumnNames(ajax, tableName);
+    dispatch(selectedInstanceTable(tableName));
+    dispatch(instanceTableColumns(response));
+}
+
+async function dispatchEnrollmentTableDetails(tableName, dispatch, ajax) {
+    let response = await getColumnNames(ajax, tableName);
+    dispatch(selectedEnrollmentsTable(tableName));
+    dispatch(enrollmentTableColumns(response));
+}
+
+async function dispatchTableDetails(tableName, category, dispatch, ajax) {
+    dispatch(mappingJson());
+
+    if (category === "instance") {
+        await dispatchInstanceTableDetails(tableName, dispatch, ajax);
+    }else if(category === "enrollments"){
+        await dispatchEnrollmentTableDetails(tableName, dispatch, ajax);
+    }
+
 }

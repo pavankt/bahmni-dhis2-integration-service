@@ -25,6 +25,7 @@ describe('ColumnMappings', () => {
               dispatch={() => {
                 }}
               columns={['pat_id', 'pat_name']}
+              mappingJson={{}}
             />
           </Provider>
         );

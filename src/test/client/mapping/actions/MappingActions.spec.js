@@ -57,18 +57,18 @@ describe('#mappingActions', () => {
         });
     });
 
-    describe('tableColumns', () => {
+    describe('instanceTableColumns', () => {
         it('should return an empty array', () => {
-            expect(MappingActions.tableColumns()).toEqual({
-                type: 'selectedTableColumns',
-                selectedTableColumns: []
+            expect(MappingActions.instanceTableColumns()).toEqual({
+                type: 'selectedInstanceTableColumns',
+                selectedInstanceTableColumns: []
             });
         });
 
         it('should return selected table columns in an array', () => {
-            expect(MappingActions.tableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
-                type: 'selectedTableColumns',
-                selectedTableColumns: ['pat_id', 'pat_name', 'age']
+            expect(MappingActions.instanceTableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
+                type: 'selectedInstanceTableColumns',
+                selectedInstanceTableColumns: ['pat_id', 'pat_name', 'age']
             });
         });
     });
@@ -187,7 +187,10 @@ describe('#mappingActions', () => {
                },
                {
                    type: "mappingJson",
-                   mappingJson: {}
+                   mappingJson: {
+                       instance: {},
+                       enrollment: {}
+                   }
                },
                {
                    type: "hideSpinner",
@@ -347,12 +350,8 @@ describe('#mappingActions', () => {
                     selectedInstanceTable: "patient_details"
                 },
                 {
-                    type: "mappingJson",
-                    mappingJson: {}
-                },
-                {
-                    type: "selectedTableColumns",
-                    selectedTableColumns: tableColumns
+                    type: "selectedInstanceTableColumns",
+                    selectedInstanceTableColumns: tableColumns
                 },
                 {
                     type: "currentMapping",
@@ -361,8 +360,10 @@ describe('#mappingActions', () => {
                 {
                     type: "mappingJson",
                     mappingJson: {
-                        patient_identifier: "fYj7U",
-                        patient_name: "ert76HK"
+                        instance: {
+                            patient_identifier: "fYj7U",
+                            patient_name: "ert76HK"
+                        },
                     }
                 },
                 {
@@ -559,26 +560,17 @@ describe('#mappingActions', () => {
     describe('getTableColumns', () => {
         it('should get all columns of the table', async () => {
             let ajax = new Ajax();
-            let columns = [
-                "pat_identifier",
-                "pat_name"
-            ];
             let expectedActions = [
                 {
                     type: "hideSpinner",
                     hideSpinner : false
                 },
                 {
-                    type: "selectedInstanceTable",
-                    selectedInstanceTable: "pat_details"
-                },
-                {
                     type: "mappingJson",
-                    mappingJson: {}
-                },
-                {
-                    type: "selectedTableColumns",
-                    selectedTableColumns: columns
+                    mappingJson: {
+                        instance:{},
+                        enrollment: {}
+                    }
                 },
                 {
                     type: "hideSpinner",
@@ -592,15 +584,10 @@ describe('#mappingActions', () => {
 
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
-            let ajaxGetMock = sandbox.mock(ajax)
-                .expects("get")
-                .withArgs("/dhis-integration/getColumns")
-                .returns(Promise.resolve(columns));
 
             await store.dispatch(MappingActions.getTableColumns("pat_details"));
 
             expect(store.getActions()).toEqual(expectedActions);
-            ajaxGetMock.verify();
             sandbox.restore();
         });
 

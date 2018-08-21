@@ -10,7 +10,7 @@ export default class DisplayTableNames extends Component {
     }
 
     onSelect(_event) {
-       this.props.dispatch(getTableColumns(_event.target.dataset.tableName));
+       this.props.dispatch(getTableColumns(_event.target.dataset.tableName, this.props.category));
        this.props.filteredTablesAction();
     }
 
@@ -45,5 +45,6 @@ export default class DisplayTableNames extends Component {
 DisplayTableNames.propTypes = {
     filteredTables: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filteredTablesAction: PropTypes.func.isRequired
+    filteredTablesAction: PropTypes.func.isRequired,
+    category: PropTypes.string.isRequired
 };

@@ -165,7 +165,7 @@
   padding: 5px 15px;
   border: 1px solid #dddddd;
   display: block;
-  margin: 10px 0 25px 0;
+  margin: 10px 0 0 0;
   border-radius: 5px;
 }
 
@@ -205,4 +205,8 @@
   width: 80px;
   color: black;
   background-image: linear-gradient(#dddddd, #f3f3f3);
+}
+
+.mapper{
+  margin: 25px 0;
 }

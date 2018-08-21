@@ -7,12 +7,14 @@ import {
     filteredInstanceTables,
     mappingJson,
     saveMappings,
+    selectedEnrollmentsTable,
     selectedInstanceTable
 } from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
 import {showHome} from "../../common/Actions";
 import InstanceMapper from "./InstanceMapper";
+import EnrollmentMapper from "./EnrollmentMapper";
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -21,7 +23,7 @@ class DescribeFilteredTable extends Component {
     this._onSave = this._onSave.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
       this.props.dispatch(showHome(false));
       fetch('/dhis-integration/getTables')
           .then(res => res.json())
@@ -42,6 +44,7 @@ class DescribeFilteredTable extends Component {
 
   _onCancel() {
     this.props.dispatch(selectedInstanceTable());
+    this.props.dispatch(selectedEnrollmentsTable());
     this.props.dispatch(filteredInstanceTables());
     this.props.dispatch(currentMapping());
     this.props.dispatch(mappingJson());
@@ -71,6 +74,8 @@ class DescribeFilteredTable extends Component {
 
         <InstanceMapper />
 
+        <EnrollmentMapper />
+
         <div className="footer">
           {(this.props.selectedInstanceTable) && (
           <button type="button" className="save" onClick={this._onSave}>
@@ -89,7 +94,6 @@ class DescribeFilteredTable extends Component {
 DescribeFilteredTable.propTypes = {
   selectedInstanceTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
-  tables: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   hideSpinner:PropTypes.bool.isRequired,
   currentMapping: PropTypes.string.isRequired
