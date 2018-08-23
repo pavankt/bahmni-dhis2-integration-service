@@ -12,10 +12,10 @@ describe('AuditLog', () => {
         sandbox.stub(Ajax, "instance").returns(ajax);
 
         let postMock = sandbox.mock(ajax).expects("post")
-            .withArgs(audit.URI, auditLogEventDetails.SAVE_MAPPING)
+            .withArgs(audit.URI, auditLogEventDetails.SAVE_DHIS_MAPPING)
             .returns(Promise.resolve());
 
-        await auditLog(auditLogEventDetails.SAVE_MAPPING);
+        await auditLog(auditLogEventDetails.SAVE_DHIS_MAPPING);
 
         postMock.verify();
         sandbox.restore();
