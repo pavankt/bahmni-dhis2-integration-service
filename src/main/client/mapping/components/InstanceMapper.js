@@ -37,7 +37,7 @@ class InstanceMapper extends Component {
     render(){
         return (
           <div className="mapper">
-            <span>
+            <span className="instance-table-span">
           Please select patient instance table
             </span>
             <input

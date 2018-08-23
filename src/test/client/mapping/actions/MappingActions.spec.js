@@ -41,6 +41,22 @@ describe('#mappingActions', () => {
         });
     });
 
+    describe('#filteredEnrollmentTables', () => {
+        it('should return empty tables ', () => {
+            expect(MappingActions.filteredEnrollmentTables()).toEqual({
+                type: 'filteredEnrollmentTables',
+                filteredEnrollmentTables: []
+            });
+        });
+
+        it('should return table name in an array', () => {
+            expect(MappingActions.filteredEnrollmentTables(['patient_identifier', 'program', 'some_table'])).toEqual({
+                type: 'filteredEnrollmentTables',
+                filteredEnrollmentTables: ['patient_identifier', 'program', 'some_table']
+            });
+        });
+    });
+
     describe('selectedInstanceTable', () => {
         it('should return a table name', () => {
             expect(MappingActions.selectedInstanceTable()).toEqual({
@@ -113,7 +129,7 @@ describe('#mappingActions', () => {
            expect(store.getActions()).toEqual(expectedActions);
        });
 
-       it('should dispatch showMessage with AtLeaseOneColumnShouldHaveMapping when mapping name is empty', async () => {
+       it('should dispatch showMessage with AtLeaseOnePatientInstanceColumnShouldHaveMapping when no instance mapping is entered', async () => {
            let expectedActions = [{
                type : "showMessage",
                responseMessage: "Please provide at least one mapping for patient instance",
@@ -126,6 +142,47 @@ describe('#mappingActions', () => {
                }});
 
            await store.dispatch(MappingActions.saveMappings("Mapping Name", {instance:{},enrollments:{}}, ""));
+           expect(store.getActions()).toEqual(expectedActions);
+       });
+
+       it('should dispatch showMessage with AtLeaseOneProgramEnrollmentColumnShouldHaveMapping when no enrollment mapping is entered', async () => {
+           let expectedActions = [{
+               type : "showMessage",
+               responseMessage: "Please provide at least one mapping for program enrollments",
+               responseType: "error"
+           }];
+
+           document.body.innerHTML =
+               '<div>' +
+               '<div class="instance">'+
+               '<div class="mapping-column-name">pat_id</div>'+
+               '<div class="mapping-data-element">' +
+               '<input type="input" class="mapping-input"/>' +
+               '</div>'+
+               '</div>' +
+               '<div class="instance">'+
+               '<div class="mapping-column-name">pat_name</div>'+
+               '<div class="mapping-data-element">'+
+               '<input type="input" class="mapping-input"/>'+
+               '</div>'+
+               '</div>'+
+               '</div>';
+
+           let store = mockStore({ showMessage : {
+                 responseMessage: "",
+                 responseType: ""
+               }});
+
+           let instanceMappingColumns = document.getElementsByClassName('instance');
+
+           document.getElementsByClassName("mapping-input")[0].value = "asfsafsfa";
+           document.getElementsByClassName("mapping-input")[1].value = "ngdrsg";
+
+           let allMappings = {
+               instance: instanceMappingColumns,
+               enrollments:document.getElementsByClassName('enrollments')
+           };
+           await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
            expect(store.getActions()).toEqual(expectedActions);
        });
 

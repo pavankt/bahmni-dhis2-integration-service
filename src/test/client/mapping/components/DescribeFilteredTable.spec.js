@@ -12,42 +12,42 @@ configure({adapter: new Adapter()});
 describe('DescribeFilteredTable', () => {
 
     it('should render ColumnMapping component when selectedInstanceTable have value', () => {
-        let rendered = getDescribeRenderer("pat_identifier", false);
+        let rendered = getDescribeRenderer({instance:"pat_identifier",enrollments:""}, false);
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
     });
 
     it('should render DisplayColumns', () => {
-        let describeRenderer = getDescribeRenderer();
+        let describeRenderer = getDescribeRenderer({instance:"",enrollments:""});
 
         expect(describeRenderer.find('.tables-list')).toHaveLength(2);
     });
 
     it('should have an 2 input element', () => {
-        let describeRenderer = getDescribeRenderer();
+        let describeRenderer = getDescribeRenderer({instance:"",enrollments:""});
         expect(describeRenderer.find('input')).toHaveLength(3);
     });
 
     it('should have a footer and cancel className', () => {
-        let describeRenderer = getDescribeRenderer();
+        let describeRenderer = getDescribeRenderer({instance:"",enrollments:""});
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);
         expect(describeRenderer.find('.save')).toHaveLength(0);
     });
 
     it('should have a save className when there is selected table', () => {
-        let describeRenderer = getDescribeRenderer("program");
+        let describeRenderer = getDescribeRenderer({instance:"someTable",enrollments:""});
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);
         expect(describeRenderer.find('.save')).toHaveLength(1);
     });
 
     it('should not have overlay className when hideSpinner is true', () => {
-        let describeRenderer = getDescribeRenderer();
+        let describeRenderer = getDescribeRenderer({instance:"",enrollments:""});
         expect(describeRenderer.find('.overlay')).toHaveLength(0);
     });
 
     it('should have overlay className when hideSpinner is false', () => {
-        let describeRenderer = getDescribeRenderer("", false);
+        let describeRenderer = getDescribeRenderer({instance:"",enrollments:""}, false);
         expect(describeRenderer.find('.overlay')).toHaveLength(1);
     });
 
@@ -99,9 +99,10 @@ describe('DescribeFilteredTable', () => {
     //     sandbox.restore();
     // });
 
-    function getDescribeRenderer(selectTable = "", hideSpinner = true) {
+    function getDescribeRenderer(selectTable = {}, hideSpinner = true) {
         const store = createStore(() => ({
-            selectedInstanceTable: selectTable,
+            selectedInstanceTable: selectTable.instance,
+            selectedEnrollmentsTable: selectTable.enrollments,
             allTables: [
                 'patient_identifier',
                 'hiv_self_testing',
@@ -113,7 +114,7 @@ describe('DescribeFilteredTable', () => {
                 'id',
                 'name'
             ],
-            selectedEnrollmentsTableColumns: [
+            selectedEnrollmentTableColumns: [
                 'enrollId',
                 'programName'
             ],
@@ -124,7 +125,10 @@ describe('DescribeFilteredTable', () => {
             },
             hideSpinner,
             currentMapping: "",
-            mappingJson: {}
+            mappingJson: {
+                instance: {},
+                enrollments: {}
+            }
         }), applyMiddleware(thunkMiddleware));
 
         return (render(

@@ -83,7 +83,7 @@ class DescribeFilteredTable extends Component {
         <EnrollmentMapper />
 
         <div className="footer">
-          {(this.props.selectedInstanceTable) && (
+          {(this.props.selectedInstanceTable || this.props.selectedEnrollmentsTable) && (
           <button type="button" className="save" onClick={this._onSave}>
             Save
           </button>
@@ -99,6 +99,7 @@ class DescribeFilteredTable extends Component {
 
 DescribeFilteredTable.propTypes = {
   selectedInstanceTable: PropTypes.string.isRequired,
+  selectedEnrollmentsTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   hideSpinner:PropTypes.bool.isRequired,

@@ -5,33 +5,33 @@ import {configure, render} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
-import InstanceMapper from "../../../../main/client/mapping/components/InstanceMapper";
+import EnrollmentMapper from "../../../../main/client/mapping/components/EnrollmentMapper";
 
 configure({adapter: new Adapter()});
 
-describe('InstanceMapper', function () {
+describe('EnrollmentMapper', function () {
     let rendered;
 
     beforeEach(() => {
         const store = createStore(() => ({
-            selectedInstanceTable: "patient_details",
+            selectedEnrollmentsTable: "patient_details",
             allTables:[],
-            selectedInstanceTableColumns: [],
+            selectedEnrollmentTableColumns: [],
             mappingJson: {
-                instance:{},
+                Enrollment:{},
                 enrollments:{}
             }
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
           <Provider store={store}>
-            <InstanceMapper />
+            <EnrollmentMapper />
           </Provider>
         );
     });
 
 
-    it('should render ColumnMapping component when selectedInstanceTable have value', () => {
+    it('should render ColumnMapping component when selectedEnrollmentTable have value', () => {
         expect(rendered.find('.mapping-table-div')).toHaveLength(1);
     });
 
@@ -43,7 +43,7 @@ describe('InstanceMapper', function () {
         expect(rendered.find('.table-input')).toHaveLength(1);
     });
 
-    it('should have a span with class name instance-table-span', ()=> {
-        expect(rendered.find('.instance-table-span')).toHaveLength(1);
+    it('should have a span with class name Enrollment-table-span', ()=> {
+        expect(rendered.find('.enrollment-table-span')).toHaveLength(1);
     });
 });

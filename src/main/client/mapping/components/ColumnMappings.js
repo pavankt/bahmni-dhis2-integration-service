@@ -47,7 +47,7 @@ export default class ColumnMappings extends Component {
   render() {
     return (
       <div className="mapping-table-div">
-        <span>
+        <span className="enrollment-table-span">
 Please provide DHIS2 data element mapping for patient instance
         </span>
         <section className="column-mapping-section">

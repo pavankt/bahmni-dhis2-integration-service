@@ -5,7 +5,7 @@ import {
     selectedInstanceTableColumns,
     allMappingNames,
     currentMapping,
-    mappingJson
+    mappingJson, filteredEnrollmentTables, selectedEnrollmentsTable, selectedEnrollmentTableColumns
 } from '../../../../main/client/mapping/reducers/MappingReducer';
 
 describe('#mappingReducers', () => {
@@ -23,6 +23,11 @@ describe('#mappingReducers', () => {
         it('should return state when "action.type" is anything other than "allTables"', () => {
             state = ['someValue'];
             expect(allTables(state)).toEqual(['someValue']);
+        });
+
+        it('should return action.allTables when "action.type" is allTables', () => {
+            action.allTables = ['patient_identifier', 'tb-service'];
+            expect(allTables(state, action)).toEqual(['patient_identifier', 'tb-service']);
         });
 
         it('should return action.allTables when "action.type" is allTables', () => {
@@ -59,6 +64,29 @@ describe('#mappingReducers', () => {
         });
     });
 
+    describe('filteredEnrollmentTables', () => {
+        beforeEach(() => {
+            action = {
+                type: 'filteredEnrollmentTables',
+                filteredEnrollmentTables: []
+            };
+        });
+
+        it('should return state when "action.type" is anything other than "filteredEnrollmentTables"', () => {
+            state = ['someValue'];
+            expect(filteredEnrollmentTables(state)).toEqual(['someValue']);
+        });
+
+        it('should return action.filteredEnrollmentTables when "action.type" is filteredEnrollmentTables', () => {
+            action.filteredEnrollmentTables = ['patient_identifier'];
+            expect(filteredEnrollmentTables(state, action)).toEqual(['patient_identifier']);
+        });
+
+        it('should return state when "action.type" is anything other than "filteredEnrollmentTables"', () => {
+            expect(filteredEnrollmentTables()).toEqual([]);
+        });
+    });
+
     describe('selectedInstanceTable', () => {
         beforeEach(() => {
             action = {
@@ -82,6 +110,29 @@ describe('#mappingReducers', () => {
         });
     });
 
+    describe('selectedEnrollmentsTable', () => {
+        beforeEach(() => {
+            action = {
+                type: 'selectedEnrollmentsTable',
+                selectedEnrollmentsTable: ''
+            };
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEnrollmentsTable"', () => {
+            state = 'someValue';
+            expect(selectedEnrollmentsTable(state)).toEqual('someValue');
+        });
+
+        it('should return action.selectedEnrollmentsTable when "action.type" is selectedEnrollmentsTable', () => {
+            action.selectedEnrollmentsTable = 'patient_identifier';
+            expect(selectedEnrollmentsTable(state, action)).toEqual('patient_identifier');
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEnrollmentsTable"', () => {
+            expect(selectedEnrollmentsTable()).toEqual('');
+        });
+    });
+
     describe('selectedInstanceTableColumns', () => {
         beforeEach(() => {
             action = {
@@ -102,6 +153,29 @@ describe('#mappingReducers', () => {
 
         it('should return state when "action.type" is anything other than "selectedInstanceTableColumns"', () => {
             expect(selectedInstanceTableColumns()).toEqual([]);
+        });
+    });
+
+    describe('selectedEnrollmentTableColumns', () => {
+        beforeEach(() => {
+            action = {
+                type: 'selectedEnrollmentTableColumns',
+                selectedEnrollmentTableColumns: []
+            };
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEnrollmentTableColumns"', () => {
+            state = ['someValue'];
+            expect(selectedEnrollmentTableColumns(state)).toEqual(['someValue']);
+        });
+
+        it('should return action.selectedEnrollmentTableColumns when "action.type" is selectedEnrollmentTableColumns', () => {
+            action.selectedEnrollmentTableColumns = ['patient_identifier', 'tb-service'];
+            expect(selectedEnrollmentTableColumns(state, action)).toEqual(['patient_identifier', 'tb-service']);
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEnrollmentTableColumns"', () => {
+            expect(selectedEnrollmentTableColumns()).toEqual([]);
         });
     });
 
