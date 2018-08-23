@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
 
@@ -14,9 +14,9 @@ class EnrollmentMapper extends Component {
         };
     }
     componentWillReceiveProps(nextProps){
-        this.refs.tablesSearch.value = nextProps.selectedEnrollmentsTable !== this.props.selectedEnrollmentsTable ?
-            nextProps.selectedEnrollmentsTable
-            :this.props.selectedEnrollmentsTable;
+        this.refs.tablesSearch.value = nextProps.selectedTable !== this.props.selectedTable ?
+            nextProps.selectedTable
+            :this.props.selectedTable;
     }
 
     searchTables() {
@@ -56,10 +56,11 @@ class EnrollmentMapper extends Component {
               filteredTablesAction={()=>{this.setState({filteredTables:[]})}}
             />
 
-            {(this.props.selectedEnrollmentsTable) && (
+            {(this.props.selectedTable) && (
             <ColumnMappings
               columns={this.props.columns}
-              mappingJson={this.props.mappingJson.enrollment}
+              mappingJson={this.props.mappingJson.enrollments}
+              category="enrollments"
             />
                 )}
           </div>
@@ -68,7 +69,7 @@ class EnrollmentMapper extends Component {
 }
 
 EnrollmentMapper.propTypes = {
-    selectedEnrollmentsTable: PropTypes.string.isRequired,
+    selectedTable: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     tables: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired,
@@ -76,7 +77,7 @@ EnrollmentMapper.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    selectedEnrollmentsTable: state.selectedEnrollmentsTable,
+    selectedTable: state.selectedEnrollmentsTable,
     tables: state.allTables,
     columns: state.selectedEnrollmentTableColumns,
     mappingJson: state.mappingJson

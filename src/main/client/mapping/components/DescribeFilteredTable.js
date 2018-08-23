@@ -53,8 +53,14 @@ class DescribeFilteredTable extends Component {
 
   _onSave() {
     let mappingName = this.refs.mappingName.value;
-    let columnMappings = document.getElementsByClassName('mapping-row');
-    this.props.dispatch(saveMappings(mappingName, columnMappings, this.props.selectedInstanceTable, this.props.history, this.props.currentMapping));
+    let mappings = {};
+    mappings.instance = document.getElementsByClassName('instance');
+    mappings.enrollments = document.getElementsByClassName('enrollments');
+    let lookupTable = {
+        instance: this.props.selectedInstanceTable,
+        enrollments: this.props.selectedEnrollmentsTable
+    };
+    this.props.dispatch(saveMappings(mappingName, mappings, lookupTable, this.props.history, this.props.currentMapping));
   }
 
   render() {
@@ -101,6 +107,7 @@ DescribeFilteredTable.propTypes = {
 
 const mapStateToProps = (state) => ({
   selectedInstanceTable: state.selectedInstanceTable,
+  selectedEnrollmentsTable: state.selectedEnrollmentsTable,
   tables: state.allTables,
   hideSpinner : state.hideSpinner,
   currentMapping: state.currentMapping,

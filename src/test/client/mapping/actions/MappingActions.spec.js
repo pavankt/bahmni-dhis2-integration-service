@@ -109,14 +109,14 @@ describe('#mappingActions', () => {
                  responseType: ""
                }});
 
-           await store.dispatch(MappingActions.saveMappings("", [], ""));
+           await store.dispatch(MappingActions.saveMappings("", {instance:{},enrollments:{}}, ""));
            expect(store.getActions()).toEqual(expectedActions);
        });
 
        it('should dispatch showMessage with AtLeaseOneColumnShouldHaveMapping when mapping name is empty', async () => {
            let expectedActions = [{
                type : "showMessage",
-               responseMessage: "At least one Bahmni Data Point should have DHIS2 Data Element ID mapped",
+               responseMessage: "Please provide at least one mapping for patient instance",
                responseType: "error"
            }];
 
@@ -125,11 +125,12 @@ describe('#mappingActions', () => {
                  responseType: ""
                }});
 
-           await store.dispatch(MappingActions.saveMappings("Mapping Name", [], ""));
+           await store.dispatch(MappingActions.saveMappings("Mapping Name", {instance:{},enrollments:{}}, ""));
            expect(store.getActions()).toEqual(expectedActions);
        });
 
-       it('should dispatch showMessage with MappingNameShouldBeUnique when mapping name is already registered', async () => {
+       it('should dispatch showMessage with MappingNameShouldBeUnique' +
+           ' when mapping name is already registered', async () => {
            let expectedActions = [{
                type : "showMessage",
                responseMessage: "Mapping Name should be unique",
@@ -146,13 +147,13 @@ describe('#mappingActions', () => {
 
            document.body.innerHTML =
            '<div>' +
-               '<div class="mapping-row">'+
+               '<div class="instance">'+
                    '<div class="mapping-column-name">pat_id</div>'+
                    '<div class="mapping-data-element">' +
                        '<input type="input" class="mapping-input"/>' +
                    '</div>'+
                '</div>' +
-               '<div class="mapping-row">'+
+               '<div class="enrollments">'+
                    '<div class="mapping-column-name">pat_name</div>'+
                    '<div class="mapping-data-element">'+
                        '<input type="input" class="mapping-input"/>'+
@@ -163,7 +164,13 @@ describe('#mappingActions', () => {
            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
 
-           await store.dispatch(MappingActions.saveMappings("Mapping Name", document.getElementsByClassName("mapping-row"), ""));
+
+           let mappings = {
+               instance: document.getElementsByClassName("instance"),
+               enrollments:document.getElementsByClassName("enrollments")
+           };
+           
+           await store.dispatch(MappingActions.saveMappings("Mapping Name", mappings, ""));
            expect(store.getActions()).toEqual(expectedActions);
        });
 
@@ -201,6 +208,10 @@ describe('#mappingActions', () => {
                    selectedInstanceTable: ""
                },
                {
+                   selectedEnrollmentsTable: "",
+                   type: "selectedEnrollmentsTable"
+               },
+               {
                    type: "filteredInstanceTables",
                    filteredInstanceTables : []
                }
@@ -217,13 +228,13 @@ describe('#mappingActions', () => {
 
            document.body.innerHTML =
            '<div>' +
-               '<div class="mapping-row">'+
+               '<div class="instance">'+
                    '<div class="mapping-column-name">pat_id</div>'+
                    '<div class="mapping-data-element">' +
                        '<input type="input" class="mapping-input"/>' +
                    '</div>'+
                '</div>' +
-               '<div class="mapping-row">'+
+               '<div class="enrollments">'+
                    '<div class="mapping-column-name">pat_name</div>'+
                    '<div class="mapping-data-element">'+
                        '<input type="input" class="mapping-input"/>'+
@@ -246,11 +257,11 @@ describe('#mappingActions', () => {
 
             history.push = pushMock;
 
-           await store.dispatch(MappingActions
-               .saveMappings(mappingName,
-               document.getElementsByClassName("mapping-row"),
-               lookupTable,
-               history));
+           let allMappings = {
+               instance:document.getElementsByClassName("instance"),
+               enrollments:document.getElementsByClassName("enrollments")
+           };
+           await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable, history));
 
            expect(store.getActions()).toEqual(expectedActions);
 
@@ -281,13 +292,13 @@ describe('#mappingActions', () => {
 
            document.body.innerHTML =
            '<div>' +
-               '<div class="mapping-row">'+
+               '<div class="instance">'+
                    '<div class="mapping-column-name">pat_id</div>'+
                    '<div class="mapping-data-element">' +
                        '<input type="input" class="mapping-input"/>' +
                    '</div>'+
                '</div>' +
-               '<div class="mapping-row">'+
+               '<div class="instance">'+
                    '<div class="mapping-column-name">pat_name</div>'+
                    '<div class="mapping-data-element">'+
                        '<input type="input" class="mapping-input"/>'+
@@ -305,10 +316,11 @@ describe('#mappingActions', () => {
 
 
             try {
-                await store.dispatch(MappingActions
-                    .saveMappings(mappingName,
-                        document.getElementsByClassName("mapping-row"),
-                        lookupTable));
+                let allMapings = {
+                    instance:document.getElementsByClassName("instance"),
+                    enrollments:document.getElementsByClassName("instance")
+                };
+                await store.dispatch(MappingActions.saveMappings(mappingName,allMapings,lookupTable));
             } catch (e) {
                 expect(store.getActions()).toEqual(expectedActions);
                 putMock.verify();
@@ -354,6 +366,14 @@ describe('#mappingActions', () => {
                     selectedInstanceTableColumns: tableColumns
                 },
                 {
+                    type: "selectedEnrollmentsTable",
+                    selectedEnrollmentsTable: "enroll"
+                },
+                {
+                    type: "selectedEnrollmentTableColumns",
+                    selectedEnrollmentTableColumns: tableColumns
+                },
+                {
                     type: "currentMapping",
                     mappingName: mappingNameToEdit
                 },
@@ -374,6 +394,7 @@ describe('#mappingActions', () => {
 
             let store = mockStore({
                 selectedInstanceTable: "",
+                selectedEnrollmentsTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -392,7 +413,8 @@ describe('#mappingActions', () => {
                     "mapping_name": "HTS Service",
                     "lookup_table": {
                         "value" : '{' +
-                            '"instance": "patient_details"' +
+                            '"instance": "patient_details",' +
+                            '"enrollments": "enroll"'+
                         '}',
                         "type": "json"
                     },
@@ -406,13 +428,18 @@ describe('#mappingActions', () => {
                         "type": "json"
                     }
                 }));
-            let getColumnsMock = ajaxMock
+            let getInstanceColumnsMock = ajaxMock
                 .expects("get")
                 .withArgs("/dhis-integration/getColumns", { tableName: "patient_details" })
                 .returns(Promise.resolve(tableColumns));
 
+            let getEnrollmentsColumnsMock = ajaxMock
+                .expects("get")
+                .withArgs("/dhis-integration/getColumns", { tableName: "enroll" })
+                .returns(Promise.resolve(tableColumns));
+
             let pushMock = sandbox.mock(history).expects("push")
-                .withArgs("/dhis-integration/mapping/addEditMappings");
+                .withArgs("/dhis-integration/mapping/save");
             history.push = pushMock;
 
             await store.dispatch(MappingActions.getMapping(mappingNameToEdit, history));
@@ -420,7 +447,8 @@ describe('#mappingActions', () => {
             expect(store.getActions()).toEqual(expectedActions);
 
             ajaxGetMock.verify();
-            getColumnsMock.verify();
+            getInstanceColumnsMock.verify();
+            getEnrollmentsColumnsMock.verify();
             pushMock.verify();
             sandbox.restore();
         });

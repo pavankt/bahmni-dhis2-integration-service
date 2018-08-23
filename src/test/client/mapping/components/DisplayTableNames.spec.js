@@ -1,11 +1,6 @@
 import 'jsdom-global/register';
 import React from 'react';
-import thunkMiddleware from 'redux-thunk';
-import {
-  configure, mount
-} from 'enzyme';
-import { applyMiddleware, createStore } from 'redux';
-import { Provider } from 'react-redux';
+import {configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import * as MappingActions from '../../../../main/client/mapping/actions/MappingActions';
@@ -18,19 +13,14 @@ describe('DisplayTableNames', () => {
   let rendered;
 
   beforeEach(() => {
-    const store = createStore(() => ({
-      filteredTables: ['pat_identifier', 'program']
-    }), applyMiddleware(thunkMiddleware));
 
     rendered = mount(
-      <Provider store={store}>
-        <DisplayTableNames
-          dispatch={() => {}}
-          filteredTables={['pat_identifier', 'program']}
-          filteredTablesAction={()=>{}}
-          category=""
-        />
-      </Provider>
+      <DisplayTableNames
+        dispatch={() => {}}
+        filteredTables={['pat_identifier', 'program']}
+        filteredTablesAction={()=>{}}
+        category=""
+      />
     );
   });
 

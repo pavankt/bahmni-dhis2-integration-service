@@ -5,12 +5,6 @@ import auditLog from '../../common/AuditLog';
 
 const isEmptyString = (aString) => aString === "";
 
-const objectify = (key,value) => (
-    {
-        [key]:value
-    }
-);
-
 export function allTables(tables = []) {
   return {
     type: 'allTables',
@@ -22,6 +16,13 @@ export function filteredInstanceTables(tables = []) {
   return {
     type: 'filteredInstanceTables',
     filteredInstanceTables: tables
+  };
+}
+
+export function filteredEnrollmentTables(tables = []) {
+  return {
+    type: 'filteredEnrollmentTables',
+    filteredEnrollmentTables: tables
   };
 }
 
@@ -86,32 +87,43 @@ export function hasNoMappings(mappings) {
     return elementIds.filter(element => element !== "").length === 0;
 }
 
-export function createJson(columnMappings) {
+export function createJson (allMappings){
     let mappingObj = {};
-    Array.from(columnMappings).map(mapping => {
-        mappingObj[mapping.firstElementChild.innerText] = mapping.lastChild.firstElementChild.value;
-    });
 
+    Object.keys(allMappings).forEach((mappingType)=>{
+       let columnMapping = allMappings[mappingType];
+
+            mappingObj[mappingType] = {};
+
+            Array.from(columnMapping).forEach(mappingRow => {
+                let columnName = mappingRow.firstElementChild.innerText;
+                let mappingValue = mappingRow.lastChild.firstElementChild.value;
+                let mapping = mappingObj[mappingType];
+
+                mapping[columnName] = mappingValue;
+            });
+    });
     return mappingObj;
 }
 
-
-export function saveMappings(mappingName = "", columnMappings, lookupTable, history = {}, currentMappingName, category = "instance") {
+export function saveMappings(mappingName = "", allMappings, lookupTable, history = {}, currentMappingName) {
     return async (dispatch, getState) => {
-        const mappingObj = createJson(columnMappings);
+        const mappingObj = createJson(allMappings);
 
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
-        }else if (hasNoMappings(mappingObj)) {
-            dispatch(showMessage("At least one Bahmni Data Point should have DHIS2 Data Element ID mapped", "error"));
+        }else if (hasNoMappings(mappingObj.instance)) {
+            dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
+        }else if (hasNoMappings(mappingObj.enrollments)) {
+            dispatch(showMessage("Please provide at least one mapping for program enrollments", "error"));
         }else if(getState().allMappingNames.includes(mappingName.trim()) &&
             (getState().currentMapping === "" || mappingName !== getState().currentMapping)) {
                 dispatch(showMessage("Mapping Name should be unique", "error"));
         } else {
             let body = {
                 mappingName : mappingName.trim(),
-                lookupTable: JSON.stringify(objectify(category,lookupTable)),
-                mappingJson: JSON.stringify(objectify(category,mappingObj)),
+                lookupTable: JSON.stringify(lookupTable),
+                mappingJson: JSON.stringify(mappingObj),
                 currentMapping : currentMappingName
             };
 
@@ -136,7 +148,9 @@ function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
     dispatch(mappingJson());
     dispatch(hideSpinner());
     dispatch(selectedInstanceTable());
+    dispatch(selectedEnrollmentsTable());
     dispatch(filteredInstanceTables());
+
     history.push("/dhis-integration/mapping");
 }
 
@@ -163,9 +177,10 @@ export function getMapping(mappingNameToEdit, history) {
             let ajax = Ajax.instance();
             let response = parseResponse(await ajax.get('/dhis-integration/getMapping', {"mappingName": mappingNameToEdit}));
             await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
+            await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
             dispatch(mappingJson(response.mapping_json.value));
-            history.push('/dhis-integration/mapping/addEditMappings');
+            history.push('/dhis-integration/mapping/save');
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
         } finally {

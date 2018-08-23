@@ -3,6 +3,7 @@ import {
     allMappingNames,
     allTables,
     filteredInstanceTables,
+    filteredEnrollmentTables,
     selectedInstanceTable,
     selectedEnrollmentsTable,
     selectedInstanceTableColumns,
@@ -19,6 +20,7 @@ import { hideSpinner,
 
 const reducers = combineReducers({
   filteredInstanceTables,
+  filteredEnrollmentTables,
   selectedInstanceTable,
   selectedEnrollmentsTable,
   allTables,

@@ -86,7 +86,7 @@ describe('Mapping dashboard', function () {
         let sandbox = sinon.createSandbox();
         let pushMock = sandbox.mock(history)
             .expects("push")
-            .withArgs("/dhis-integration/mapping/addEditMappings");
+            .withArgs("/dhis-integration/mapping/save");
 
         history.push = pushMock;
 

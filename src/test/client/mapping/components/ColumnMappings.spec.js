@@ -1,9 +1,6 @@
 import 'jsdom-global/register';
 import React from 'react';
-import thunkMiddleware from 'redux-thunk';
 import {configure, render} from 'enzyme';
-import {applyMiddleware, createStore} from 'redux';
-import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import ColumnMappings from '../../../../main/client/mapping/components/ColumnMappings';
 
@@ -14,20 +11,15 @@ describe('ColumnMappings', () => {
     let rendered;
 
     beforeEach(() => {
-        const store = createStore(() => ({
-            selectedTableColumns: ['pat_id', 'pat_name'],
-            mappingJson: {}
-        }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
-          <Provider store={store}>
-            <ColumnMappings
-              dispatch={() => {
+          <ColumnMappings
+            dispatch={() => {
                 }}
-              columns={['pat_id', 'pat_name']}
-              mappingJson={{}}
-            />
-          </Provider>
+            columns={['pat_id', 'pat_name']}
+            mappingJson={{}}
+            category=""
+          />
         );
     });
 

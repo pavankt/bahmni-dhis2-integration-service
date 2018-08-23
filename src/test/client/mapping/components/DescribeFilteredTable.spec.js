@@ -19,12 +19,12 @@ describe('DescribeFilteredTable', () => {
     it('should render DisplayColumns', () => {
         let describeRenderer = getDescribeRenderer();
 
-        expect(describeRenderer.find('.tables-list')).toHaveLength(1);
+        expect(describeRenderer.find('.tables-list')).toHaveLength(2);
     });
 
     it('should have an 2 input element', () => {
         let describeRenderer = getDescribeRenderer();
-        expect(describeRenderer.find('input')).toHaveLength(2);
+        expect(describeRenderer.find('input')).toHaveLength(3);
     });
 
     it('should have a footer and cancel className', () => {
@@ -109,9 +109,13 @@ describe('DescribeFilteredTable', () => {
                 'patient_encounter_details_default',
                 'patient_allergy_status_default'
             ],
-            selectedTableColumns: [
+            selectedInstanceTableColumns: [
                 'id',
                 'name'
+            ],
+            selectedEnrollmentsTableColumns: [
+                'enrollId',
+                'programName'
             ],
             filteredInstanceTables: [],
             showMessage: {
@@ -129,6 +133,7 @@ describe('DescribeFilteredTable', () => {
               dispatch={() => {
                 }}
               history={{}}
+              columns={[]}
             />
           </Provider>
         ));

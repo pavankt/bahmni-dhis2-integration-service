@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
 
@@ -14,9 +14,9 @@ class InstanceMapper extends Component {
         };
     }
     componentWillReceiveProps(nextProps){
-        this.refs.tablesSearch.value = nextProps.selectedInstanceTable !== this.props.selectedInstanceTable ?
-            nextProps.selectedInstanceTable
-            :this.props.selectedInstanceTable;
+        this.refs.tablesSearch.value = nextProps.selectedTable !== this.props.selectedTable ?
+            nextProps.selectedTable
+            :this.props.selectedTable;
      }
 
     searchTables() {
@@ -56,10 +56,11 @@ class InstanceMapper extends Component {
               filteredTablesAction={()=>{this.setState({filteredTables:[]})}}
             />
 
-            {(this.props.selectedInstanceTable) && (
+            {(this.props.selectedTable) && (
             <ColumnMappings
               columns={this.props.columns}
               mappingJson={this.props.mappingJson.instance}
+              category="instance"
             />
 )}
           </div>
@@ -68,7 +69,7 @@ class InstanceMapper extends Component {
 }
 
 InstanceMapper.propTypes = {
-    selectedInstanceTable: PropTypes.string.isRequired,
+    selectedTable: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     tables: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired,
@@ -76,7 +77,7 @@ InstanceMapper.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    selectedInstanceTable: state.selectedInstanceTable,
+    selectedTable: state.selectedInstanceTable,
     tables: state.allTables,
     columns: state.selectedInstanceTableColumns,
     mappingJson: state.mappingJson

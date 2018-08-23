@@ -18,15 +18,22 @@ export default class ColumnMappings extends Component {
 
   insertValues() {
       let mappingJson = this.props.mappingJson;
-      this.props.columns.map(column => {
-          let mapping = mappingJson[column];
-          this.refs[column].value = mapping !== undefined ? mapping : '';
-      });
+
+      if(!this.isEmptyObject(mappingJson)){
+          this.props.columns.forEach(column => {
+              let mapping = mappingJson[column];
+              this.refs[column].value = mapping !== undefined ? mapping : '';
+          });
+      }
   }
+
+    isEmptyObject(object) {
+        return object === undefined || Object.keys(object).length === 0;
+    }
 
     renderColumns() {
     return this.props.columns.map(column => (
-      <tr key={column} className="mapping-row table-row">
+      <tr key={column} className={`mapping-row table-row ${this.props.category}`}>
         <td className="mapping-column-name">
           {column}
         </td>
@@ -63,5 +70,6 @@ Please provide DHIS2 data element mapping for patient instance
 
 ColumnMappings.propTypes = {
   columns: PropTypes.array.isRequired,
-  mappingJson: PropTypes.object.isRequired
+  mappingJson: PropTypes.object.isRequired,
+  category: PropTypes.string.isRequired
 };
