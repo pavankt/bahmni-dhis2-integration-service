@@ -27,9 +27,7 @@ class InstanceMapper extends Component {
                 tableName => tableName.includes(searchText)
             );
             this.setState({filteredTables:result});
-        }
-
-        if(searchText.length === 0){
+        }else{
             this.setState({filteredTables:[]});
         }
     }
@@ -61,6 +59,7 @@ class InstanceMapper extends Component {
               columns={this.props.columns}
               mappingJson={this.props.mappingJson.instance}
               category="instance"
+              mappingType="patient instance"
             />
 )}
           </div>

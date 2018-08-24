@@ -19,6 +19,7 @@ describe('ColumnMappings', () => {
             columns={['pat_id', 'pat_name']}
             mappingJson={{}}
             category=""
+            mappingType=""
           />
         );
     });

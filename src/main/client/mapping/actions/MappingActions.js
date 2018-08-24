@@ -106,19 +106,23 @@ export function createJson (allMappings){
     return mappingObj;
 }
 
+function mappingNameIsNotUnique(getState, mappingName) {
+    return getState().allMappingNames.includes(mappingName.trim()) &&
+        (getState().currentMapping === "" || mappingName !== getState().currentMapping);
+}
+
 export function saveMappings(mappingName = "", allMappings, lookupTable, history = {}, currentMappingName) {
     return async (dispatch, getState) => {
         const mappingObj = createJson(allMappings);
 
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
+        }else if(mappingNameIsNotUnique(getState, mappingName)) {
+            dispatch(showMessage("Mapping Name should be unique", "error"));
         }else if (hasNoMappings(mappingObj.instance)) {
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
         }else if (hasNoMappings(mappingObj.enrollments)) {
             dispatch(showMessage("Please provide at least one mapping for program enrollments", "error"));
-        }else if(getState().allMappingNames.includes(mappingName.trim()) &&
-            (getState().currentMapping === "" || mappingName !== getState().currentMapping)) {
-                dispatch(showMessage("Mapping Name should be unique", "error"));
         } else {
             let body = {
                 mappingName : mappingName.trim(),

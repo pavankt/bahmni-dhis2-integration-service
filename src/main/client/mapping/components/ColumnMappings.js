@@ -47,9 +47,11 @@ export default class ColumnMappings extends Component {
   render() {
     return (
       <div className="mapping-table-div">
+        {/*eslint-disable*/}
         <span className="enrollment-table-span">
-Please provide DHIS2 data element mapping for patient instance
+            Please provide DHIS2 data element mapping for {this.props.mappingType}
         </span>
+        {/*eslint-enable*/}
         <section className="column-mapping-section">
           <table className="mapping-table">
             <tr className="mapping-row-header">
@@ -71,5 +73,7 @@ Please provide DHIS2 data element mapping for patient instance
 ColumnMappings.propTypes = {
   columns: PropTypes.array.isRequired,
   mappingJson: PropTypes.object.isRequired,
-  category: PropTypes.string.isRequired
+  category: PropTypes.string.isRequired,
+  mappingType: PropTypes.string.isRequired
+
 };

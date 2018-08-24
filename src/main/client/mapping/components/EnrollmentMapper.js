@@ -27,9 +27,7 @@ class EnrollmentMapper extends Component {
                 tableName => tableName.includes(searchText)
             );
             this.setState({filteredTables:result});
-        }
-
-        if(searchText.length === 0){
+        }else{
             this.setState({filteredTables:[]});
         }
     }
@@ -38,7 +36,7 @@ class EnrollmentMapper extends Component {
         return (
           <div className="mapper">
             <span>
-          Please select patient instance table
+          Please select program enrollment table
             </span>
             <input
               type="text"
@@ -61,6 +59,7 @@ class EnrollmentMapper extends Component {
               columns={this.props.columns}
               mappingJson={this.props.mappingJson.enrollments}
               category="enrollments"
+              mappingType="program enrollment"
             />
                 )}
           </div>
