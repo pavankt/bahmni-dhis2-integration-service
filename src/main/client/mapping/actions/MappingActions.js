@@ -122,7 +122,7 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
         }else if (hasNoMappings(mappingObj.instance)) {
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
         }else if (hasNoMappings(mappingObj.enrollments)) {
-            dispatch(showMessage("Please provide at least one mapping for program enrollments", "error"));
+            dispatch(showMessage("Please provide at least one mapping for program enrollment", "error"));
         } else {
             let body = {
                 mappingName : mappingName.trim(),
