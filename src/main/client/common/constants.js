@@ -17,3 +17,8 @@ export const auditLogEventDetails = {
   OPEN_SYNC_TO_DHIS: { patientUuid: null, eventType: 'OPEN_SYNC_TO_DHIS', message: 'OPEN_SYNC_TO_DHIS_MESSAGE', module: audit.LABEL },
   OPEN_DHIS_LOG: { patientUuid: null, eventType: 'OPEN_DHIS_LOG', message: 'OPEN_DHIS_LOG_MESSAGE', module: audit.LABEL }
 };
+
+export const sync = {
+    // LABEL: 'MODULE_LABEL_DHIS_SYNC_KEY',
+    URI: '/sync/pushData?service='
+};
