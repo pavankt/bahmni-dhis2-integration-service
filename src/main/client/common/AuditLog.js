@@ -1,4 +1,3 @@
-import React from 'react';
 import Ajax from './Ajax';
 import {audit} from './constants';
 
