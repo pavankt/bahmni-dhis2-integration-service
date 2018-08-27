@@ -3,6 +3,8 @@ package com.thoughtworks.bahmnidhis2integrationservice.interceptor;
 import com.thoughtworks.bahmnidhis2integrationservice.config.AppProperties;
 import com.thoughtworks.bahmnidhis2integrationservice.security.AuthenticationResponse;
 import com.thoughtworks.bahmnidhis2integrationservice.security.OpenMRSAuthenticator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -15,6 +17,8 @@ import java.net.URLEncoder;
 
 @Component(value = "authenticationFilter")
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
     public static final String REPORTING_COOKIE_NAME = "reporting_session";
     private OpenMRSAuthenticator authenticator;
@@ -53,8 +57,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             case UNAUTHORIZED:
                 response.sendError(HttpServletResponse.SC_FORBIDDEN,
                         "Privileges is required to access DHIS2 sync");
+                logger.error(this.getClass().getName() + ": Privileges is required to access DHIS2 sync");
                 return false;
             default:
+                logger.error(this.getClass().getName() + ": Not authenticated user.");
                 return true;
         }
     }
