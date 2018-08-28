@@ -1,64 +1,64 @@
 import {hideSpinner, showMessage} from "../../common/Actions";
-import { auditLogEventDetails } from '../../common/constants';
+import {auditLogEventDetails} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
 
 const isEmptyString = (aString) => aString === "";
 
 export function allTables(tables = []) {
-  return {
-    type: 'allTables',
-    allTables: tables
-  };
+    return {
+        type: 'allTables',
+        allTables: tables
+    };
 }
 
 export function filteredInstanceTables(tables = []) {
-  return {
-    type: 'filteredInstanceTables',
-    filteredInstanceTables: tables
-  };
+    return {
+        type: 'filteredInstanceTables',
+        filteredInstanceTables: tables
+    };
 }
 
 export function filteredEnrollmentTables(tables = []) {
-  return {
-    type: 'filteredEnrollmentTables',
-    filteredEnrollmentTables: tables
-  };
+    return {
+        type: 'filteredEnrollmentTables',
+        filteredEnrollmentTables: tables
+    };
 }
 
 export function selectedInstanceTable(table = '') {
-  return {
-    type: 'selectedInstanceTable',
-    selectedInstanceTable: table
-  };
+    return {
+        type: 'selectedInstanceTable',
+        selectedInstanceTable: table
+    };
 }
 
 export function selectedEnrollmentsTable(table = '') {
-  return {
-    type: 'selectedEnrollmentsTable',
-    selectedEnrollmentsTable: table
-  };
+    return {
+        type: 'selectedEnrollmentsTable',
+        selectedEnrollmentsTable: table
+    };
 }
 
 export function instanceTableColumns(columns = []) {
-  return {
-    type: 'selectedInstanceTableColumns',
-    selectedInstanceTableColumns: columns
-  };
+    return {
+        type: 'selectedInstanceTableColumns',
+        selectedInstanceTableColumns: columns
+    };
 }
 
 export function enrollmentTableColumns(columns = []) {
-  return {
-    type: 'selectedEnrollmentTableColumns',
-    selectedEnrollmentTableColumns: columns
-  };
+    return {
+        type: 'selectedEnrollmentTableColumns',
+        selectedEnrollmentTableColumns: columns
+    };
 }
 
-export function allMappingNames(mappingNames = []){
-  return{
-    type: 'allMappings',
-    allMappings: mappingNames
-  }
+export function allMappingNames(mappingNames = []) {
+    return {
+        type: 'allMappings',
+        allMappings: mappingNames
+    }
 }
 
 export function addNewMapping(mappingName) {
@@ -70,14 +70,14 @@ export function addNewMapping(mappingName) {
 
 export function currentMapping(mappingName = "") {
     return {
-        type : 'currentMapping',
+        type: 'currentMapping',
         mappingName
     }
 }
 
-export function mappingJson(mappingJson = {instance:{}, enrollment:{}}) {
+export function mappingJson(mappingJson = {instance: {}, enrollment: {}}) {
     return {
-        type : 'mappingJson',
+        type: 'mappingJson',
         mappingJson
     }
 }
@@ -87,48 +87,50 @@ export function hasNoMappings(mappings) {
     return elementIds.filter(element => element !== "").length === 0;
 }
 
-export function createJson (allMappings){
+export function createJson(allMappings) {
     let mappingObj = {};
 
-    Object.keys(allMappings).forEach((mappingType)=>{
-       let columnMapping = allMappings[mappingType];
+    Object.keys(allMappings).forEach((mappingType) => {
+        let columnMapping = allMappings[mappingType];
 
-            mappingObj[mappingType] = {};
+        mappingObj[mappingType] = {};
 
-            Array.from(columnMapping).forEach(mappingRow => {
-                let columnName = mappingRow.firstElementChild.innerText;
-                let mappingValue = mappingRow.lastChild.firstElementChild.value;
-                let mapping = mappingObj[mappingType];
+        Array.from(columnMapping).forEach(mappingRow => {
+            let columnName = mappingRow.firstElementChild.innerText;
+            let mappingValue = mappingRow.lastChild.firstElementChild.value;
+            let mapping = mappingObj[mappingType];
 
-                mapping[columnName] = mappingValue;
-            });
+            mapping[columnName] = mappingValue;
+        });
     });
     return mappingObj;
 }
 
-function mappingNameIsNotUnique(getState, mappingName) {
-    return getState().allMappingNames.includes(mappingName.trim()) &&
-        (getState().currentMapping === "" || mappingName !== getState().currentMapping);
+function mappingNameIsNotUnique(state, mappingName) {
+    return state.allMappingNames.includes(mappingName.trim()) &&
+        (state.currentMapping === "" || mappingName !== state.currentMapping);
 }
+
 
 export function saveMappings(mappingName = "", allMappings, lookupTable, history = {}, currentMappingName) {
     return async (dispatch, getState) => {
         const mappingObj = createJson(allMappings);
+        const state = getState();
 
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
-        }else if(mappingNameIsNotUnique(getState, mappingName)) {
+        } else if (mappingNameIsNotUnique(state,mappingName)) {
             dispatch(showMessage("Mapping Name should be unique", "error"));
-        }else if (hasNoMappings(mappingObj.instance)) {
+        } else if (hasNoMappings(mappingObj.instance)) {
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
-        }else if (hasNoMappings(mappingObj.enrollments)) {
+        } else if (hasNoMappings(mappingObj.enrollments)) {
             dispatch(showMessage("Please provide at least one mapping for program enrollment", "error"));
         } else {
             let body = {
-                mappingName : mappingName.trim(),
+                mappingName: mappingName.trim(),
                 lookupTable: JSON.stringify(lookupTable),
                 mappingJson: JSON.stringify(mappingObj),
-                currentMapping : currentMappingName
+                currentMapping: currentMappingName
             };
 
             dispatch(hideSpinner(false));
@@ -163,10 +165,10 @@ function isJSON(type) {
     return type !== undefined && type.toLowerCase() === 'json';
 }
 
-let parseResponse = (res)=>{
+let parseResponse = (res) => {
     let keys = Object.keys(res);
-    keys.forEach((key)=>{
-        if(isJSON(res[key].type)) {
+    keys.forEach((key) => {
+        if (isJSON(res[key].type)) {
             res[key].value = JSON.parse(res[key].value)
         }
     });
@@ -175,7 +177,7 @@ let parseResponse = (res)=>{
 };
 
 export function getMapping(mappingNameToEdit, history) {
-    return async (dispatch)=> {
+    return async (dispatch) => {
         try {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
@@ -244,7 +246,7 @@ async function dispatchTableDetails(tableName, category, dispatch, ajax) {
 
     if (category === "instance") {
         await dispatchInstanceTableDetails(tableName, dispatch, ajax);
-    }else if(category === "enrollments"){
+    } else if (category === "enrollments") {
         await dispatchEnrollmentTableDetails(tableName, dispatch, ajax);
     }
 

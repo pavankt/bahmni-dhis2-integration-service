@@ -13,12 +13,12 @@ export default class ColumnMappings extends Component {
         this.insertValues();
     }
 
-    componentDidUpdate() {
-        this.insertValues();
-    }
-
     shouldComponentUpdate(nextProps) {
         return !(_.isEqual(this.props.columns, nextProps.columns));
+    }
+
+    componentDidUpdate() {
+        this.insertValues();
     }
 
     insertValues() {
@@ -32,39 +32,39 @@ export default class ColumnMappings extends Component {
 
     renderColumns() {
         return this.props.columns.map(column => (
-            <tr key={column} className={`mapping-row table-row ${this.props.category}`}>
-                <td className="mapping-column-name">
-                    {column}
-                </td>
-                <td className="mapping-data-element">
-                    <input type="text" className="mapping-input" ref={column}/>
-                </td>
-            </tr>
+          <tr key={column} className={`mapping-row table-row ${this.props.category}`}>
+            <td className="mapping-column-name">
+              {column}
+            </td>
+            <td className="mapping-data-element">
+              <input type="text" className="mapping-input" ref={column} />
+            </td>
+          </tr>
         ));
     }
 
     render() {
         return (
-            <div className="mapping-table-div">
-                {/*eslint-disable*/}
+          <div className="mapping-table-div">
+            {/*eslint-disable*/}
                 <span className="enrollment-table-span">
                     Please provide DHIS2 data element mapping for {this.props.mappingType}
                 </span>
                 {/*eslint-enable*/}
-                <section className="column-mapping-section">
-                    <table className="mapping-table">
-                        <tr className="mapping-row-header">
-                            <th className="mapping-header">
+            <section className="column-mapping-section">
+              <table className="mapping-table">
+                <tr className="mapping-row-header">
+                  <th className="mapping-header">
                                 Bahmni Data Point
-                            </th>
-                            <th className="mapping-header">
+                  </th>
+                  <th className="mapping-header">
                                 DHIS2 Data Element ID
-                            </th>
-                        </tr>
-                        {this.renderColumns()}
-                    </table>
-                </section>
-            </div>
+                  </th>
+                </tr>
+                {this.renderColumns()}
+              </table>
+            </section>
+          </div>
         );
     }
 }

@@ -33,22 +33,31 @@ class App extends Component {
             <Spinner hide={this.props.hideSpinner} />
             <div className="app-link">
               {this.props.privileges.includes(privileges.MAPPING) && (
-              <Link to="/dhis-integration/mapping" className="mapping-link"
-                    onClick={() => this.logEvent(auditLogEventDetails.OPEN_DHIS_MANAGE_MAPPING)}>
+              <Link
+                to="/dhis-integration/mapping"
+                className="mapping-link"
+                onClick={() => this.logEvent(auditLogEventDetails.OPEN_DHIS_MANAGE_MAPPING)}
+              >
                 <i className="fa fa-map-signs" />
                     Manage Mapping
               </Link>
 )}
               {this.props.privileges.includes(privileges.UPLOAD) && (
-              <Link to="/dhis-integration/sync" className="sync-link"
-                  onClick={() => this.logEvent(auditLogEventDetails.OPEN_SYNC_TO_DHIS)}>
+              <Link
+                to="/dhis-integration/sync"
+                className="sync-link"
+                onClick={() => this.logEvent(auditLogEventDetails.OPEN_SYNC_TO_DHIS)}
+              >
                 <i className="fa fa-upload" />
                     Sync to DHIS
               </Link>
 )}
               {this.props.privileges.includes(privileges.LOG) && (
-              <Link to="/dhis-integration/logs" className="log-link"
-                  onClick={() => this.logEvent(auditLogEventDetails.OPEN_DHIS_LOG)}>
+              <Link
+                to="/dhis-integration/logs"
+                className="log-link"
+                onClick={() => this.logEvent(auditLogEventDetails.OPEN_DHIS_LOG)}
+              >
                 <i className="fa fa-book" />
                     Logs
               </Link>

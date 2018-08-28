@@ -39,11 +39,13 @@ export default class Ajax {
 
     async get(url, queryParams = {}) {
         let keys = Object.keys(queryParams);
+        let actualUrl = url;
+
         if (keys.length) {
             let keyValues = keys.map(queryKey => `${queryKey}=${encodeURIComponent(queryParams[queryKey])}`);
-            url = url + "?" + keyValues.join("&");
+            actualUrl = url + "?" + keyValues.join("&");
         }
-        return await this.request(url, {
+        return await this.request(actualUrl, {
             "method": "GET"
         });
     }

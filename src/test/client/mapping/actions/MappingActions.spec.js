@@ -108,299 +108,306 @@ describe('#mappingActions', () => {
     describe('addNewMapping', () => {
         it('should return object with type and mapping', () => {
             expect(MappingActions.addNewMapping("new mapping"))
-                .toEqual({ type: 'addNewMapping', mappingName: 'new mapping' })
+                .toEqual({type: 'addNewMapping', mappingName: 'new mapping'})
         })
     });
 
     describe('saveMapping', () => {
-       it('should dispatch showMessage with ShouldAddMappingName when mapping name is empty', async () => {
-           let expectedActions = [{
-               type : "showMessage",
-               responseMessage: "Should have Mapping Name",
-               responseType: "error"
-           }];
+        it('should dispatch showMessage with ShouldAddMappingName when mapping name is empty', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Should have Mapping Name",
+                responseType: "error"
+            }];
 
-           let store = mockStore({ showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               }});
-
-           await store.dispatch(MappingActions.saveMappings("", {instance:{},enrollments:{}}, ""));
-           expect(store.getActions()).toEqual(expectedActions);
-       });
-
-       it('should dispatch showMessage with AtLeaseOnePatientInstanceColumnShouldHaveMapping when no instance mapping is entered', async () => {
-           let expectedActions = [{
-               type : "showMessage",
-               responseMessage: "Please provide at least one mapping for patient instance",
-               responseType: "error"
-           }];
-
-           let store = mockStore({ showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               }});
-
-           await store.dispatch(MappingActions.saveMappings("Mapping Name", {instance:{},enrollments:{}}, ""));
-           expect(store.getActions()).toEqual(expectedActions);
-       });
-
-       it('should dispatch showMessage with AtLeaseOneProgramEnrollmentColumnShouldHaveMapping when no enrollment mapping is entered', async () => {
-           let expectedActions = [{
-               type : "showMessage",
-               responseMessage: "Please provide at least one mapping for program enrollments",
-               responseType: "error"
-           }];
-
-           document.body.innerHTML =
-               '<div>' +
-               '<div class="instance">'+
-               '<div class="mapping-column-name">pat_id</div>'+
-               '<div class="mapping-data-element">' +
-               '<input type="input" class="mapping-input"/>' +
-               '</div>'+
-               '</div>' +
-               '<div class="instance">'+
-               '<div class="mapping-column-name">pat_name</div>'+
-               '<div class="mapping-data-element">'+
-               '<input type="input" class="mapping-input"/>'+
-               '</div>'+
-               '</div>'+
-               '</div>';
-
-           let store = mockStore({ showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               }});
-
-           let instanceMappingColumns = document.getElementsByClassName('instance');
-
-           document.getElementsByClassName("mapping-input")[0].value = "asfsafsfa";
-           document.getElementsByClassName("mapping-input")[1].value = "ngdrsg";
-
-           let allMappings = {
-               instance: instanceMappingColumns,
-               enrollments:document.getElementsByClassName('enrollments')
-           };
-           await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
-           expect(store.getActions()).toEqual(expectedActions);
-       });
-
-       it('should dispatch showMessage with MappingNameShouldBeUnique' +
-           ' when mapping name is already registered', async () => {
-           let expectedActions = [{
-               type : "showMessage",
-               responseMessage: "Mapping Name should be unique",
-               responseType: "error"
-           }];
-
-           let store = mockStore({
-               showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               },
-               allMappingNames: ["Mapping Name"]
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                }
             });
 
-           document.body.innerHTML =
-           '<div>' +
-               '<div class="instance">'+
-                   '<div class="mapping-column-name">pat_id</div>'+
-                   '<div class="mapping-data-element">' +
-                       '<input type="input" class="mapping-input"/>' +
-                   '</div>'+
-               '</div>' +
-               '<div class="enrollments">'+
-                   '<div class="mapping-column-name">pat_name</div>'+
-                   '<div class="mapping-data-element">'+
-                       '<input type="input" class="mapping-input"/>'+
-                   '</div>'+
-               '</div>'+
-           '</div>';
+            await store.dispatch(MappingActions.saveMappings("", {instance: {}, enrollments: {}}, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
 
-           document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
-           document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
+        it('should dispatch showMessage with AtLeaseOnePatientInstanceColumnShouldHaveMapping when no instance mapping is entered', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Please provide at least one mapping for patient instance",
+                responseType: "error"
+            }];
 
-
-           let mappings = {
-               instance: document.getElementsByClassName("instance"),
-               enrollments:document.getElementsByClassName("enrollments")
-           };
-           
-           await store.dispatch(MappingActions.saveMappings("Mapping Name", mappings, ""));
-           expect(store.getActions()).toEqual(expectedActions);
-       });
-
-       it('should dispatch necessary actions on ajax success', async () => {
-           let mappingName = "Mapping Name 2";
-           let lookupTable = "patient_details";
-           let ajax = new Ajax();
-           let expectedActions = [
-               {
-                 type: "hideSpinner",
-                 hideSpinner: false
-               },
-               {
-                   type: "showMessage",
-                   responseMessage: "Successfully Added new mapping",
-                   responseType: "success"
-               },
-               {
-                   type: "currentMapping",
-                   mappingName: ""
-               },
-               {
-                   type: "mappingJson",
-                   mappingJson: {
-                       instance: {},
-                       enrollment: {}
-                   }
-               },
-               {
-                   type: "hideSpinner",
-                   hideSpinner: true
-               },
-               {
-                   type: "selectedInstanceTable",
-                   selectedInstanceTable: ""
-               },
-               {
-                   selectedEnrollmentsTable: "",
-                   type: "selectedEnrollmentsTable"
-               },
-               {
-                   type: "filteredInstanceTables",
-                   filteredInstanceTables : []
-               }
-           ];
-
-           let store = mockStore({
-               showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               },
-               allMappingNames: ["Mapping Name"],
-               currentMapping : ""
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: []
             });
 
-           document.body.innerHTML =
-           '<div>' +
-               '<div class="instance">'+
-                   '<div class="mapping-column-name">pat_id</div>'+
-                   '<div class="mapping-data-element">' +
-                       '<input type="input" class="mapping-input"/>' +
-                   '</div>'+
-               '</div>' +
-               '<div class="enrollments">'+
-                   '<div class="mapping-column-name">pat_name</div>'+
-                   '<div class="mapping-data-element">'+
-                       '<input type="input" class="mapping-input"/>'+
-                   '</div>'+
-               '</div>'+
-           '</div>';
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", {instance: {}, enrollments: {}}, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
 
-           document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
-           document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
+        it('should dispatch showMessage with AtLeaseOneProgramEnrollmentColumnShouldHaveMapping when no enrollment mapping is entered', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Please provide at least one mapping for program enrollment",
+                responseType: "error"
+            }];
 
-           let history = {
-                push : () => {}
+            document.body.innerHTML =
+                '<div>' +
+                '<div class="enrollments">' +
+                '<div class="mapping-column-name">pat_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input" value="asdfasf"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: []
+            });
+
+            let instanceMappingColumns = document.getElementsByClassName('instance');
+            let enrollmentsMappingColumns = document.getElementsByClassName('enrollments');
+
+            let allMappings = {
+                instance: instanceMappingColumns,
+                enrollments: enrollmentsMappingColumns
+            };
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
+        it('should dispatch showMessage with MappingNameShouldBeUnique' +
+            ' when mapping name is already registered', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Mapping Name should be unique",
+                responseType: "error"
+            }];
+
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: ["Mapping Name"]
+            });
+
+            document.body.innerHTML =
+                '<div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="enrollments">' +
+                '<div class="mapping-column-name">pat_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
+            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
+
+
+            let mappings = {
+                instance: document.getElementsByClassName("instance"),
+                enrollments: document.getElementsByClassName("enrollments")
+            };
+
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", mappings, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
+        it('should dispatch necessary actions on ajax success', async () => {
+            let mappingName = "Mapping Name 2";
+            let lookupTable = "patient_details";
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "showMessage",
+                    responseMessage: "Successfully Added new mapping",
+                    responseType: "success"
+                },
+                {
+                    type: "currentMapping",
+                    mappingName: ""
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {
+                        instance: {},
+                        enrollment: {}
+                    }
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                },
+                {
+                    type: "selectedInstanceTable",
+                    selectedInstanceTable: ""
+                },
+                {
+                    selectedEnrollmentsTable: "",
+                    type: "selectedEnrollmentsTable"
+                },
+                {
+                    type: "filteredInstanceTables",
+                    filteredInstanceTables: []
+                }
+            ];
+
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: ["Mapping Name"],
+                currentMapping: ""
+            });
+
+            document.body.innerHTML =
+                '<div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="enrollments">' +
+                '<div class="mapping-column-name">pat_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
+            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
+
+            let history = {
+                push: () => {
+                }
             };
 
             let sandbox = sinon.createSandbox();
             let pushMock = sandbox.mock(history).expects("push");
             sandbox.stub(Ajax, "instance").returns(ajax);
             let putMock = sandbox.mock(ajax).expects("put")
-                .returns(Promise.resolve({ data : "Successfully Added new mapping" }));
+                .returns(Promise.resolve({data: "Successfully Added new mapping"}));
 
             history.push = pushMock;
 
-           let allMappings = {
-               instance:document.getElementsByClassName("instance"),
-               enrollments:document.getElementsByClassName("enrollments")
-           };
-           await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable, history));
+            let allMappings = {
+                instance: document.getElementsByClassName("instance"),
+                enrollments: document.getElementsByClassName("enrollments")
+            };
+            await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable, history));
 
-           expect(store.getActions()).toEqual(expectedActions);
+            expect(store.getActions()).toEqual(expectedActions);
 
-           pushMock.verify();
-           putMock.verify();
-           sandbox.restore();
-       });
+            pushMock.verify();
+            putMock.verify();
+            sandbox.restore();
+        });
 
-       it('should dispatch showMessage on ajax call fails', async () => {
-           let mappingName = "Mapping Name 2";
-           let lookupTable = "patient_details";
-           let ajax = new Ajax();
-           let expectedActions = [
-               {
-                   type: "showMessage",
-                   responseMessage: "Could not able to add mapping",
-                   responseType: "error"
-               }
-           ];
+        it('should dispatch showMessage on ajax call fails', async () => {
+            let mappingName = "Mapping Name 2";
+            let lookupTable = "patient_details";
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "showMessage",
+                    responseMessage: "Could not able to add mapping",
+                    responseType: "error"
+                }
+            ];
 
-           let store = mockStore({
-               showMessage : {
-                 responseMessage: "",
-                 responseType: ""
-               },
-               allMappingNames: ["Mapping Name"]
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: ["Mapping Name"]
             });
 
-           document.body.innerHTML =
-           '<div>' +
-               '<div class="instance">'+
-                   '<div class="mapping-column-name">pat_id</div>'+
-                   '<div class="mapping-data-element">' +
-                       '<input type="input" class="mapping-input"/>' +
-                   '</div>'+
-               '</div>' +
-               '<div class="instance">'+
-                   '<div class="mapping-column-name">pat_name</div>'+
-                   '<div class="mapping-data-element">'+
-                       '<input type="input" class="mapping-input"/>'+
-                   '</div>'+
-               '</div>'+
-           '</div>';
+            document.body.innerHTML =
+                '<div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
 
-           document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
-           document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
+            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
+            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
 
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
             let putMock = sandbox.mock(ajax).expects("put")
-                .returns(Promise.reject({ "message": "Could not able to add mapping" }));
+                .returns(Promise.reject({"message": "Could not able to add mapping"}));
 
 
             try {
                 let allMapings = {
-                    instance:document.getElementsByClassName("instance"),
-                    enrollments:document.getElementsByClassName("instance")
+                    instance: document.getElementsByClassName("instance"),
+                    enrollments: document.getElementsByClassName("instance")
                 };
-                await store.dispatch(MappingActions.saveMappings(mappingName,allMapings,lookupTable));
+                await store.dispatch(MappingActions.saveMappings(mappingName, allMapings, lookupTable));
             } catch (e) {
                 expect(store.getActions()).toEqual(expectedActions);
                 putMock.verify();
             }
-           sandbox.restore();
-       });
+            sandbox.restore();
+        });
     });
 
     describe('currentMapping', () => {
         it('should return object with type and mappingName', () => {
             expect(MappingActions.currentMapping("new mapping"))
-                .toEqual({ type: "currentMapping", mappingName: "new mapping" })
+                .toEqual({type: "currentMapping", mappingName: "new mapping"})
         })
     });
 
     describe('mappingJson', () => {
         it('should return object with type and mappingJson', () => {
             let mappingJson = {
-              "patient_id" : "FH7RTu",
-              "patient_name" : "ZS8Srt7"
+                "patient_id": "FH7RTu",
+                "patient_name": "ZS8Srt7"
             };
             expect(MappingActions.mappingJson(mappingJson))
-                .toEqual({ type: "mappingJson", mappingJson })
+                .toEqual({type: "mappingJson", mappingJson})
         })
     });
 
@@ -469,30 +476,30 @@ describe('#mappingActions', () => {
                 .returns(Promise.resolve({
                     "mapping_name": "HTS Service",
                     "lookup_table": {
-                        "value" : '{' +
+                        "value": '{' +
                             '"instance": "patient_details",' +
-                            '"enrollments": "enroll"'+
-                        '}',
+                            '"enrollments": "enroll"' +
+                            '}',
                         "type": "json"
                     },
                     "mapping_json": {
                         "value": '{' +
                             '"instance": {' +
-                                '"patient_identifier": "fYj7U",' +
-                                '"patient_name": "ert76HK"' +
+                            '"patient_identifier": "fYj7U",' +
+                            '"patient_name": "ert76HK"' +
                             '}' +
-                        '}',
+                            '}',
                         "type": "json"
                     }
                 }));
             let getInstanceColumnsMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/getColumns", { tableName: "patient_details" })
+                .withArgs("/dhis-integration/getColumns", {tableName: "patient_details"})
                 .returns(Promise.resolve(tableColumns));
 
             let getEnrollmentsColumnsMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/getColumns", { tableName: "enroll" })
+                .withArgs("/dhis-integration/getColumns", {tableName: "enroll"})
                 .returns(Promise.resolve(tableColumns));
 
             let pushMock = sandbox.mock(history).expects("push")
@@ -566,7 +573,7 @@ describe('#mappingActions', () => {
             let expectedActions = [
                 {
                     type: "hideSpinner",
-                    hideSpinner : false
+                    hideSpinner: false
                 },
                 {
                     type: "allMappings",
@@ -628,7 +635,7 @@ describe('#mappingActions', () => {
                 .expects("get")
                 .withArgs("/dhis-integration/getMappingNames")
                 .returns(Promise.reject({
-                    message : "Could not get mappings"
+                    message: "Could not get mappings"
                 }));
 
             try {
@@ -648,12 +655,12 @@ describe('#mappingActions', () => {
             let expectedActions = [
                 {
                     type: "hideSpinner",
-                    hideSpinner : false
+                    hideSpinner: false
                 },
                 {
                     type: "mappingJson",
                     mappingJson: {
-                        instance:{},
+                        instance: {},
                         enrollment: {}
                     }
                 },
@@ -704,7 +711,7 @@ describe('#mappingActions', () => {
                 .expects("get")
                 .withArgs("/dhis-integration/getColumns")
                 .returns(Promise.reject({
-                    message : "Could not get table columns"
+                    message: "Could not get table columns"
                 }));
 
             try {
