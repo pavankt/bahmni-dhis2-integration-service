@@ -18,8 +18,8 @@ describe('EnrollmentMapper', function () {
             allTables:[],
             selectedEnrollmentTableColumns: [],
             mappingJson: {
-                Enrollment:{},
-                enrollments:{}
+                instance:{},
+                enrollment:{}
             }
         }), applyMiddleware(thunkMiddleware));
 

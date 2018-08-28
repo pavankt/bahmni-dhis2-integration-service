@@ -75,7 +75,7 @@ export function currentMapping(mappingName = "") {
     }
 }
 
-export function mappingJson(mappingJson = {instance: {}, enrollment: {}}) {
+export function mappingJson(mappingJson = {instance: {}, enrollments: {}}) {
     return {
         type: 'mappingJson',
         mappingJson

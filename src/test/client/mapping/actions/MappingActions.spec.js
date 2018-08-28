@@ -259,7 +259,7 @@ describe('#mappingActions', () => {
                     type: "mappingJson",
                     mappingJson: {
                         instance: {},
-                        enrollment: {}
+                        enrollments: {}
                     }
                 },
                 {
@@ -403,8 +403,8 @@ describe('#mappingActions', () => {
     describe('mappingJson', () => {
         it('should return object with type and mappingJson', () => {
             let mappingJson = {
-                "patient_id": "FH7RTu",
-                "patient_name": "ZS8Srt7"
+                "instance": {"patient_id": "FH7RTu", "patient_name": "ZS8Srt7"},
+                "enrollments": { "pat_id": "4RT43" }
             };
             expect(MappingActions.mappingJson(mappingJson))
                 .toEqual({type: "mappingJson", mappingJson})
@@ -661,7 +661,7 @@ describe('#mappingActions', () => {
                     type: "mappingJson",
                     mappingJson: {
                         instance: {},
-                        enrollment: {}
+                        enrollments: {}
                     }
                 },
                 {

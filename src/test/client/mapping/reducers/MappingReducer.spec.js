@@ -233,12 +233,13 @@ describe('#mappingReducers', () => {
 
     describe('mappingJson', () => {
         it('should return state with default params', () => {
-            expect(mappingJson()).toEqual({instance:{},enrollment:{}});
+            expect(mappingJson()).toEqual({instance:{},enrollments:{}});
         });
 
         it('should return state when "action.type" is anything other than "mappingJson"', () => {
             state = {
-                "pat_id" : "patHn67"
+                "instance": {"pat_id" : "patHn67"},
+                "enrollments": {"pat_id": "pafsr3"}
             };
             expect(mappingJson(state)).toEqual(state);
         });
@@ -247,8 +248,8 @@ describe('#mappingReducers', () => {
             let action = {
                 type : "mappingJson",
                 mappingJson : {
-                    "pro_id" : "ASG67J",
-                    "rpo_name" : "9Yu6TR"
+                    "instance": {"pro_id" : "ASG67J", "rpo_name" : "9Yu6TR" },
+                    "enrollments": {"pat_id": "pafsr3"}
                 }
             };
             expect(mappingJson({}, action)).toEqual(action.mappingJson);
