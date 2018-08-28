@@ -29,7 +29,7 @@ describe('#syncActions', () => {
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxMock = sandbox.mock(ajax);
             let ajaxGetMock = ajaxMock
-                .expects("get")
+                .expects("put")
                 .withArgs(sync.URI + mappingName);
 
             await store.dispatch(SyncActions.syncData(mappingName));

@@ -20,6 +20,5 @@ export const auditLogEventDetails = {
 };
 
 export const sync = {
-    // LABEL: 'MODULE_LABEL_DHIS_SYNC_KEY',
     URI: '/sync/pushData?service='
 };

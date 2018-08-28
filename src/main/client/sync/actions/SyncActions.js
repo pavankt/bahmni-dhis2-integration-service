@@ -8,7 +8,7 @@ export function syncData(mappingName = "") {
         dispatch(hideSpinner(false));
         try {
             let ajax = Ajax.instance();
-            await ajax.get(sync.URI + mappingName);
+            await ajax.put(sync.URI + mappingName);
             auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             dispatch(showMessage("Sync started for " + mappingName, "success"));
         } catch (e) {
