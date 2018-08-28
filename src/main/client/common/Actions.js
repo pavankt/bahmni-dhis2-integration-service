@@ -35,7 +35,7 @@ export function getPrivileges() {
         let ajax = Ajax.instance();
         dispatch(hideSpinner(false));
         try {
-            let response = await ajax.get('/dhis-integration/session');
+            let response = await ajax.get('/dhis-integration/api/session');
             if (response.length === 0) {
                 window.location.pathname = '/home';
             }

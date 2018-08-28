@@ -25,7 +25,7 @@ class DescribeFilteredTable extends Component {
 
   componentDidMount() {
       this.props.dispatch(showHome(false));
-      fetch('/dhis-integration/getTables')
+      fetch('/dhis-integration/api/getTables')
           .then(res => res.json())
           .then(result => {
               this.props.dispatch(allTables(result));

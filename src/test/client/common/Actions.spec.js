@@ -109,7 +109,7 @@ describe('Actions', () => {
             let privileges = ["dhis2:mapping", "dhis2:log"];
             sandbox.stub(Ajax, "instance").returns(ajax);
             let privilegesMock = sandbox.mock(ajax).expects("get")
-                .withArgs('/dhis-integration/session')
+                .withArgs('/dhis-integration/api/session')
                 .returns(Promise.resolve(privileges));
 
             let expectedActions = [
@@ -149,7 +149,7 @@ describe('Actions', () => {
             let privileges = ["app:dhis2sync"];
             sandbox.stub(Ajax, "instance").returns(ajax);
             let privilegesMock = sandbox.mock(ajax).expects("get")
-                .withArgs('/dhis-integration/session')
+                .withArgs('/dhis-integration/api/session')
                 .returns(Promise.resolve(privileges));
 
             let expectedActions = [

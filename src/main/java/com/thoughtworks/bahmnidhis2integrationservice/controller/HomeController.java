@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@RequestMapping("/api")
 public class HomeController {
-
-	@RequestMapping(value = "/dhis-integration")
-	public String index() {
-		return "index";
-	}
 
 	@GetMapping(value = "/session")
 	@ResponseBody

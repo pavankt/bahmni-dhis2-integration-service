@@ -472,7 +472,7 @@ describe('#mappingActions', () => {
             let ajaxMock = sandbox.mock(ajax);
             let ajaxGetMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/getMapping", {"mappingName": mappingNameToEdit})
+                .withArgs("/dhis-integration/api/getMapping", {"mappingName": mappingNameToEdit})
                 .returns(Promise.resolve({
                     "mapping_name": "HTS Service",
                     "lookup_table": {
@@ -494,12 +494,12 @@ describe('#mappingActions', () => {
                 }));
             let getInstanceColumnsMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/getColumns", {tableName: "patient_details"})
+                .withArgs("/dhis-integration/api/getColumns", {tableName: "patient_details"})
                 .returns(Promise.resolve(tableColumns));
 
             let getEnrollmentsColumnsMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/getColumns", {tableName: "enroll"})
+                .withArgs("/dhis-integration/api/getColumns", {tableName: "enroll"})
                 .returns(Promise.resolve(tableColumns));
 
             let pushMock = sandbox.mock(history).expects("push")
@@ -546,7 +546,7 @@ describe('#mappingActions', () => {
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxGetMock = sandbox.mock(ajax)
                 .expects("get")
-                .withArgs("/dhis-integration/getMapping", {"mappingName": "some name"})
+                .withArgs("/dhis-integration/api/getMapping", {"mappingName": "some name"})
                 .returns(Promise.reject({
                     message
                 }));
@@ -595,7 +595,7 @@ describe('#mappingActions', () => {
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxGetMock = sandbox.mock(ajax)
                 .expects("get")
-                .withArgs("/dhis-integration/getMappingNames")
+                .withArgs("/dhis-integration/api/getMappingNames")
                 .returns(Promise.resolve(mappings));
 
             await store.dispatch(MappingActions.getAllMappings());
@@ -633,7 +633,7 @@ describe('#mappingActions', () => {
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxGetMock = sandbox.mock(ajax)
                 .expects("get")
-                .withArgs("/dhis-integration/getMappingNames")
+                .withArgs("/dhis-integration/api/getMappingNames")
                 .returns(Promise.reject({
                     message: "Could not get mappings"
                 }));
@@ -709,7 +709,7 @@ describe('#mappingActions', () => {
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxGetMock = sandbox.mock(ajax)
                 .expects("get")
-                .withArgs("/dhis-integration/getColumns")
+                .withArgs("/dhis-integration/api/getColumns")
                 .returns(Promise.reject({
                     message: "Could not get table columns"
                 }));

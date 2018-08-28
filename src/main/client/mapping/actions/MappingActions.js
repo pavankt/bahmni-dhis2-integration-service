@@ -137,7 +137,7 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
 
             try {
                 let ajax = Ajax.instance();
-                let response = await ajax.put("/dhis-integration/saveMapping", body);
+                let response = await ajax.put("/dhis-integration/api/saveMapping", body);
                 afterOnSaveMappingSuccessResponse(dispatch, response, history);
                 auditLog(auditLogEventDetails.SAVE_DHIS_MAPPING);
             } catch (e) {
@@ -181,7 +181,7 @@ export function getMapping(mappingNameToEdit, history) {
         try {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
-            let response = parseResponse(await ajax.get('/dhis-integration/getMapping', {"mappingName": mappingNameToEdit}));
+            let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingNameToEdit}));
             await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
             await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
@@ -200,7 +200,7 @@ export function getAllMappings() {
         try {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
-            let response = await ajax.get('/dhis-integration/getMappingNames');
+            let response = await ajax.get('/dhis-integration/api/getMappingNames');
             dispatch(allMappingNames(response));
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
@@ -225,7 +225,7 @@ export function getTableColumns(tableName, category) {
 }
 
 async function getColumnNames(ajax, tableName) {
-    let response = await ajax.get('/dhis-integration/getColumns', {tableName});
+    let response = await ajax.get('/dhis-integration/api/getColumns', {tableName});
     return response;
 }
 
