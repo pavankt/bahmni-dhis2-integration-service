@@ -210,3 +210,27 @@
 .mapper{
   margin: 25px 0;
 }
+
+.edit-button {
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #fff, #ddd);
+  background-color: #ddd;
+  border: #ddd 1px solid;
+  padding: 6px 20px 7px;
+  display: inline-block;
+  line-height: 1.2em;
+  cursor: pointer;
+  min-width: 0;
+  max-width: 300px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+a {
+
+  &, &:link, &:visited, &:hover, &:active {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}

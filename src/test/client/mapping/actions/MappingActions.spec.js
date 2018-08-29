@@ -422,6 +422,15 @@ describe('#mappingActions', () => {
                     hideSpinner: false
                 },
                 {
+                    type: "mappingJson",
+                    mappingJson: {
+                        instance: {
+                            patient_identifier: "fYj7U",
+                            patient_name: "ert76HK"
+                        },
+                    }
+                },
+                {
                     type: "selectedInstanceTable",
                     selectedInstanceTable: "patient_details"
                 },
@@ -440,15 +449,6 @@ describe('#mappingActions', () => {
                 {
                     type: "currentMapping",
                     mappingName: mappingNameToEdit
-                },
-                {
-                    type: "mappingJson",
-                    mappingJson: {
-                        instance: {
-                            patient_identifier: "fYj7U",
-                            patient_name: "ert76HK"
-                        },
-                    }
                 },
                 {
                     type: "hideSpinner",

@@ -74,5 +74,4 @@ ColumnMappings.propTypes = {
     mappingJson: PropTypes.object.isRequired,
     category: PropTypes.string.isRequired,
     mappingType: PropTypes.string.isRequired
-
 };

@@ -182,10 +182,10 @@ export function getMapping(mappingNameToEdit, history) {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
             let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingNameToEdit}));
+            dispatch(mappingJson(response.mapping_json.value));
             await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
             await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
-            dispatch(mappingJson(response.mapping_json.value));
             history.push('/dhis-integration/mapping/edit/' + mappingNameToEdit);
         } catch (e) {
             dispatch(showMessage(e.message, "error"))

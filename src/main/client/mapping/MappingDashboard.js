@@ -1,24 +1,20 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import Spinner from '../common/Spinner';
-import {getAllMappings, getMapping} from './actions/MappingActions';
+import {getAllMappings} from './actions/MappingActions';
 import Message from '../common/Message';
 
 class MappingDashboard extends Component {
     constructor() {
         super();
         this.renderMappingNames = this.renderMappingNames.bind(this);
-        this.editMapping = this.editMapping.bind(this);
         this.redirectToAddEditMapping = this.redirectToAddEditMapping.bind(this);
     }
 
     componentDidMount() {
         this.props.dispatch(getAllMappings());
-    }
-
-    editMapping(mappingName) {
-        this.props.dispatch(getMapping(mappingName, this.props.history));
     }
 
     redirectToAddEditMapping() {
@@ -33,9 +29,9 @@ class MappingDashboard extends Component {
                   {mappingName}
                 </td>
                 <td className="edit-mapping-button">
-                  <button type="submit" className="center edit-button" onClick={()=>{this.editMapping(mappingName)}}>
+                  <Link to={`/dhis-integration/mapping/edit/${mappingName}`} className="center edit-button">
                             Edit
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))

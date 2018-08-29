@@ -1,13 +1,13 @@
 import 'jsdom-global/register';
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
-import {render, configure, mount} from 'enzyme';
+import {configure, mount, render} from 'enzyme';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
+import {BrowserRouter as Router} from 'react-router-dom';
 import MappingDashboard from '../../../main/client/mapping/MappingDashboard';
-import * as MappingActions from '../../../main/client/mapping/actions/MappingActions';
 
 configure({adapter: new Adapter()});
 
@@ -26,13 +26,15 @@ describe('Mapping dashboard', function () {
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
-          <Provider store={store}>
-            <MappingDashboard
-              dispatch={() => {
-                }}
-              history={{}}
-            />
-          </Provider>
+          <Router>
+            <Provider store={store}>
+              <MappingDashboard
+                dispatch={() => {
+                  }}
+                history={{}}
+              />
+            </Provider>
+          </Router>
         );
     });
 
@@ -56,27 +58,9 @@ describe('Mapping dashboard', function () {
         expect(rendered.find('.edit-mapping-button')).toHaveLength(2);
     });
 
-    it('should dispatch getMappings on edit click', () => {
-        let history = {};
-        let sandbox = sinon.createSandbox();
-        let mappingMock = sandbox.mock(MappingActions)
-            .expects("getMapping")
-            .withArgs("HTS Service", history)
-            .returns({ type: '' });
-
-        rendered = mount(
-          <Provider store={store}>
-            <MappingDashboard
-              dispatch={() => {}}
-              history={history}
-            />
-          </Provider>
-        );
-
-        rendered.find('.edit-button').first().simulate('click');
-
-        mappingMock.verify();
-        sandbox.restore();
+    it('should have link to /dhis-integration/mapping/edit/HTS Service and /mapping/edit/TB Service', () => {
+        expect(rendered.find('.edit-button').first().attr().href).toEqual('/dhis-integration/mapping/edit/HTS Service');
+        expect(rendered.find('.edit-button').last().attr().href).toEqual('/dhis-integration/mapping/edit/TB Service');
     });
 
     it('should call history push on redirect to addEditMapping', () => {
@@ -91,12 +75,14 @@ describe('Mapping dashboard', function () {
         history.push = pushMock;
 
         rendered = mount(
-          <Provider store={store}>
-            <MappingDashboard
-              dispatch={() => {}}
-              history={history}
-            />
-          </Provider>
+          <Router>
+            <Provider store={store}>
+              <MappingDashboard
+                dispatch={() => {}}
+                history={history}
+              />
+            </Provider>
+          </Router>
         );
 
         rendered.find('.add-mapping-button').first().simulate('click');
