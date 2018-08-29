@@ -724,4 +724,86 @@ describe('#mappingActions', () => {
             }
         });
     });
+
+    describe("getTables", () => {
+       it("should dispatch tables on ajax success", async() => {
+           let tables = ["patient_identifier", "patient_allergy_view"];
+           let ajax = Ajax.instance();
+           let expectedActions = [
+               {
+                   type: "hideSpinner",
+                   hideSpinner: false
+               },
+               {
+                   type: "allTables",
+                   allTables: tables
+               },
+               {
+                   type: "hideSpinner",
+                   hideSpinner: true
+               }
+           ];
+
+           let sandbox = sinon.createSandbox();
+           sandbox.stub(Ajax, "instance").returns(ajax);
+           let ajaxGetMock = sandbox.mock(ajax)
+               .expects("get")
+               .withArgs("/dhis-integration/api/getTables")
+               .returns(Promise.resolve(tables));
+
+           let store = mockStore({
+               allTables: [],
+               hideSpinner: false
+           });
+
+           await store.dispatch(MappingActions.getTables());
+           expect(store.getActions()).toEqual(expectedActions);
+           ajaxGetMock.verify();
+           sandbox.restore();
+       });
+
+        it("should dispatch tables on ajax success", async() => {
+            let ajax = Ajax.instance();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "showMessage",
+                    responseMessage: "Could not get tables to select",
+                    responseType: "error"
+                },
+                {
+                    type: "allTables",
+                    allTables: []
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxGetMock = sandbox.mock(ajax)
+                .expects("get")
+                .withArgs("/dhis-integration/api/getTables")
+                .returns(Promise.reject({}));
+
+            let store = mockStore({
+                allTables: [],
+                hideSpinner: false
+            });
+
+            try {
+                await store.dispatch(MappingActions.getTables());
+            } catch(e) {
+                expect(store.getActions()).toEqual(expectedActions);
+                ajaxGetMock.verify();
+            } finally {
+                sandbox.restore();
+            }
+        });
+    });
 });

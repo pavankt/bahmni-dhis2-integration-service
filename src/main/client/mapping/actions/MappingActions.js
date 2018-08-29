@@ -249,5 +249,20 @@ async function dispatchTableDetails(tableName, category, dispatch, ajax) {
     } else if (category === "enrollments") {
         await dispatchEnrollmentTableDetails(tableName, dispatch, ajax);
     }
+}
 
+export function getTables() {
+    return async dispatch => {
+        dispatch(hideSpinner(false));
+        let ajax = Ajax.instance();
+        try {
+            let response = await ajax.get("/dhis-integration/api/getTables");
+            dispatch(allTables(response));
+        } catch (e) {
+            dispatch(showMessage("Could not get tables to select", "error"));
+            dispatch(allTables());
+        } finally {
+            dispatch(hideSpinner());
+        }
+    }
 }

@@ -9,7 +9,8 @@ import {
     saveMappings,
     selectedEnrollmentsTable,
     selectedInstanceTable,
-    getMapping
+    getMapping,
+    getTables
 } from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
@@ -30,11 +31,7 @@ class DescribeFilteredTable extends Component {
       if(mappingName) {
           this.props.dispatch(getMapping(mappingName, this.props.history));
       }
-      fetch('/dhis-integration/api/getTables')
-          .then(res => res.json())
-          .then(result => {
-              this.props.dispatch(allTables(result));
-          });
+      this.props.dispatch(getTables());
   }
 
   componentWillReceiveProps(nextProps) {
