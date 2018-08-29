@@ -503,7 +503,7 @@ describe('#mappingActions', () => {
                 .returns(Promise.resolve(tableColumns));
 
             let pushMock = sandbox.mock(history).expects("push")
-                .withArgs("/dhis-integration/mapping/save");
+                .withArgs("/dhis-integration/mapping/edit/"+mappingNameToEdit);
             history.push = pushMock;
 
             await store.dispatch(MappingActions.getMapping(mappingNameToEdit, history));

@@ -186,7 +186,7 @@ export function getMapping(mappingNameToEdit, history) {
             await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
             dispatch(mappingJson(response.mapping_json.value));
-            history.push('/dhis-integration/mapping/save');
+            history.push('/dhis-integration/mapping/edit/' + mappingNameToEdit);
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
         } finally {

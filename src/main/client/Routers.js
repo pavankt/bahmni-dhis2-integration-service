@@ -19,7 +19,8 @@ return (
       <Route exact path="/dhis-integration/mapping" component={MappingDashboard} />
       <Route exact path="/dhis-integration/sync" component={SyncDashboard} />
       <Route exact path="/dhis-integration/logs" component={LogDashboard} />
-      <Route exact path="/dhis-integration/mapping/save" component={DescribeFilteredTable} />
+      <Route exact path="/dhis-integration/mapping/new" component={DescribeFilteredTable} />
+      <Route exact path="/dhis-integration/mapping/edit/:mappingName" component={DescribeFilteredTable} />
     </switch>
   </BrowserRouter>);
 }

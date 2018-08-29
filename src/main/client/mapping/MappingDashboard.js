@@ -22,7 +22,7 @@ class MappingDashboard extends Component {
     }
 
     redirectToAddEditMapping() {
-        this.props.history.push('/dhis-integration/mapping/save');
+        this.props.history.push('/dhis-integration/mapping/new');
     }
 
     renderMappingNames() {
