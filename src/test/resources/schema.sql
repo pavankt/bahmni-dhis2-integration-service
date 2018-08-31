@@ -40,3 +40,14 @@ CREATE TABLE "public"."mapping"(
   modifed_by text,
   modifed_date date
 );
+
+DROP TABLE IF EXISTS marker CASCADE;
+CREATE TABLE "public"."marker"
+(
+  marker_id        SERIAL NOT NULL
+    CONSTRAINT marker_pkey
+    PRIMARY KEY,
+  program_name     TEXT,
+  category         TEXT,
+  last_synced_date TIMESTAMP
+);

@@ -3,6 +3,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 import com.thoughtworks.bahmnidhis2integrationservice.BahmniDhis2IntegrationServiceApplication;
 import com.thoughtworks.bahmnidhis2integrationservice.SystemPropertyActiveProfileResolver;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,14 @@ import static org.junit.Assert.assertTrue;
 @ActiveProfiles(profiles = "test", resolver = SystemPropertyActiveProfileResolver.class)
 public class MappingControllerIT{
 
+    private static final int MARKER_ENTRIES = 3;
+
     @Autowired
     private MappingController mappingController;
 
     @Qualifier("jdbcTemplate")
     @Autowired
     protected JdbcTemplate jdbcTemplate;
-
 
     @Test
     @Sql(scripts = {"classpath:mappingData/mapping.sql"})
@@ -43,7 +45,6 @@ public class MappingControllerIT{
         int expectedRows = 2;
         List<String> expectedList = Arrays.asList("HTS Service","TB Service");
 
-        System.out.println(mappingNames);
         assertEquals(expectedRows, mappingNames.size());
         assertTrue(mappingNames.containsAll(expectedList));
     }
@@ -60,8 +61,12 @@ public class MappingControllerIT{
 
         Map<String, String> actualMessage = mappingController.saveMappings(params);
 
-        assertEquals(expectedMessage, actualMessage.get("data"));
+        String checkForExistence = String.format("SELECT count(*) FROM marker WHERE program_name = '%s'",
+                                                params.get("mappingName"));
+        Map<String, Object> markerEntriesCount = jdbcTemplate.queryForMap(checkForExistence);
 
+        assertEquals(expectedMessage, actualMessage.get("data"));
+        assertEquals(MARKER_ENTRIES, Integer.parseInt(markerEntriesCount.get("count").toString()));
         truncateMapping();
     }
 
@@ -82,10 +87,14 @@ public class MappingControllerIT{
                 .map(mapping -> mapping.get("mapping_name").toString())
                 .collect(Collectors.toList());
 
+        String checkForExistence = String.format("SELECT count(*) FROM marker WHERE program_name = '%s'",
+                params.get("mappingName"));
+        Map<String, Object> markerEntriesCount = jdbcTemplate.queryForMap(checkForExistence);
+
         assertEquals(expectedMessage, actualMessage.get("data"));
         assertEquals(allMappingNames.size(), 2);
-        System.out.println(allMappingNames);
         assertTrue(Arrays.asList("TB Service","Edit Service Name").containsAll(allMappingNames));
+        assertEquals(MARKER_ENTRIES, Integer.parseInt(markerEntriesCount.get("count").toString()));
 
         truncateMapping();
     }
@@ -105,5 +114,19 @@ public class MappingControllerIT{
     @Test(expected = NoMappingFoundException.class)
     public void shouldThrowErrorIfNoMappingExist() throws NoMappingFoundException {
         mappingController.getMapping("someMapping");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        jdbcTemplate.execute("DROP TABLE IF EXISTS marker CASCADE;\n" +
+                "CREATE TABLE \"public\".\"marker\"\n" +
+                "(\n" +
+                "  marker_id        SERIAL NOT NULL\n" +
+                "    CONSTRAINT marker_pkey\n" +
+                "    PRIMARY KEY,\n" +
+                "  program_name     TEXT,\n" +
+                "  category         TEXT,\n" +
+                "  last_synced_date TIMESTAMP\n" +
+                ");");
     }
 }

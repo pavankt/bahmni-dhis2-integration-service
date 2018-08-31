@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
+import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.se
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -27,11 +29,13 @@ public class MappingControllerTest {
     @Mock
     private MappingServiceImpl mappingService;
 
+    @Mock
+    private MarkerServiceImpl markerService;
+
     private String mappingName = "patient_details";
     private String lookupTable = "patient";
     private String mappingJson = "{'patient_id': 'Asj8X', 'patient_name': 'jghTk9'}";
     private String currentMapping = "pat_details";
-
 
     private Map<String, String> params = new HashMap<>();
 
@@ -39,6 +43,7 @@ public class MappingControllerTest {
     public void setUp() throws Exception {
         mappingController = new MappingController();
         setValuesForMemberFields(mappingController, "mappingService", mappingService);
+        setValuesForMemberFields(mappingController, "markerService", markerService);
         params.put("mappingName", mappingName);
         params.put("lookupTable", lookupTable);
         params.put("mappingJson", mappingJson);
@@ -51,10 +56,14 @@ public class MappingControllerTest {
 
         when(mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping)).thenReturn(expected);
 
+        doNothing().when(markerService).createEntriesForNewService(mappingName);
+
         Map<String, String> actual = mappingController.saveMappings(params);
 
         verify(mappingService, times(1))
                 .saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+        verify(markerService, times(1)).createEntriesForNewService(mappingName);
+
         assertEquals(expected, actual.get("data"));
     }
 
@@ -76,21 +85,21 @@ public class MappingControllerTest {
 
     @Test
     public void shouldReturnAllMappingNames() {
-        List<String> expected = Arrays.asList("HTS Service","TB Service");
+        List<String> expected = Arrays.asList("HTS Service", "TB Service");
         when(mappingService.getMappingNames()).thenReturn(expected);
 
         List<String> allMappings = mappingController.getAllMappingNames();
 
-        assertEquals(allMappings,expected);
+        assertEquals(allMappings, expected);
     }
 
     @Test
     public void shouldReturnExistingMappingName() throws NoMappingFoundException {
         Map<String, Object> HTSMapping = new HashMap<>();
 
-        HTSMapping.put("mapping_name","HTS Service");
-        HTSMapping.put("lookup_table","{\"instance\" : \"patient\"}");
-        HTSMapping.put("mapping_json","{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
+        HTSMapping.put("mapping_name", "HTS Service");
+        HTSMapping.put("lookup_table", "{\"instance\" : \"patient\"}");
+        HTSMapping.put("mapping_json", "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
 
         when(mappingService.getMapping("HTS Service")).thenReturn(HTSMapping);
 
@@ -107,10 +116,10 @@ public class MappingControllerTest {
                 mappingService.getMapping(mappingName)
         ).thenThrow(new NoMappingFoundException(mappingName));
 
-        try{
+        try {
             mappingController.getMapping(mappingName);
-        }catch (NoMappingFoundException e){
-            assertEquals(e.getMessage(),"No mapping found with name "+mappingName);
+        } catch (NoMappingFoundException e) {
+            assertEquals(e.getMessage(), "No mapping found with name " + mappingName);
         }
     }
 }
