@@ -1,6 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.security;
 
 import com.thoughtworks.bahmnidhis2integrationservice.config.AppProperties;
+import com.thoughtworks.bahmnidhis2integrationservice.security.response.OpenMRSResponse;
 import com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -13,7 +14,7 @@ import static com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil.
 @Component
 public class OpenMRSAuthenticator {
 
-    private static final String SESSION = "/session";
+    private static final String SESSION_URI = "/session";
     private static final String OPENMRS_SESSION_ID_COOKIE_NAME = "JSESSIONID";
 
     @Autowired
@@ -38,7 +39,7 @@ public class OpenMRSAuthenticator {
         requestHeaders.add("Cookie", OPENMRS_SESSION_ID_COOKIE_NAME + "=" + sessionId);
         try {
             return new RestTemplate()
-                    .exchange(appProperties.getOpenmrsRootUrl() + SESSION,
+                    .exchange(appProperties.getOpenmrsRootUrl() + SESSION_URI,
                             HttpMethod.GET,
                             new HttpEntity<>(null, requestHeaders),
                             OpenMRSResponse.class

@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.security;
 
 import com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper;
 import com.thoughtworks.bahmnidhis2integrationservice.config.AppProperties;
+import com.thoughtworks.bahmnidhis2integrationservice.security.response.OpenMRSResponse;
 import com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil;
 import lombok.SneakyThrows;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class OpenMRSAuthenticatorTest {
   private AppProperties appProperties;
 
   @Mock
-  private ResponseEntity<PrivilegeUtil.Privileges> response;
+  private ResponseEntity<OpenMRSResponse> response;
 
   @Mock
   private RestTemplate restTemplate;
@@ -55,7 +56,7 @@ public class OpenMRSAuthenticatorTest {
   @Test
   @SneakyThrows
   public void shouldAuthenticateGivenValidSessionId() {
-    response = ok().body(new PrivilegeUtil.Privileges());
+    response = ok().body(new OpenMRSResponse());
 
     when(PrivilegeUtil.hasPrivilege(APP_DHIS2SYNC)).thenReturn(true);
 
@@ -71,7 +72,7 @@ public class OpenMRSAuthenticatorTest {
   @Test
   @SneakyThrows
   public void shouldNotAuthenticateGivenInvalidSessionId() {
-    response = status(HttpStatus.UNAUTHORIZED).body(new PrivilegeUtil.Privileges());
+    response = status(HttpStatus.UNAUTHORIZED).body(new OpenMRSResponse());
 
     whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);
     when(restTemplate.exchange(anyString(), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
@@ -85,7 +86,7 @@ public class OpenMRSAuthenticatorTest {
   @Test
   @SneakyThrows
   public void shouldNotAuthorizeGivenValidSessionIdButInvalidPrivileges() {
-    response = ok().body(new PrivilegeUtil.Privileges());
+    response = ok().body(new OpenMRSResponse());
 
     whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);
     when(restTemplate.exchange(anyString(), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
@@ -99,7 +100,7 @@ public class OpenMRSAuthenticatorTest {
   @Test
   @SneakyThrows
   public void shouldNotAuthorizeGivenValidSessionId() {
-    response = ok().body(new PrivilegeUtil.Privileges());
+    response = ok().body(new OpenMRSResponse());
     HttpClientErrorException exception = new HttpClientErrorException(HttpStatus.BAD_REQUEST);
 
     whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);

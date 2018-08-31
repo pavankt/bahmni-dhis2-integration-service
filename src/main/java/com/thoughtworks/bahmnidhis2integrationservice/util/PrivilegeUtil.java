@@ -1,6 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.util;
 
-import com.thoughtworks.bahmnidhis2integrationservice.security.Privilege;
+import com.thoughtworks.bahmnidhis2integrationservice.security.response.Privilege;
 import lombok.Getter;
 import lombok.Setter;
 

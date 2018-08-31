@@ -1,4 +1,4 @@
-package com.thoughtworks.bahmnidhis2integrationservice.security;
+package com.thoughtworks.bahmnidhis2integrationservice.security.response;
 
 import lombok.Data;
 
