@@ -21,11 +21,11 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: path.join(__dirname, './src/main/client/styles/fonts'),
-                to: path.join(__dirname, './src/main/resources/static/fonts'),
+                to: path.join(__dirname, './src/main/resources/static/dhis-integration/fonts'),
             },
             {
                 from: path.join(__dirname, './src/main/client/styles/images'),
-                to: path.join(__dirname, './src/main/resources/static/images'),
+                to: path.join(__dirname, './src/main/resources/static/dhis-integration/images'),
             }
         ], { copyUnmodified: true }
         )
