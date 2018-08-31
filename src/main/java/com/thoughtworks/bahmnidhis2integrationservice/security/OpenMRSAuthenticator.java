@@ -13,18 +13,18 @@ import static com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil.
 @Component
 public class OpenMRSAuthenticator {
 
-    private static final String WHOAMI_URL = "/bahmnicore/whoami";
+    private static final String SESSION = "/session";
     private static final String OPENMRS_SESSION_ID_COOKIE_NAME = "JSESSIONID";
 
     @Autowired
     private AppProperties appProperties;
 
     public AuthenticationResponse authenticate(String sessionId) {
-        ResponseEntity<PrivilegeUtil.Privileges> response = callOpenMRS(sessionId);
+        ResponseEntity<OpenMRSResponse> response = callOpenMRS(sessionId);
         HttpStatus status = response.getStatusCode();
 
         if (status.series() == HttpStatus.Series.SUCCESSFUL) {
-            PrivilegeUtil.savePrivileges(response.getBody());
+            PrivilegeUtil.savePrivileges(response.getBody().getUser().getPrivileges());
             return PrivilegeUtil.hasPrivilege(APP_DHIS2SYNC)?
                     AuthenticationResponse.AUTHORIZED:
                     AuthenticationResponse.UNAUTHORIZED;
@@ -33,15 +33,15 @@ public class OpenMRSAuthenticator {
         return AuthenticationResponse.NOT_AUTHENTICATED;
     }
 
-    private ResponseEntity<PrivilegeUtil.Privileges> callOpenMRS(String sessionId) {
+    private ResponseEntity<OpenMRSResponse> callOpenMRS(String sessionId) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", OPENMRS_SESSION_ID_COOKIE_NAME + "=" + sessionId);
         try {
             return new RestTemplate()
-                    .exchange(appProperties.getOpenmrsRootUrl() + WHOAMI_URL,
+                    .exchange(appProperties.getOpenmrsRootUrl() + SESSION,
                             HttpMethod.GET,
                             new HttpEntity<>(null, requestHeaders),
-                            PrivilegeUtil.Privileges.class
+                            OpenMRSResponse.class
                     );
         } catch (HttpClientErrorException exception) {
             return new ResponseEntity<>(exception.getStatusCode());

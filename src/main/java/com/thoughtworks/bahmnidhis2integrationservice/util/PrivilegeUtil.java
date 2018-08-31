@@ -1,5 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.util;
 
+import com.thoughtworks.bahmnidhis2integrationservice.security.Privilege;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,21 +23,11 @@ public class PrivilegeUtil {
             .count() > 0;
   }
 
-  public static void savePrivileges(Privileges privileges) {
+  public static void savePrivileges(List<Privilege> privileges) {
     setAvailablePrivileges(privileges
             .stream()
-            .map(Privilege::getName)
+            .map(Privilege::getDisplay)
             .filter(privilege -> privilege.startsWith(APP_DHIS2SYNC))
             .collect(Collectors.toList()));
   }
-
-  public static class Privileges extends ArrayList<Privilege> {
-  }
-
-  @Getter
-  @Setter
-  public static class Privilege {
-    private String name;
-  }
-
 }
