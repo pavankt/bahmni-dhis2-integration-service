@@ -12,25 +12,25 @@ import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.se
 import static org.junit.Assert.assertEquals;
 
 @RunWith(PowerMockRunner.class)
-public class PrivilegeUtilTest {
+public class SessionUtilTest {
 
-  private PrivilegeUtil privilegeUtil;
+  private SessionUtil sessionUtil;
 
   @Before
   public void setUp() throws Exception {
-    privilegeUtil = new PrivilegeUtil();
+    sessionUtil = new SessionUtil();
     List<String> privileges = Arrays.asList("test:privilege", "dev:privilege");
 
-    setValuesForMemberFields(privilegeUtil, "availablePrivileges", privileges);
+    setValuesForMemberFields(sessionUtil, "availablePrivileges", privileges);
   }
 
   @Test
   public void shouldSaveGivenSetOfPrivileges() throws Exception {
-    assertEquals(PrivilegeUtil.getAvailablePrivileges().get(0), "test:privilege");
+    assertEquals(SessionUtil.getAvailablePrivileges().get(0), "test:privilege");
   }
 
   @Test
   public void shouldReturnTrueIfAGivenPrivilegeIsAvailable() throws Exception {
-    assertEquals(true, PrivilegeUtil.hasPrivilege("test:privilege"));
+    assertEquals(true, SessionUtil.hasPrivilege("test:privilege"));
   }
 }

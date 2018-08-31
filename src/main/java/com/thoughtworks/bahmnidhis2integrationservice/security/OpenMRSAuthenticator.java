@@ -2,14 +2,14 @@ package com.thoughtworks.bahmnidhis2integrationservice.security;
 
 import com.thoughtworks.bahmnidhis2integrationservice.config.AppProperties;
 import com.thoughtworks.bahmnidhis2integrationservice.security.response.OpenMRSResponse;
-import com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil;
+import com.thoughtworks.bahmnidhis2integrationservice.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static com.thoughtworks.bahmnidhis2integrationservice.util.PrivilegeUtil.APP_DHIS2SYNC;
+import static com.thoughtworks.bahmnidhis2integrationservice.util.SessionUtil.APP_DHIS2SYNC;
 
 @Component
 public class OpenMRSAuthenticator {
@@ -25,8 +25,9 @@ public class OpenMRSAuthenticator {
         HttpStatus status = response.getStatusCode();
 
         if (status.series() == HttpStatus.Series.SUCCESSFUL) {
-            PrivilegeUtil.savePrivileges(response.getBody().getUser().getPrivileges());
-            return PrivilegeUtil.hasPrivilege(APP_DHIS2SYNC)?
+            SessionUtil.setUser(response.getBody().getUser().getDisplay());
+            SessionUtil.savePrivileges(response.getBody().getUser().getPrivileges());
+            return SessionUtil.hasPrivilege(APP_DHIS2SYNC)?
                     AuthenticationResponse.AUTHORIZED:
                     AuthenticationResponse.UNAUTHORIZED;
         }

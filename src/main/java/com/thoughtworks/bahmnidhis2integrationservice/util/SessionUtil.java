@@ -8,13 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PrivilegeUtil {
+public class SessionUtil {
 
   public static final String APP_DHIS2SYNC = "app:dhis2sync";
 
   @Getter
-  @Setter
   private static List<String> availablePrivileges = new ArrayList<>();
+
+  @Getter
+  @Setter
+  private static String user;
 
   public static boolean hasPrivilege(String priv) {
     return availablePrivileges
@@ -24,10 +27,10 @@ public class PrivilegeUtil {
   }
 
   public static void savePrivileges(List<Privilege> privileges) {
-    setAvailablePrivileges(privileges
+    availablePrivileges = privileges
             .stream()
             .map(Privilege::getDisplay)
             .filter(privilege -> privilege.startsWith(APP_DHIS2SYNC))
-            .collect(Collectors.toList()));
+            .collect(Collectors.toList());
   }
 }

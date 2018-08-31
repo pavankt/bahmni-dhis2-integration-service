@@ -36,11 +36,13 @@ export function getPrivileges() {
         dispatch(hideSpinner(false));
         try {
             let response = await ajax.get('/dhis-integration/api/session');
-            if (response.length === 0) {
+            if (response.privileges.length === 0) {
                 window.location.pathname = '/home';
             }
-            (response.length === 1 && response.includes(appPrivileges.APP)) ?
-                dispatch(showMessage("You do not have permissions assigned. Contact admin to assign privileges for your user",
+            let priv = response.privileges.slice(1, -1);
+            response.privileges = (priv.split(","));
+            (response.privileges.length === 1 && response.privileges.includes(appPrivileges.APP)) ?
+                dispatch(showMessage("You do not have permissions assigned. Contact admin to assign session for your user",
                     "error"))
                 :dispatch(privileges(response));
         } catch (e) {
