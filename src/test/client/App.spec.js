@@ -21,7 +21,7 @@ describe('App', () => {
     beforeEach(() => {
         const store = createStore(() => ({
             hideSpinner : false,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "",
                 responseType : ""
@@ -72,7 +72,7 @@ describe('App', () => {
     it('should not have overlay className when hideSpinner is true', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "",
                 responseType : ""
@@ -90,10 +90,10 @@ describe('App', () => {
         expect(rendered.find('.overlay')).toHaveLength(0);
     });
 
-    it('should dispatch hideSpinner and getPrivileges on didMount', () => {
+    it('should dispatch hideSpinner and getSession on didMount', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "",
                 responseType : ""
@@ -111,8 +111,8 @@ describe('App', () => {
         let spinnerTrue = actions.expects('hideSpinner')
             .returns({ type: '' });
 
-        let getPrivileges = actions.expects('getPrivileges')
-            .returns({ type: "privileges" });
+        let getSession = actions.expects('getSession')
+            .returns({ type: "session" });
 
         mount(
           <Router>
@@ -124,14 +124,14 @@ describe('App', () => {
 
         spinnerFalse.verify();
         spinnerTrue.verify();
-        getPrivileges.verify();
+        getSession.verify();
         sandbox.restore();
     });
 
     it('should not have message-container className when responseMessage is empty', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "",
                 responseType : ""
@@ -152,7 +152,7 @@ describe('App', () => {
     it('should not have success-message-container className when responseMessage is not empty and type is success', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "message",
                 responseType : "success"
@@ -173,7 +173,7 @@ describe('App', () => {
     it('should not have error-message-container className when responseMessage is not empty and type is error', () => {
         const store = createStore(() => ({
             hideSpinner : true,
-            privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"],
+            session: {user: 'admin', privileges: ["app:dhis2sync:mapping", "app:dhis2sync:log", "app:dhis2sync:upload"]},
             showMessage: {
                 responseMessage : "message",
                 responseType : "error"

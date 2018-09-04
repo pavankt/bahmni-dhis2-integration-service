@@ -25,10 +25,10 @@ export function showHomeButton(state = true, action = {}) {
     }
 }
 
-export function privileges(state = [], action = {}) {
+export function session(state = {user: '', privileges: []}, action = {}) {
     switch(action.type) {
-        case 'privileges' :
-            return action.privileges;
+        case 'session' :
+            return action.session;
         default :
             return state;
     }

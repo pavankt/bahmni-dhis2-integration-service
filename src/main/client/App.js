@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from './common/Spinner';
-import { hideSpinner, getPrivileges } from './common/Actions';
+import { hideSpinner, getSession } from './common/Actions';
 import { privileges, auditLogEventDetails } from './common/constants';
 import Message from './common/Message';
 import auditLog from './common/AuditLog';
@@ -17,7 +17,7 @@ class App extends Component {
 
     componentDidMount() {
         this.props.dispatch(hideSpinner(false));
-        this.props.dispatch(getPrivileges());
+        this.props.dispatch(getSession());
         auditLog(auditLogEventDetails.OPEN_DHIS_SYNC_APP);
         this.props.dispatch(hideSpinner());
     }
@@ -32,7 +32,7 @@ class App extends Component {
             <Message />
             <Spinner hide={this.props.hideSpinner} />
             <div className="app-link">
-              {this.props.privileges.includes(privileges.MAPPING) && (
+              {this.props.session.privileges.includes(privileges.MAPPING) && (
               <Link
                 to="/dhis-integration/mapping"
                 className="mapping-link"
@@ -42,7 +42,7 @@ class App extends Component {
                     Manage Mapping
               </Link>
 )}
-              {this.props.privileges.includes(privileges.UPLOAD) && (
+              {this.props.session.privileges.includes(privileges.UPLOAD) && (
               <Link
                 to="/dhis-integration/sync"
                 className="sync-link"
@@ -52,7 +52,7 @@ class App extends Component {
                     Sync to DHIS
               </Link>
 )}
-              {this.props.privileges.includes(privileges.LOG) && (
+              {this.props.session.privileges.includes(privileges.LOG) && (
               <Link
                 to="/dhis-integration/logs"
                 className="log-link"
@@ -72,12 +72,12 @@ class App extends Component {
 App.propTypes = {
     hideSpinner : PropTypes.bool.isRequired,
     dispatch : PropTypes.func.isRequired,
-    privileges: PropTypes.array.isRequired
+    session: PropTypes.object.isRequired
 };
 
 const mapStoreToProps = (store) => ({
     hideSpinner : store.hideSpinner,
-    privileges : store.privileges
+    session : store.session
 });
 
 export default connect(mapStoreToProps)(App);

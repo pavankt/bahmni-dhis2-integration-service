@@ -1,7 +1,7 @@
 import {hideSpinner,
     showHomeButton,
     showMessage,
-    privileges
+    session
 } from '../../../main/client/common/Reducers';
 
 describe('Reducers', () => {
@@ -67,15 +67,15 @@ describe('Reducers', () => {
 
     describe('privilegesReducer', () => {
         it('should return empty array with default params', () => {
-            expect(privileges()).toEqual([]);
+            expect(session()).toEqual({"privileges": [], "user": ''});
         });
 
-        it('should return privileges as action.privileges when action type is privileges', () => {
+        it('should return session as action.session when action type is session', () => {
             const action = {
-                type: 'privileges',
-                privileges: ["mapping"]
+                type: 'session',
+                session: {user: 'admin', privileges: ["mapping"]}
             };
-            expect(privileges([], action)).toEqual(["mapping"]);
+            expect(session({}, action).privileges).toEqual(["mapping"]);
         });
 
         it('should return state value when action.type is not showHome', () => {

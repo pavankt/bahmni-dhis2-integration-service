@@ -15,7 +15,7 @@ import {
 import { hideSpinner,
     showMessage,
     showHomeButton,
-    privileges
+    session
 } from './common/Reducers';
 
 const reducers = combineReducers({
@@ -32,7 +32,7 @@ const reducers = combineReducers({
   currentMapping,
   showHomeButton,
   mappingJson,
-  privileges
+  session
 });
 
 export default reducers;

@@ -23,28 +23,28 @@ export function showHome(show = true) {
     }
 }
 
-export function privileges(privileges = []) {
+export function session(session = {user: '', privileges: []}) {
     return {
-        type: "privileges",
-        privileges
+        type: "session",
+        session
     }
 }
 
-export function getPrivileges() {
+export function getSession() {
     return async dispatch => {
         let ajax = Ajax.instance();
         dispatch(hideSpinner(false));
         try {
             let response = await ajax.get('/dhis-integration/api/session');
+            let priv = response.privileges.slice(1, -1);
+            response.privileges = (priv.split(/\s*,\s*/));
             if (response.privileges.length === 0) {
                 window.location.pathname = '/home';
             }
-            let priv = response.privileges.slice(1, -1);
-            response.privileges = (priv.split(","));
             (response.privileges.length === 1 && response.privileges.includes(appPrivileges.APP)) ?
-                dispatch(showMessage("You do not have permissions assigned. Contact admin to assign session for your user",
+                dispatch(showMessage("You do not have permissions assigned. Contact admin to assign privileges for your user",
                     "error"))
-                :dispatch(privileges(response));
+                :dispatch(session(response));
         } catch (e) {
             window.location.pathname = '/home';
         }

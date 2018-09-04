@@ -5,8 +5,8 @@ import sinon from 'sinon';
 import {hideSpinner,
     showHome,
     showMessage,
-    privileges,
-    getPrivileges
+    session,
+    getSession
 } from '../../../main/client/common/Actions';
 import Ajax from '../../../main/client/common/Ajax';
 
@@ -75,28 +75,28 @@ describe('Actions', () => {
         })
     });
 
-    describe('privileges', () => {
-        it('should return empty privileges as default', () => {
+    describe('session', () => {
+        it('should return empty session as default', () => {
             const expected = {
-                type: "privileges",
-                privileges: []
+                type: "session",
+                session: {"privileges": [], "user": ''}
             };
-            let result = privileges();
+            let result = session();
             expect(expected).toEqual(result);
         });
 
         it('should return given value as showHome value', () => {
             const expected = {
-                type: "privileges",
-                privileges : ["dhis2:mapping"]
+                type: "session",
+                session: {user: 'admin', privileges: ["dhis2:mapping"]}
             };
-            let result = privileges(["dhis2:mapping"]);
+            let result = session({user: 'admin', privileges: ["dhis2:mapping"]});
             expect(expected).toEqual(result);
         })
     });
 
-    describe('getPrivileges', () => {
-        it('should dispatch privileges when response has privileges', async () => {
+    describe('getSession', () => {
+        it('should dispatch session when response has session', async () => {
             let sandbox = sinon.createSandbox();
             let ajax = new Ajax();
             let store = mockStore({
@@ -106,11 +106,11 @@ describe('Actions', () => {
                     responseType: ""
                 }
             });
-            let privileges = ["dhis2:mapping", "dhis2:log"];
+            let session = {user: 'admin', privileges: "[app:dhis2sync, dhis2:mapping, dhis2:log]"};
             sandbox.stub(Ajax, "instance").returns(ajax);
             let privilegesMock = sandbox.mock(ajax).expects("get")
                 .withArgs('/dhis-integration/api/session')
-                .returns(Promise.resolve(privileges));
+                .returns(Promise.resolve(session));
 
             let expectedActions = [
                 {
@@ -118,8 +118,8 @@ describe('Actions', () => {
                     hideSpinner: false
                 },
                 {
-                    type: "privileges",
-                    privileges
+                    type: "session",
+                    session
                 },
                 {
                     type: "hideSpinner",
@@ -127,7 +127,7 @@ describe('Actions', () => {
                 }
             ];
 
-            await store.dispatch(getPrivileges());
+            await store.dispatch(getSession());
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -136,7 +136,7 @@ describe('Actions', () => {
             sandbox.restore();
         });
 
-        it('should dispatch show message with no permissions when response has no privileges', async () => {
+        it('should dispatch show message with no permissions when response has no session', async () => {
             let sandbox = sinon.createSandbox();
             let ajax = new Ajax();
             let store = mockStore({
@@ -146,11 +146,11 @@ describe('Actions', () => {
                     responseType: ""
                 }
             });
-            let privileges = ["app:dhis2sync"];
+            let session = {user: 'admin', privileges: "[app:dhis2sync]"};
             sandbox.stub(Ajax, "instance").returns(ajax);
             let privilegesMock = sandbox.mock(ajax).expects("get")
                 .withArgs('/dhis-integration/api/session')
-                .returns(Promise.resolve(privileges));
+                .returns(Promise.resolve(session));
 
             let expectedActions = [
                 {
@@ -168,7 +168,7 @@ describe('Actions', () => {
                 }
             ];
 
-            await store.dispatch(getPrivileges());
+            await store.dispatch(getSession());
 
             expect(store.getActions()).toEqual(expectedActions);
 
