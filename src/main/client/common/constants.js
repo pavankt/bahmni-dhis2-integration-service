@@ -20,5 +20,5 @@ export const auditLogEventDetails = {
 };
 
 export const sync = {
-    URI: '/sync/pushData?service='
+    URI: '/sync/pushData'
 };

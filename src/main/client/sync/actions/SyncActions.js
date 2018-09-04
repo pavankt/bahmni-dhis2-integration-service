@@ -3,12 +3,12 @@ import {sync, auditLogEventDetails} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
 
-export function syncData(mappingName = "") {
+export function syncData(mappingName = '', user = '') {
     return async dispatch => {
         dispatch(hideSpinner(false));
         try {
             let ajax = Ajax.instance();
-            await ajax.put(sync.URI + mappingName);
+            await ajax.put(sync.URI + '?service=' + mappingName + '&user=' + user);
             auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             dispatch(showMessage("Sync started for " + mappingName, "success"));
         } catch (e) {

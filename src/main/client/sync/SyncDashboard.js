@@ -24,7 +24,7 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="center send-button"
-                    onClick={() => this.props.dispatch(syncData(mappingName))}
+                    onClick={() => this.props.dispatch(syncData(mappingName, this.props.session.user))}
                   >
                             Sync to DHIS2
                   </button>
@@ -59,12 +59,14 @@ class SyncDashboard extends React.Component {
 SyncDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    session: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
     mappingNames: state.allMappingNames,
-    hideSpinner: state.hideSpinner
+    hideSpinner: state.hideSpinner,
+    session : state.session
 });
 
 export default connect(mapStateToProps)(SyncDashboard);
