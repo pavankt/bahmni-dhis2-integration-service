@@ -14,9 +14,10 @@ describe('#syncActions', () => {
 
     describe('#syncData', () => {
 
-        it('should dispatch success message after an ajax call', async () => {
+        it.only('should dispatch success message after an ajax call', async () => {
             let ajax = new Ajax();
             let mappingName = "HTS Service";
+            let user = "admin";
             let expectedActions = [
                 {"hideSpinner": false, "type": "hideSpinner"},
                 {"responseMessage": "Sync started for HTS Service", "responseType": "success", "type": "showMessage"},
@@ -28,15 +29,15 @@ describe('#syncActions', () => {
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
             let ajaxMock = sandbox.mock(ajax);
-            let ajaxGetMock = ajaxMock
+            let ajaxPutMock = ajaxMock
                 .expects("put")
-                .withArgs(sync.URI + mappingName);
+                .withArgs(sync.URI + '?service=' + mappingName + '&user=' + user);
 
-            await store.dispatch(SyncActions.syncData(mappingName));
+            await store.dispatch(SyncActions.syncData(mappingName, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
-            ajaxGetMock.verify();
+            ajaxPutMock.verify();
             sandbox.restore();
         });
     });

@@ -22,7 +22,8 @@ describe('Sync dashboard', function () {
             showMessage : {
                 responseMessage : "",
                 responseType: ""
-            }
+            },
+            session: {user: 'admin', privileges: []}
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
