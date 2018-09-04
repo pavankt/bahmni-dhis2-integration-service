@@ -24,7 +24,7 @@ public class OpenMRSAuthenticator {
         ResponseEntity<OpenMRSResponse> response = callOpenMRS(sessionId);
         HttpStatus status = response.getStatusCode();
 
-        if (status.series() == HttpStatus.Series.SUCCESSFUL) {
+        if (status.series() == HttpStatus.Series.SUCCESSFUL && response.getBody().isAuthenticated()) {
             SessionUtil.setUser(response.getBody().getUser().getDisplay());
             SessionUtil.savePrivileges(response.getBody().getUser().getPrivileges());
             return SessionUtil.hasPrivilege(APP_DHIS2SYNC)?

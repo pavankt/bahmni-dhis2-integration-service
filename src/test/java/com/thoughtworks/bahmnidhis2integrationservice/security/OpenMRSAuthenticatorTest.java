@@ -57,6 +57,7 @@ public class OpenMRSAuthenticatorTest {
   @SneakyThrows
   public void shouldAuthenticateGivenValidSessionId() {
     response = ok().body(new OpenMRSResponse());
+    response.getBody().setAuthenticated(true);
 
     when(SessionUtil.hasPrivilege(APP_DHIS2SYNC)).thenReturn(true);
 
@@ -87,6 +88,7 @@ public class OpenMRSAuthenticatorTest {
   @SneakyThrows
   public void shouldNotAuthorizeGivenValidSessionIdButInvalidPrivileges() {
     response = ok().body(new OpenMRSResponse());
+    response.getBody().setAuthenticated(true);
 
     whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);
     when(restTemplate.exchange(anyString(), any(HttpMethod.class), any(HttpEntity.class), any(Class.class)))
