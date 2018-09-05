@@ -8,19 +8,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.security.AuthenticationResponse.AUTHORIZED;
 import static com.thoughtworks.bahmnidhis2integrationservice.security.AuthenticationResponse.NOT_AUTHENTICATED;
 import static com.thoughtworks.bahmnidhis2integrationservice.security.AuthenticationResponse.UNAUTHORIZED;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore("javax.management.*")
 public class AuthenticationInterceptorTest {
 
   @Mock
