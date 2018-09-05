@@ -56,13 +56,13 @@ public class MappingControllerTest {
 
         when(mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping)).thenReturn(expected);
 
-        doNothing().when(markerService).createEntriesForNewService(mappingName);
+        doNothing().when(markerService).createEntriesForNewService(currentMapping, mappingName);
 
         Map<String, String> actual = mappingController.saveMappings(params);
 
         verify(mappingService, times(1))
                 .saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
-        verify(markerService, times(1)).createEntriesForNewService(mappingName);
+        verify(markerService, times(1)).createEntriesForNewService(currentMapping, mappingName);
 
         assertEquals(expected, actual.get("data"));
     }

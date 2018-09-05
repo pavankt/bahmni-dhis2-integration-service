@@ -38,7 +38,7 @@ public class MappingControllerIT{
     protected JdbcTemplate jdbcTemplate;
 
     @Test
-    @Sql(scripts = {"classpath:mappingData/mapping.sql"})
+    @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingNames() {
         List<String> mappingNames = mappingController.getAllMappingNames();
 
@@ -47,6 +47,8 @@ public class MappingControllerIT{
 
         assertEquals(expectedRows, mappingNames.size());
         assertTrue(mappingNames.containsAll(expectedList));
+        truncateMapping();
+        truncateMarker();
     }
 
     @Test
@@ -71,7 +73,7 @@ public class MappingControllerIT{
     }
 
     @Test
-    @Sql(scripts = {"classpath:mappingData/mapping.sql"})
+    @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldUpdateMappingNameWithCurrentMappingOnEdit() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("mappingName", "Edit Service Name");
@@ -97,6 +99,12 @@ public class MappingControllerIT{
         assertEquals(MARKER_ENTRIES, Integer.parseInt(markerEntriesCount.get("count").toString()));
 
         truncateMapping();
+        truncateMarker();
+    }
+
+    @Test(expected = NoMappingFoundException.class)
+    public void shouldThrowErrorIfNoMappingExist() throws NoMappingFoundException {
+        mappingController.getMapping("someMapping");
     }
 
     private void truncateMapping() {
@@ -111,13 +119,7 @@ public class MappingControllerIT{
                 "modifed_date date)");
     }
 
-    @Test(expected = NoMappingFoundException.class)
-    public void shouldThrowErrorIfNoMappingExist() throws NoMappingFoundException {
-        mappingController.getMapping("someMapping");
-    }
-
-    @After
-    public void tearDown() throws Exception {
+    private void truncateMarker() {
         jdbcTemplate.execute("DROP TABLE IF EXISTS marker CASCADE;\n" +
                 "CREATE TABLE \"public\".\"marker\"\n" +
                 "(\n" +
@@ -128,5 +130,10 @@ public class MappingControllerIT{
                 "  category         TEXT,\n" +
                 "  last_synced_date TIMESTAMP\n" +
                 ");");
+    }
+
+    @After
+    public void tearDown() {
+        truncateMarker();
     }
 }

@@ -12,7 +12,7 @@ public class MarkerServiceImpl implements MarkerService {
     private MarkerDAOImpl markerDAO;
 
     @Override
-    public void createEntriesForNewService(String programName) {
-        markerDAO.createMarkerEntries(programName);
+    public void createEntriesForNewService(String oldMappingName, String newMappingName) {
+        markerDAO.createMarkerEntries(oldMappingName, newMappingName);
     }
 }

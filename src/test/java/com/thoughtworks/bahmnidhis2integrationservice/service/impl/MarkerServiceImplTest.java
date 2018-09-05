@@ -28,12 +28,13 @@ public class MarkerServiceImplTest {
 
     @Test
     public void shouldMakeACallToMarkerDAOToCreateEntries() {
-        String programName = "Tracker Service";
+        String oldMappingName = "Tracker";
+        String newMappingName = "Tracker Service";
 
-        doNothing().when(markerDAO).createMarkerEntries(programName);
+        doNothing().when(markerDAO).createMarkerEntries(oldMappingName, newMappingName);
 
-        markerService.createEntriesForNewService(programName);
+        markerService.createEntriesForNewService(oldMappingName, newMappingName);
 
-        verify(markerDAO, times(1)).createMarkerEntries(programName);
+        verify(markerDAO, times(1)).createMarkerEntries(oldMappingName, newMappingName);
     }
 }

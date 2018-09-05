@@ -33,7 +33,7 @@ public class MappingController {
                                                      params.get("mappingJson"),
                                                      params.get("currentMapping"));
 
-        markerService.createEntriesForNewService(params.get("mappingName"));
+        markerService.createEntriesForNewService(params.get("currentMapping"), params.get("mappingName"));
 
         Map<String, String> responseObj = new HashMap<>();
 
