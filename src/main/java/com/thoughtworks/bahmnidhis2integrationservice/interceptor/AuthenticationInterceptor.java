@@ -12,8 +12,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URLEncoder;
 
 @Component(value = "authenticationFilter")
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {

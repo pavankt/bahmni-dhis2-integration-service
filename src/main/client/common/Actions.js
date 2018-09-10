@@ -36,11 +36,12 @@ export function getSession() {
         dispatch(hideSpinner(false));
         try {
             let response = await ajax.get('/dhis-integration/api/session');
-            if (response.user === null) {
+            if (!response.user) {
                 window.location.pathname = '/home';
             } else {
                 let priv = response.privileges.slice(1, -1);
                 response.privileges = (priv.split(/\s*,\s*/));
+
                 if (response.privileges.length === 0) {
                     window.location.pathname = '/home';
                 }

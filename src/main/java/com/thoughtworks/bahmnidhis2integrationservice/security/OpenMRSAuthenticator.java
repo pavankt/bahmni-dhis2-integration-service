@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+
 import static com.thoughtworks.bahmnidhis2integrationservice.util.SessionUtil.APP_DHIS2SYNC;
 
 @Component
@@ -27,9 +29,12 @@ public class OpenMRSAuthenticator {
         if (status.series() == HttpStatus.Series.SUCCESSFUL && response.getBody().isAuthenticated()) {
             SessionUtil.setUser(response.getBody().getUser().getDisplay());
             SessionUtil.savePrivileges(response.getBody().getUser().getPrivileges());
-            return SessionUtil.hasPrivilege(APP_DHIS2SYNC)?
-                    AuthenticationResponse.AUTHORIZED:
+            return SessionUtil.hasPrivilege(APP_DHIS2SYNC) ?
+                    AuthenticationResponse.AUTHORIZED :
                     AuthenticationResponse.UNAUTHORIZED;
+        } else {
+            SessionUtil.setUser("");
+            SessionUtil.savePrivileges(Collections.emptyList());
         }
 
         return AuthenticationResponse.NOT_AUTHENTICATED;
