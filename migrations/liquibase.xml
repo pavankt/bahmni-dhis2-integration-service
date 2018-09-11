@@ -25,4 +25,37 @@
             );
         </sql>
     </changeSet>
+
+    <changeSet id="110920181504" author="Mahitha">
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="created_date" tableName="mapping"/>
+        </preConditions>
+        <comment>changing data type to timestamp</comment>
+        <sql>
+            ALTER TABLE mapping DROP COLUMN created_date;
+            ALTER TABLE mapping ADD COLUMN date_created timestamp;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1109201630" author="Mahitha">
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="modified_by" tableName="mapping"/>
+        </preConditions>
+        <comment>Adding modified_by again to maintain columns order</comment>
+        <sql>
+            ALTER TABLE mapping DROP COLUMN modified_by;
+            ALTER TABLE mapping ADD COLUMN modified_by text;
+        </sql>
+    </changeSet>
+
+    <changeSet id="110920181631" author="Mahitha">
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="modified_date" tableName="mapping"/>
+        </preConditions>
+        <comment>changing data type to timestamp</comment>
+        <sql>
+            ALTER TABLE mapping DROP COLUMN modified_date;
+            ALTER TABLE mapping ADD COLUMN date_modified timestamp;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
