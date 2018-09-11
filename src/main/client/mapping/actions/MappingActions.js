@@ -40,6 +40,13 @@ export function selectedEnrollmentsTable(table = '') {
     };
 }
 
+export function selectedEventTable(table = '') {
+    return {
+        type: 'selectedEventTable',
+        selectedEventTable: table
+    };
+}
+
 export function instanceTableColumns(columns = []) {
     return {
         type: 'selectedInstanceTableColumns',
@@ -51,6 +58,13 @@ export function enrollmentTableColumns(columns = []) {
     return {
         type: 'selectedEnrollmentTableColumns',
         selectedEnrollmentTableColumns: columns
+    };
+}
+
+export function eventTableColumns(columns = []) {
+    return {
+        type: 'selectedEventTableColumns',
+        selectedEventTableColumns: columns
     };
 }
 
@@ -75,7 +89,7 @@ export function currentMapping(mappingName = "") {
     }
 }
 
-export function mappingJson(mappingJson = {instance: {}, enrollments: {}}) {
+export function mappingJson(mappingJson = {instance: {}, enrollments: {}, event: {}}) {
     return {
         type: 'mappingJson',
         mappingJson
@@ -125,6 +139,8 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
         } else if (hasNoMappings(mappingObj.enrollments)) {
             dispatch(showMessage("Please provide at least one mapping for program enrollment", "error"));
+        } else if (hasNoMappings(mappingObj.event)) {
+            dispatch(showMessage("Please provide at least one mapping for program event", "error"));
         } else {
             let body = {
                 mappingName: mappingName.trim(),
@@ -155,6 +171,7 @@ function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
     dispatch(hideSpinner());
     dispatch(selectedInstanceTable());
     dispatch(selectedEnrollmentsTable());
+    dispatch(selectedEventTable());
     dispatch(filteredInstanceTables());
 
     history.push("/dhis-integration/mapping");
@@ -185,6 +202,7 @@ export function getMapping(mappingNameToEdit, history) {
             dispatch(mappingJson(response.mapping_json.value));
             await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
             await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
+            await dispatchEventTableDetails(response.lookup_table.value.event, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
             history.push('/dhis-integration/mapping/edit/' + mappingNameToEdit);
         } catch (e) {
@@ -241,6 +259,12 @@ async function dispatchEnrollmentTableDetails(tableName, dispatch, ajax) {
     dispatch(enrollmentTableColumns(response));
 }
 
+async function dispatchEventTableDetails(tableName, dispatch, ajax) {
+    let response = await getColumnNames(ajax, tableName);
+    dispatch(selectedEventTable(tableName));
+    dispatch(eventTableColumns(response));
+}
+
 async function dispatchTableDetails(tableName, category, dispatch, ajax) {
     dispatch(mappingJson());
 
@@ -248,6 +272,8 @@ async function dispatchTableDetails(tableName, category, dispatch, ajax) {
         await dispatchInstanceTableDetails(tableName, dispatch, ajax);
     } else if (category === "enrollments") {
         await dispatchEnrollmentTableDetails(tableName, dispatch, ajax);
+    } else if(category === "events") {
+        await dispatchEventTableDetails(tableName, dispatch, ajax);
     }
 }
 

@@ -5,7 +5,12 @@ import {
     selectedInstanceTableColumns,
     allMappingNames,
     currentMapping,
-    mappingJson, filteredEnrollmentTables, selectedEnrollmentsTable, selectedEnrollmentTableColumns
+    mappingJson,
+    filteredEnrollmentTables,
+    selectedEnrollmentsTable,
+    selectedEnrollmentTableColumns,
+    selectedEventTable,
+    selectedEventTableColumns
 } from '../../../../main/client/mapping/reducers/MappingReducer';
 
 describe('#mappingReducers', () => {
@@ -133,6 +138,29 @@ describe('#mappingReducers', () => {
         });
     });
 
+    describe('selectedEventTable', () => {
+        beforeEach(() => {
+            action = {
+                type: 'selectedEventTable',
+                selectedEventTable: ''
+            };
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEventTable"', () => {
+            state = 'someValue';
+            expect(selectedEventTable(state)).toEqual('someValue');
+        });
+
+        it('should return action.selectedEventTable when "action.type" is selectedEventTable', () => {
+            action.selectedEventTable = "patient_identifier";
+            expect(selectedEventTable(state, action)).toEqual("patient_identifier");
+        });
+
+        it('should return empty when args are default', () => {
+            expect(selectedEnrollmentsTable()).toEqual("");
+        });
+    });
+
     describe('selectedInstanceTableColumns', () => {
         beforeEach(() => {
             action = {
@@ -176,6 +204,29 @@ describe('#mappingReducers', () => {
 
         it('should return state when "action.type" is anything other than "selectedEnrollmentTableColumns"', () => {
             expect(selectedEnrollmentTableColumns()).toEqual([]);
+        });
+    });
+
+    describe('selectedEventTableColumns', () => {
+        beforeEach(() => {
+            action = {
+                type: 'selectedEventTableColumns',
+                selectedEventTableColumns: []
+            };
+        });
+
+        it('should return state when "action.type" is anything other than "selectedEventTableColumns"', () => {
+            state = ['someValue'];
+            expect(selectedEventTableColumns(state)).toEqual(['someValue']);
+        });
+
+        it('should return action.selectedEventTableColumns when "action.type" is selectedEventTableColumns', () => {
+            action.selectedEventTableColumns = ['patient_identifier', 'tb-service'];
+            expect(selectedEventTableColumns(state, action)).toEqual(['patient_identifier', 'tb-service']);
+        });
+
+        it('should return empty array on default"', () => {
+            expect(selectedEventTableColumns()).toEqual([]);
         });
     });
 
@@ -233,13 +284,14 @@ describe('#mappingReducers', () => {
 
     describe('mappingJson', () => {
         it('should return state with default params', () => {
-            expect(mappingJson()).toEqual({instance:{},enrollments:{}});
+            expect(mappingJson()).toEqual({instance: {}, enrollments: {}, event: {}});
         });
 
         it('should return state when "action.type" is anything other than "mappingJson"', () => {
             state = {
                 "instance": {"pat_id" : "patHn67"},
-                "enrollments": {"pat_id": "pafsr3"}
+                "enrollments": {"pat_id": "pafsr3"},
+                "event": {"event_id": "fdkf23"}
             };
             expect(mappingJson(state)).toEqual(state);
         });
@@ -249,7 +301,8 @@ describe('#mappingReducers', () => {
                 type : "mappingJson",
                 mappingJson : {
                     "instance": {"pro_id" : "ASG67J", "rpo_name" : "9Yu6TR" },
-                    "enrollments": {"pat_id": "pafsr3"}
+                    "enrollments": {"pat_id": "pafsr3"},
+                    "event": {"event_id": "fdkf23"}
                 }
             };
             expect(mappingJson({}, action)).toEqual(action.mappingJson);

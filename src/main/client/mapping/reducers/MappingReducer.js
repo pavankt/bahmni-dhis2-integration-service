@@ -43,6 +43,15 @@ export function selectedEnrollmentsTable(state = '', action = {}) {
   }
 }
 
+export function selectedEventTable(state = '', action = {}) {
+  switch (action.type) {
+    case 'selectedEventTable':
+      return action.selectedEventTable;
+    default:
+      return state;
+  }
+}
+
 export function selectedInstanceTableColumns(state = [], action = {}) {
   switch (action.type) {
     case 'selectedInstanceTableColumns':
@@ -56,6 +65,15 @@ export function selectedEnrollmentTableColumns(state = [], action = {}) {
   switch (action.type) {
     case 'selectedEnrollmentTableColumns':
       return action.selectedEnrollmentTableColumns;
+    default:
+      return state;
+  }
+}
+
+export function selectedEventTableColumns(state = [], action = {}) {
+  switch (action.type) {
+    case 'selectedEventTableColumns':
+      return action.selectedEventTableColumns;
     default:
       return state;
   }
@@ -81,7 +99,7 @@ export function currentMapping(state = '', action = {}) {
     }
 }
 
-export function mappingJson(state = {instance:{}, enrollments:{}}, action = {}) {
+export function mappingJson(state = {instance:{}, enrollments:{}, event:{}}, action = {}) {
     switch (action.type) {
         case 'mappingJson':
             return action.mappingJson;

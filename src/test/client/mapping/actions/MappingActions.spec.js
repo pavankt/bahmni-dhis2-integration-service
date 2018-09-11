@@ -73,6 +73,38 @@ describe('#mappingActions', () => {
         });
     });
 
+    describe('selectedEnrollmentsTable', () => {
+        it('should return selectedEnrollmentsTable as empty on default', () => {
+            expect(MappingActions.selectedEnrollmentsTable()).toEqual({
+                type: 'selectedEnrollmentsTable',
+                selectedEnrollmentsTable: ''
+            });
+        });
+
+        it('should return tableName as value for the selectedEnrollmentsTable field in the return object', () => {
+            expect(MappingActions.selectedEnrollmentsTable('tb_service')).toEqual({
+                type: 'selectedEnrollmentsTable',
+                selectedEnrollmentsTable: 'tb_service'
+            });
+        });
+    });
+
+    describe('selectedEventTable', () => {
+        it('should return selectedEventTable as empty on default', () => {
+            expect(MappingActions.selectedEventTable()).toEqual({
+                type: 'selectedEventTable',
+                selectedEventTable: ''
+            });
+        });
+
+        it('should return tableName as value for the selectedEventTable field in the return object', () => {
+            expect(MappingActions.selectedEventTable('tb_service')).toEqual({
+                type: 'selectedEventTable',
+                selectedEventTable: 'tb_service'
+            });
+        });
+    });
+
     describe('instanceTableColumns', () => {
         it('should return an empty array', () => {
             expect(MappingActions.instanceTableColumns()).toEqual({
@@ -85,6 +117,38 @@ describe('#mappingActions', () => {
             expect(MappingActions.instanceTableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
                 type: 'selectedInstanceTableColumns',
                 selectedInstanceTableColumns: ['pat_id', 'pat_name', 'age']
+            });
+        });
+    });
+
+    describe('enrollmentTableColumns', () => {
+        it('should return an empty array on default', () => {
+            expect(MappingActions.enrollmentTableColumns()).toEqual({
+                type: 'selectedEnrollmentTableColumns',
+                selectedEnrollmentTableColumns: []
+            });
+        });
+
+        it('should return selected table columns in an array', () => {
+            expect(MappingActions.enrollmentTableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
+                type: 'selectedEnrollmentTableColumns',
+                selectedEnrollmentTableColumns: ['pat_id', 'pat_name', 'age']
+            });
+        });
+    });
+
+    describe('eventTableColumns', () => {
+        it('should return an empty array on default', () => {
+            expect(MappingActions.eventTableColumns()).toEqual({
+                type: 'selectedEventTableColumns',
+                selectedEventTableColumns: []
+            });
+        });
+
+        it('should return selected table columns in an array', () => {
+            expect(MappingActions.eventTableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
+                type: 'selectedEventTableColumns',
+                selectedEventTableColumns: ['pat_id', 'pat_name', 'age']
             });
         });
     });
@@ -192,6 +256,53 @@ describe('#mappingActions', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
 
+        it('should dispatch showMessage with PleaseProvideAtLeastOneMappingForProgramEvent when no event mapping is entered', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Please provide at least one mapping for program event",
+                responseType: "error"
+            }];
+            document.body.innerHTML =
+                '<div>' +
+                '<div class="instance">' +
+                '<div class="mapping-column-name">pat_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input" value="patIdElementId"/>' +
+                '</div>' +
+                '</div>' +
+                '<div class="enrollments">' +
+                '<div class="mapping-column-name">pat_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input" value="patNameElementId"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="events">' +
+                '<div class="mapping-column-name">event_name</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                },
+                allMappingNames: []
+            });
+            let instanceMappingColumns = document.getElementsByClassName('instance');
+            let enrollmentsMappingColumns = document.getElementsByClassName('enrollments');
+            let eventMappingColumns = document.getElementsByClassName('events');
+            let allMappings = {
+                instance: instanceMappingColumns,
+                enrollments: enrollmentsMappingColumns,
+                event: eventMappingColumns
+            };
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
         it('should dispatch showMessage with MappingNameShouldBeUnique' +
             ' when mapping name is already registered', async () => {
             let expectedActions = [{
@@ -259,7 +370,8 @@ describe('#mappingActions', () => {
                     type: "mappingJson",
                     mappingJson: {
                         instance: {},
-                        enrollments: {}
+                        enrollments: {},
+                        event: {}
                     }
                 },
                 {
@@ -273,6 +385,10 @@ describe('#mappingActions', () => {
                 {
                     selectedEnrollmentsTable: "",
                     type: "selectedEnrollmentsTable"
+                },
+                {
+                    selectedEventTable: "",
+                    type: "selectedEventTable"
                 },
                 {
                     type: "filteredInstanceTables",
@@ -294,19 +410,23 @@ describe('#mappingActions', () => {
                 '<div class="instance">' +
                 '<div class="mapping-column-name">pat_id</div>' +
                 '<div class="mapping-data-element">' +
-                '<input type="input" class="mapping-input"/>' +
+                '<input type="input" class="mapping-input" value="XdJH67"/>' +
                 '</div>' +
                 '</div>' +
                 '<div class="enrollments">' +
                 '<div class="mapping-column-name">pat_name</div>' +
                 '<div class="mapping-data-element">' +
-                '<input type="input" class="mapping-input"/>' +
+                '<input type="input" class="mapping-input" value="LKtyR55"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="events">' +
+                '<div class="mapping-column-name">event_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input" value="DLR5U8"/>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
-
-            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
-            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
 
             let history = {
                 push: () => {
@@ -323,7 +443,8 @@ describe('#mappingActions', () => {
 
             let allMappings = {
                 instance: document.getElementsByClassName("instance"),
-                enrollments: document.getElementsByClassName("enrollments")
+                enrollments: document.getElementsByClassName("enrollments"),
+                event: document.getElementsByClassName("events")
             };
             await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable, history));
 
@@ -359,19 +480,24 @@ describe('#mappingActions', () => {
                 '<div class="instance">' +
                 '<div class="mapping-column-name">pat_id</div>' +
                 '<div class="mapping-data-element">' +
-                '<input type="input" class="mapping-input"/>' +
+                '<input type="input" class="mapping-input" value="XdJH67"/>' +
                 '</div>' +
                 '</div>' +
-                '<div class="instance">' +
+                '<div class="enrollments">' +
                 '<div class="mapping-column-name">pat_name</div>' +
                 '<div class="mapping-data-element">' +
-                '<input type="input" class="mapping-input"/>' +
+                '<input type="input" class="mapping-input" value="LKtyR55"/>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="events">' +
+                '<div class="mapping-column-name">event_id</div>' +
+                '<div class="mapping-data-element">' +
+                '<input type="input" class="mapping-input" value="LDW9TY"/>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
 
-            document.getElementsByClassName("mapping-input")[0].value = "XdJH67";
-            document.getElementsByClassName("mapping-input")[1].value = "LKtyR55";
 
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
@@ -380,11 +506,12 @@ describe('#mappingActions', () => {
 
 
             try {
-                let allMapings = {
+                let allMappings = {
                     instance: document.getElementsByClassName("instance"),
-                    enrollments: document.getElementsByClassName("instance")
+                    enrollments: document.getElementsByClassName("enrollments"),
+                    event: document.getElementsByClassName("event")
                 };
-                await store.dispatch(MappingActions.saveMappings(mappingName, allMapings, lookupTable));
+                await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable));
             } catch (e) {
                 expect(store.getActions()).toEqual(expectedActions);
                 putMock.verify();
@@ -403,12 +530,24 @@ describe('#mappingActions', () => {
     describe('mappingJson', () => {
         it('should return object with type and mappingJson', () => {
             let mappingJson = {
-                "instance": {"patient_id": "FH7RTu", "patient_name": "ZS8Srt7"},
-                "enrollments": { "pat_id": "4RT43" }
+                instance: {"patient_id": "FH7RTu", "patient_name": "ZS8Srt7"},
+                enrollments: { "pat_id": "4RT43" },
+                event: {"event_id": "fdkf23"}
             };
             expect(MappingActions.mappingJson(mappingJson))
                 .toEqual({type: "mappingJson", mappingJson})
-        })
+        });
+
+        it('should return object with empty instance, enrollments and events on default', () => {
+            let mappingJson = {
+                instance: {},
+                enrollments: {},
+                event: {}
+            };
+
+            expect(MappingActions.mappingJson())
+                .toEqual({ type: "mappingJson", mappingJson })
+        });
     });
 
     describe('getMapping', () => {
@@ -416,6 +555,7 @@ describe('#mappingActions', () => {
             let ajax = new Ajax();
             let mappingNameToEdit = "HTS Service";
             let tableColumns = ["pat_id", "program_id", "program_status"];
+            let eventTableColumns = ["event_id", "patient_name"];
             let expectedActions = [
                 {
                     type: "hideSpinner",
@@ -428,6 +568,14 @@ describe('#mappingActions', () => {
                             patient_identifier: "fYj7U",
                             patient_name: "ert76HK"
                         },
+                        enrollments: {
+                            enrollment_id: "fYj7U",
+                            patient_name: "ert76HK"
+                        },
+                        event: {
+                            event_id: "fYj7U",
+                            patient_name: "ert76HK"
+                        }
                     }
                 },
                 {
@@ -447,6 +595,14 @@ describe('#mappingActions', () => {
                     selectedEnrollmentTableColumns: tableColumns
                 },
                 {
+                    type: "selectedEventTable",
+                    selectedEventTable: "event_table"
+                },
+                {
+                    type: "selectedEventTableColumns",
+                    selectedEventTableColumns: eventTableColumns
+                },
+                {
                     type: "currentMapping",
                     mappingName: mappingNameToEdit
                 },
@@ -459,6 +615,7 @@ describe('#mappingActions', () => {
             let store = mockStore({
                 selectedInstanceTable: "",
                 selectedEnrollmentsTable: "",
+                selectedEventTable: "",
                 currentMapping: "",
                 mappingJson: {}
             });
@@ -478,17 +635,26 @@ describe('#mappingActions', () => {
                     "lookup_table": {
                         "value": '{' +
                             '"instance": "patient_details",' +
-                            '"enrollments": "enroll"' +
+                            '"enrollments": "enroll",' +
+                            '"event": "event_table"' +
                             '}',
                         "type": "json"
                     },
                     "mapping_json": {
                         "value": '{' +
                             '"instance": {' +
-                            '"patient_identifier": "fYj7U",' +
-                            '"patient_name": "ert76HK"' +
+                                '"patient_identifier": "fYj7U",' +
+                                '"patient_name": "ert76HK"' +
+                            '},' +
+                            '"enrollments": {' +
+                                '"enrollment_id": "fYj7U",' +
+                                '"patient_name": "ert76HK"' +
+                            '},' +
+                            '"event": {' +
+                                '"event_id": "fYj7U",' +
+                                '"patient_name": "ert76HK"' +
                             '}' +
-                            '}',
+                        '}',
                         "type": "json"
                     }
                 }));
@@ -502,6 +668,11 @@ describe('#mappingActions', () => {
                 .withArgs("/dhis-integration/api/getColumns", {tableName: "enroll"})
                 .returns(Promise.resolve(tableColumns));
 
+            let eventColumnsMock = ajaxMock
+                .expects("get")
+                .withArgs("/dhis-integration/api/getColumns", {tableName: "event_table"})
+                .returns(Promise.resolve(eventTableColumns));
+
             let pushMock = sandbox.mock(history).expects("push")
                 .withArgs("/dhis-integration/mapping/edit/"+mappingNameToEdit);
             history.push = pushMock;
@@ -513,6 +684,7 @@ describe('#mappingActions', () => {
             ajaxGetMock.verify();
             getInstanceColumnsMock.verify();
             getEnrollmentsColumnsMock.verify();
+            eventColumnsMock.verify();
             pushMock.verify();
             sandbox.restore();
         });
@@ -650,7 +822,9 @@ describe('#mappingActions', () => {
     });
 
     describe('getTableColumns', () => {
-        it('should get all columns of the table', async () => {
+        it('should get all columns of the given table and dispatch instance actions when category is instance', async () => {
+            let tableName = "pat_details";
+            let tableColumns = ["pat_id", "pat_name"];
             let ajax = new Ajax();
             let expectedActions = [
                 {
@@ -661,8 +835,17 @@ describe('#mappingActions', () => {
                     type: "mappingJson",
                     mappingJson: {
                         instance: {},
-                        enrollments: {}
+                        enrollments: {},
+                        event: {}
                     }
+                },
+                {
+                    type: "selectedInstanceTable",
+                    selectedInstanceTable: tableName
+                },
+                {
+                    type: "selectedInstanceTableColumns",
+                    selectedInstanceTableColumns: tableColumns
                 },
                 {
                     type: "hideSpinner",
@@ -676,8 +859,108 @@ describe('#mappingActions', () => {
 
             let sandbox = sinon.createSandbox();
             sandbox.stub(Ajax, "instance").returns(ajax);
+            sandbox.mock(ajax)
+                .expects("get")
+                .withExactArgs("/dhis-integration/api/getColumns", { tableName })
+                .returns(Promise.resolve(tableColumns));
 
-            await store.dispatch(MappingActions.getTableColumns("pat_details"));
+            await store.dispatch(MappingActions.getTableColumns(tableName, "instance"));
+
+            expect(store.getActions()).toEqual(expectedActions);
+            sandbox.restore();
+        });
+
+        it('should get all columns of the given table and dispatch enrollments actions when category is enrollments', async () => {
+            let tableName = "pat_details";
+            let tableColumns = ["pat_id", "pat_name"];
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {
+                        instance: {},
+                        enrollments: {},
+                        event: {}
+                    }
+                },
+                {
+                    type: "selectedEnrollmentsTable",
+                    selectedEnrollmentsTable: tableName
+                },
+                {
+                    type: "selectedEnrollmentTableColumns",
+                    selectedEnrollmentTableColumns: tableColumns
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTableColumns: []
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            sandbox.mock(ajax)
+                .expects("get")
+                .withExactArgs("/dhis-integration/api/getColumns", { tableName })
+                .returns(Promise.resolve(tableColumns));
+
+            await store.dispatch(MappingActions.getTableColumns(tableName, "enrollments"));
+
+            expect(store.getActions()).toEqual(expectedActions);
+            sandbox.restore();
+        });
+
+        it('should get all columns of the given table and dispatch event actions when category is event', async () => {
+            let tableName = "pat_details";
+            let tableColumns = ["pat_id", "pat_name"];
+            let ajax = new Ajax();
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "mappingJson",
+                    mappingJson: {
+                        instance: {},
+                        enrollments: {},
+                        event: {}
+                    }
+                },
+                {
+                    type: "selectedEventTable",
+                    selectedEventTable: tableName
+                },
+                {
+                    type: "selectedEventTableColumns",
+                    selectedEventTableColumns: tableColumns
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            let store = mockStore({
+                selectedTableColumns: []
+            });
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            sandbox.mock(ajax)
+                .expects("get")
+                .withExactArgs("/dhis-integration/api/getColumns", { tableName })
+                .returns(Promise.resolve(tableColumns));
+
+            await store.dispatch(MappingActions.getTableColumns(tableName, "events"));
 
             expect(store.getActions()).toEqual(expectedActions);
             sandbox.restore();

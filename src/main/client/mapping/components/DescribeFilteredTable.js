@@ -2,21 +2,22 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-    allTables,
     currentMapping,
     filteredInstanceTables,
+    getMapping,
+    getTables,
     mappingJson,
     saveMappings,
     selectedEnrollmentsTable,
-    selectedInstanceTable,
-    getMapping,
-    getTables
+    selectedEventTable,
+    selectedInstanceTable
 } from '../actions/MappingActions';
 import Message from '../../common/Message';
 import Spinner from "../../common/Spinner";
 import {showHome} from "../../common/Actions";
 import InstanceMapper from "./InstanceMapper";
 import EnrollmentMapper from "./EnrollmentMapper";
+import EventMapper from "./EventMapper";
 
 class DescribeFilteredTable extends Component {
   constructor() {
@@ -47,6 +48,7 @@ class DescribeFilteredTable extends Component {
   _onCancel() {
     this.props.dispatch(selectedInstanceTable());
     this.props.dispatch(selectedEnrollmentsTable());
+    this.props.dispatch(selectedEventTable());
     this.props.dispatch(filteredInstanceTables());
     this.props.dispatch(currentMapping());
     this.props.dispatch(mappingJson());
@@ -58,9 +60,11 @@ class DescribeFilteredTable extends Component {
     let mappings = {};
     mappings.instance = document.getElementsByClassName('instance');
     mappings.enrollments = document.getElementsByClassName('enrollments');
+    mappings.event = document.getElementsByClassName('events');
     let lookupTable = {
         instance: this.props.selectedInstanceTable,
-        enrollments: this.props.selectedEnrollmentsTable
+        enrollments: this.props.selectedEnrollmentsTable,
+        event: this.props.selectedEventTable
     };
     this.props.dispatch(saveMappings(mappingName, mappings, lookupTable, this.props.history, this.props.currentMapping));
   }
@@ -81,11 +85,11 @@ class DescribeFilteredTable extends Component {
         />
 
         <InstanceMapper />
-
         <EnrollmentMapper />
+        <EventMapper />
 
         <div className="footer">
-          {(this.props.selectedInstanceTable || this.props.selectedEnrollmentsTable) && (
+          {(this.props.selectedInstanceTable || this.props.selectedEnrollmentsTable || this.props.selectedEventTable) && (
           <button type="button" className="save" onClick={this._onSave}>
             Save
           </button>
@@ -102,6 +106,7 @@ class DescribeFilteredTable extends Component {
 DescribeFilteredTable.propTypes = {
   selectedInstanceTable: PropTypes.string.isRequired,
   selectedEnrollmentsTable: PropTypes.string.isRequired,
+  selectedEventTable: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   hideSpinner:PropTypes.bool.isRequired,
@@ -111,10 +116,9 @@ DescribeFilteredTable.propTypes = {
 const mapStateToProps = (state) => ({
   selectedInstanceTable: state.selectedInstanceTable,
   selectedEnrollmentsTable: state.selectedEnrollmentsTable,
-  tables: state.allTables,
+  selectedEventTable: state.selectedEventTable,
   hideSpinner : state.hideSpinner,
-  currentMapping: state.currentMapping,
-  mappingJson : state.mappingJson
+  currentMapping: state.currentMapping
 });
 
 

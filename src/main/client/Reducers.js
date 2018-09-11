@@ -6,10 +6,12 @@ import {
     filteredEnrollmentTables,
     selectedInstanceTable,
     selectedEnrollmentsTable,
+    selectedEventTable,
     selectedInstanceTableColumns,
     selectedEnrollmentTableColumns,
+    selectedEventTableColumns,
     currentMapping,
-    mappingJson
+    mappingJson,
 } from './mapping/reducers/MappingReducer';
 
 import { hideSpinner,
@@ -23,9 +25,11 @@ const reducers = combineReducers({
   filteredEnrollmentTables,
   selectedInstanceTable,
   selectedEnrollmentsTable,
+  selectedEventTable,
   allTables,
   selectedInstanceTableColumns,
   selectedEnrollmentTableColumns,
+  selectedEventTableColumns,
   allMappingNames,
   hideSpinner,
   showMessage,
