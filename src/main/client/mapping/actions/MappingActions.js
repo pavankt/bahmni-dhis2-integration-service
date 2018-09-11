@@ -146,7 +146,8 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
                 mappingName: mappingName.trim(),
                 lookupTable: JSON.stringify(lookupTable),
                 mappingJson: JSON.stringify(mappingObj),
-                currentMapping: currentMappingName
+                currentMapping: currentMappingName,
+                user: state.session.user
             };
 
             dispatch(hideSpinner(false));

@@ -402,7 +402,10 @@ describe('#mappingActions', () => {
                     responseType: ""
                 },
                 allMappingNames: ["Mapping Name"],
-                currentMapping: ""
+                currentMapping: "",
+                session: {
+                    user: "superman"
+                }
             });
 
             document.body.innerHTML =
