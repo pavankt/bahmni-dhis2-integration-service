@@ -8,8 +8,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,13 +25,14 @@ public class MappingDAOImpl implements MappingDAO {
     private final static int SUCCESS = 1;
 
     @Override
-    public String saveMapping(String mappingName, String lookupTable, String mappingJson, String currentMapping) throws Exception {
-        String sql = "".equals(currentMapping) ?
-                String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json) " +
-                "VALUES ('%s', '%s', '%s')", mappingName, lookupTable, mappingJson)
+    public String saveMapping(String mappingName, String lookupTable, String mappingJson, String currentMapping, String user) throws Exception {
+        String currentTime = getCurrentTime();
+        String sql = currentMapping.isEmpty() ?
+                String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
+                "VALUES ('%s', '%s', '%s', '%s', '%s')", mappingName, lookupTable, mappingJson, user, currentTime)
                 :String.format("UPDATE mapping " +
-                    "SET mapping_name='%s', lookup_table='%s', mapping_json='%s' " +
-                    "WHERE mapping_name='%s'", mappingName, lookupTable, mappingJson, currentMapping);
+                    "SET mapping_name='%s', lookup_table='%s', mapping_json='%s', modified_by='%s', date_modified='%s' " +
+                    "WHERE mapping_name='%s'", mappingName, lookupTable, mappingJson, user, currentTime, currentMapping);
 
         int result = jdbcTemplate.update(sql);
 
@@ -54,5 +58,12 @@ public class MappingDAOImpl implements MappingDAO {
         }catch (EmptyResultDataAccessException e){
             throw new NoMappingFoundException(mappingName);
         }
+    }
+
+    private String getCurrentTime() {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(date);
     }
 }

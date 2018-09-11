@@ -36,9 +36,9 @@ CREATE TABLE "public"."mapping"(
   lookup_table json,
   mapping_json json,
   created_by text,
-  created_date date,
-  modifed_by text,
-  modifed_date date
+  date_created TIMESTAMP,
+  modified_by text,
+  date_modified TIMESTAMP
 );
 
 DROP TABLE IF EXISTS marker CASCADE;

@@ -31,6 +31,7 @@ public class MappingServiceImplTest {
     private String lookupTable = "{\"instance\" : \"patient\"}";
     private String mappingJson = "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}";
     private String currentMapping = "";
+    private String user = "superman";
 
     @Before
     public void setUp() throws Exception {
@@ -41,25 +42,25 @@ public class MappingServiceImplTest {
     @Test
     public void shouldReturnSuccessMessageOnInsertSuccess() throws Exception {
         String expected = "Successfully Added Mapping";
-        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user))
                 .thenReturn(expected);
 
-        String actual = mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+        String actual = mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
 
-        verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+        verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldThrowErrorOnFail() throws Exception {
         String expected = "Could not able to insert";
-        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping))
+        when(mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user))
                 .thenThrow(new Exception(expected));
 
         try {
-            mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+            mappingService.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
         } catch (Exception e) {
-            verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping);
+            verify(mappingDAO, times(1)).saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
             assertEquals(expected, e.getMessage());
         }
     }

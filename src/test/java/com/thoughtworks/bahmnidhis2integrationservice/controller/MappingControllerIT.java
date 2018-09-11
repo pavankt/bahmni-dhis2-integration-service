@@ -58,6 +58,7 @@ public class MappingControllerIT{
         params.put("lookupTable", "{\"instance\" : \"patient\"}");
         params.put("mappingJson", "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}");
         params.put("currentMapping", "");
+        params.put("user", "superman");
 
         String expectedMessage = "Successfully Added New Mapping";
 
@@ -80,6 +81,7 @@ public class MappingControllerIT{
         params.put("lookupTable", "{\"instance\" : \"patient\"}");
         params.put("mappingJson", "{\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}");
         params.put("currentMapping", "HTS Service");
+        params.put("user", "superman");
 
         String expectedMessage = "Successfully Added New Mapping";
 
@@ -114,9 +116,9 @@ public class MappingControllerIT{
                 "lookup_table json, " +
                 "mapping_json json, " +
                 "created_by text, " +
-                "created_date date, " +
-                "modifed_by text, " +
-                "modifed_date date)");
+                "date_created timestamp, " +
+                "modified_by text, " +
+                "date_modified timestamp)");
     }
 
     private void truncateMarker() {

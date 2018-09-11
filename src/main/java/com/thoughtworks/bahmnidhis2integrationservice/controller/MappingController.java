@@ -31,7 +31,8 @@ public class MappingController {
         String response = mappingService.saveMapping(params.get("mappingName"),
                                                      params.get("lookupTable"),
                                                      params.get("mappingJson"),
-                                                     params.get("currentMapping"));
+                                                     params.get("currentMapping"),
+                                                     params.get("user"));
 
         markerService.createEntriesForNewService(params.get("currentMapping"), params.get("mappingName"));
 
