@@ -59,7 +59,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 return false;
             default:
                 logger.error(this.getClass().getName() + ": Not authenticated user.");
-                return true;
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return false;
         }
     }
 }

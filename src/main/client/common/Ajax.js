@@ -5,7 +5,8 @@ const responseCodes = {
     "FORBIDDEN": 403,
     "NOT_FOUND": 404,
     "BAD_REQUEST": 400,
-    "OK": 200
+    "OK": 200,
+    "USER_UNAUTHORISED": 401
 };
 
 export default class Ajax {
@@ -52,6 +53,11 @@ export default class Ajax {
 
     async request(url, params) {
         let response = await fetch(url, params);
+
+        if (response.status === responseCodes.USER_UNAUTHORISED) {
+            window.location.pathname = '/home';
+            return;
+        }
 
         let responseJson = response;
         if (url !== audit.URI) {
