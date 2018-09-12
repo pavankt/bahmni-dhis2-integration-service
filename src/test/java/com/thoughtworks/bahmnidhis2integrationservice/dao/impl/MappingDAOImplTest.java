@@ -93,7 +93,7 @@ public class MappingDAOImplTest {
             mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
         } catch(Exception e) {
             verify(jdbcTemplate, times(1)).update(sql);
-            assertEquals("Could not able to add Mapping", e.getMessage());
+            assertEquals("Could not add Mapping", e.getMessage());
         }
     }
 
