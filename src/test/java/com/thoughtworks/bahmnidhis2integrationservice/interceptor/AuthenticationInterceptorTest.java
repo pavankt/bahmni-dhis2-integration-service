@@ -94,14 +94,14 @@ public class AuthenticationInterceptorTest {
 
   @Test
   @SneakyThrows
-  public void shouldReturnTrueIfReportingSessionIdIsInvalidatedByOpenMRS() {
+  public void shouldReturnFalseIfReportingSessionIdIsInvalidatedByOpenMRS() {
     when(httpServletRequestMock.getCookies()).thenReturn(cookies);
     when(authenticator.authenticate(COOKIE_VALUE)).thenReturn(NOT_AUTHENTICATED);
 
     boolean response = authenticationInterceptor.preHandle(httpServletRequestMock, httpServletResponseMock, new Object());
 
     verify(authenticator, times(1)).authenticate(COOKIE_VALUE);
-    Assert.assertTrue(response);
+    Assert.assertFalse(response);
   }
 
   @Test
