@@ -40,7 +40,7 @@ public class MappingDAOImpl implements MappingDAO {
             return "Successfully Added New Mapping";
         }
 
-        throw new Exception("Could not able to add Mapping");
+        throw new Exception("Could not add Mapping");
     }
 
     @Override

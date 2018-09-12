@@ -6,7 +6,8 @@ import {hideSpinner,
     showHome,
     showMessage,
     session,
-    getSession
+    getSession,
+    ensureActiveSession
 } from '../../../main/client/common/Actions';
 import Ajax from '../../../main/client/common/Ajax';
 
@@ -169,6 +170,46 @@ describe('Actions', () => {
             ];
 
             await store.dispatch(getSession());
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            privilegesMock.verify();
+
+            sandbox.restore();
+        });
+    });
+
+    describe('ensureActiveSession', () => {
+        it('should dispatch session if store does not have it', async () => {
+            let sandbox = sinon.createSandbox();
+            let ajax = new Ajax();
+            let store = mockStore({
+                session: {
+                    user: '',
+                    privileges: []}
+            });
+            let session = {user: 'admin', privileges: "[app:dhis2sync, dhis2:mapping, dhis2:log]"};
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let privilegesMock = sandbox.mock(ajax).expects("get")
+                .withArgs('/dhis-integration/api/session')
+                .returns(Promise.resolve(session));
+
+            let expectedActions = [
+                {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
+                    type: "session",
+                    session
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
+                }
+            ];
+
+            await store.dispatch(ensureActiveSession());
 
             expect(store.getActions()).toEqual(expectedActions);
 

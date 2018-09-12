@@ -1,4 +1,4 @@
-import {hideSpinner, showMessage} from "../../common/Actions";
+import {hideSpinner, showMessage, ensureActiveSession} from "../../common/Actions";
 import {auditLogEventDetails} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
@@ -129,7 +129,7 @@ function mappingNameIsNotUnique(state, mappingName) {
 export function saveMappings(mappingName = "", allMappings, lookupTable, history = {}, currentMappingName) {
     return async (dispatch, getState) => {
         const mappingObj = createJson(allMappings);
-        const state = getState();
+        let state = getState();
 
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
@@ -142,6 +142,8 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
         } else if (hasNoMappings(mappingObj.event)) {
             dispatch(showMessage("Please provide at least one mapping for program event", "error"));
         } else {
+            await dispatch(ensureActiveSession());
+            state = getState();
             let body = {
                 mappingName: mappingName.trim(),
                 lookupTable: JSON.stringify(lookupTable),

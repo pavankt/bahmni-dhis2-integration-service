@@ -4,13 +4,15 @@ import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {syncData} from './actions/SyncActions';
 import {getAllMappings} from '../mapping/actions/MappingActions';
+import {ensureActiveSession} from "../common/Actions";
 import Message from "../common/Message";
 
 
 class SyncDashboard extends React.Component {
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.dispatch(getAllMappings());
+        await this.props.dispatch(ensureActiveSession());
     }
 
     renderMappingNames() {

@@ -30,6 +30,15 @@ export function session(session = {user: '', privileges: []}) {
     }
 }
 
+export function ensureActiveSession() {
+    return async (dispatch, getState) => {
+        let state = getState();
+        if (!state.session.user && state.session.user.length === 0) {
+            await dispatch(getSession());
+        }
+    }
+}
+
 export function getSession() {
     return async dispatch => {
         let ajax = Ajax.instance();
