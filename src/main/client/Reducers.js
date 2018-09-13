@@ -2,8 +2,6 @@ import { combineReducers } from 'redux';
 import {
     allMappingNames,
     allTables,
-    filteredInstanceTables,
-    filteredEnrollmentTables,
     selectedInstanceTable,
     selectedEnrollmentsTable,
     selectedEventTable,
@@ -21,8 +19,6 @@ import { hideSpinner,
 } from './common/Reducers';
 
 const reducers = combineReducers({
-  filteredInstanceTables,
-  filteredEnrollmentTables,
   selectedInstanceTable,
   selectedEnrollmentsTable,
   selectedEventTable,

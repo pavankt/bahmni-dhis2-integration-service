@@ -7,23 +7,6 @@ export function allTables(state = [], action = {}) {
   }
 }
 
-export function filteredInstanceTables(state = [], action = {}) {
-  switch (action.type) {
-    case 'filteredInstanceTables':
-      return action.filteredInstanceTables;
-    default:
-      return state;
-  }
-}
-
-export function filteredEnrollmentTables(state = [], action = {}) {
-  switch (action.type) {
-    case 'filteredEnrollmentTables':
-      return action.filteredEnrollmentTables;
-    default:
-      return state;
-  }
-}
 
 export function selectedInstanceTable(state = '', action = {}) {
   switch (action.type) {

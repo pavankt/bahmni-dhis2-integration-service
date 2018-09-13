@@ -1,12 +1,10 @@
 import {
     allTables,
-    filteredInstanceTables,
     selectedInstanceTable,
     selectedInstanceTableColumns,
     allMappingNames,
     currentMapping,
     mappingJson,
-    filteredEnrollmentTables,
     selectedEnrollmentsTable,
     selectedEnrollmentTableColumns,
     selectedEventTable,
@@ -45,52 +43,6 @@ describe('#mappingReducers', () => {
         });
     });
 
-
-    describe('filteredInstanceTables', () => {
-        beforeEach(() => {
-            action = {
-                type: 'filteredInstanceTables',
-                filteredInstanceTables: []
-            };
-        });
-
-        it('should return state when "action.type" is anything other than "filteredInstanceTables"', () => {
-            state = ['someValue'];
-            expect(filteredInstanceTables(state)).toEqual(['someValue']);
-        });
-
-        it('should return action.filteredInstanceTables when "action.type" is filteredInstanceTables', () => {
-            action.filteredInstanceTables = ['patient_identifier'];
-            expect(filteredInstanceTables(state, action)).toEqual(['patient_identifier']);
-        });
-
-        it('should return state when "action.type" is anything other than "filteredInstanceTables"', () => {
-            expect(filteredInstanceTables()).toEqual([]);
-        });
-    });
-
-    describe('filteredEnrollmentTables', () => {
-        beforeEach(() => {
-            action = {
-                type: 'filteredEnrollmentTables',
-                filteredEnrollmentTables: []
-            };
-        });
-
-        it('should return state when "action.type" is anything other than "filteredEnrollmentTables"', () => {
-            state = ['someValue'];
-            expect(filteredEnrollmentTables(state)).toEqual(['someValue']);
-        });
-
-        it('should return action.filteredEnrollmentTables when "action.type" is filteredEnrollmentTables', () => {
-            action.filteredEnrollmentTables = ['patient_identifier'];
-            expect(filteredEnrollmentTables(state, action)).toEqual(['patient_identifier']);
-        });
-
-        it('should return state when "action.type" is anything other than "filteredEnrollmentTables"', () => {
-            expect(filteredEnrollmentTables()).toEqual([]);
-        });
-    });
 
     describe('selectedInstanceTable', () => {
         beforeEach(() => {

@@ -25,38 +25,6 @@ describe('#mappingActions', () => {
         });
     });
 
-    describe('#filteredInstanceTables', () => {
-        it('should return empty tables ', () => {
-            expect(MappingActions.filteredInstanceTables()).toEqual({
-                type: 'filteredInstanceTables',
-                filteredInstanceTables: []
-            });
-        });
-
-        it('should return table name in an array', () => {
-            expect(MappingActions.filteredInstanceTables(['patient_identifier', 'program', 'some_table'])).toEqual({
-                type: 'filteredInstanceTables',
-                filteredInstanceTables: ['patient_identifier', 'program', 'some_table']
-            });
-        });
-    });
-
-    describe('#filteredEnrollmentTables', () => {
-        it('should return empty tables ', () => {
-            expect(MappingActions.filteredEnrollmentTables()).toEqual({
-                type: 'filteredEnrollmentTables',
-                filteredEnrollmentTables: []
-            });
-        });
-
-        it('should return table name in an array', () => {
-            expect(MappingActions.filteredEnrollmentTables(['patient_identifier', 'program', 'some_table'])).toEqual({
-                type: 'filteredEnrollmentTables',
-                filteredEnrollmentTables: ['patient_identifier', 'program', 'some_table']
-            });
-        });
-    });
-
     describe('selectedInstanceTable', () => {
         it('should return a table name', () => {
             expect(MappingActions.selectedInstanceTable()).toEqual({
@@ -167,13 +135,6 @@ describe('#mappingActions', () => {
                 allMappings: ['pat_id', 'pat_name', 'age']
             });
         });
-    });
-
-    describe('addNewMapping', () => {
-        it('should return object with type and mapping', () => {
-            expect(MappingActions.addNewMapping("new mapping"))
-                .toEqual({type: 'addNewMapping', mappingName: 'new mapping'})
-        })
     });
 
     describe('saveMapping', () => {
@@ -389,10 +350,6 @@ describe('#mappingActions', () => {
                 {
                     selectedEventTable: "",
                     type: "selectedEventTable"
-                },
-                {
-                    type: "filteredInstanceTables",
-                    filteredInstanceTables: []
                 }
             ];
 

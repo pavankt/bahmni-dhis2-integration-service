@@ -68,8 +68,6 @@ describe('DescribeFilteredTable', () => {
             .returns({ type: "" });
         let selectedEventTable = mappingActions.expects("selectedEventTable")
             .returns({ type: "" });
-        let filteredInstanceTables = mappingActions.expects("filteredInstanceTables")
-            .returns({ type: "" });
         let currentMapping = mappingActions.expects("currentMapping")
                     .returns({ type: "" });
         let mappingJson = mappingActions.expects("mappingJson")
@@ -84,7 +82,6 @@ describe('DescribeFilteredTable', () => {
         selectedInstanceTable.verify();
         selectedEnrollmentsTable.verify();
         selectedEventTable.verify();
-        filteredInstanceTables.verify();
         currentMapping.verify();
         mappingJson.verify();
         sandbox.restore();

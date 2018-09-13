@@ -53,15 +53,17 @@ export default class ColumnMappings extends Component {
                 {/*eslint-enable*/}
             <section className="column-mapping-section">
               <table className="mapping-table">
-                <tr className="mapping-row-header">
-                  <th className="mapping-header">
+                <tbody>
+                  <tr className="mapping-row-header">
+                    <th className="mapping-header">
                                 Bahmni Data Point
-                  </th>
-                  <th className="mapping-header">
+                    </th>
+                    <th className="mapping-header">
                                 DHIS2 Data Element ID
-                  </th>
-                </tr>
-                {this.renderColumns()}
+                    </th>
+                  </tr>
+                  {this.renderColumns()}
+                </tbody>
               </table>
             </section>
           </div>

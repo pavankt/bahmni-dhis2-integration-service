@@ -19,7 +19,7 @@ describe('EnrollmentMapper', function () {
             selectedEnrollmentTableColumns: [],
             mappingJson: {
                 instance:{},
-                enrollment:{}
+                enrollments:{}
             }
         }), applyMiddleware(thunkMiddleware));
 

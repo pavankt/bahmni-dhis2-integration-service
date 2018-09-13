@@ -12,20 +12,6 @@ export function allTables(tables = []) {
     };
 }
 
-export function filteredInstanceTables(tables = []) {
-    return {
-        type: 'filteredInstanceTables',
-        filteredInstanceTables: tables
-    };
-}
-
-export function filteredEnrollmentTables(tables = []) {
-    return {
-        type: 'filteredEnrollmentTables',
-        filteredEnrollmentTables: tables
-    };
-}
-
 export function selectedInstanceTable(table = '') {
     return {
         type: 'selectedInstanceTable',
@@ -75,13 +61,6 @@ export function allMappingNames(mappingNames = []) {
     }
 }
 
-export function addNewMapping(mappingName) {
-    return {
-        type: 'addNewMapping',
-        mappingName
-    }
-}
-
 export function currentMapping(mappingName = "") {
     return {
         type: 'currentMapping',
@@ -125,6 +104,17 @@ function mappingNameIsNotUnique(state, mappingName) {
         (state.currentMapping === "" || mappingName !== state.currentMapping);
 }
 
+function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
+    dispatch(showMessage(response.data, "success"));
+    dispatch(currentMapping());
+    dispatch(mappingJson());
+    dispatch(hideSpinner());
+    dispatch(selectedInstanceTable());
+    dispatch(selectedEnrollmentsTable());
+    dispatch(selectedEventTable());
+
+    history.push("/dhis-integration/mapping");
+}
 
 export function saveMappings(mappingName = "", allMappings, lookupTable, history = {}, currentMappingName) {
     return async (dispatch, getState) => {
@@ -167,18 +157,6 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
     };
 }
 
-function afterOnSaveMappingSuccessResponse(dispatch, response, history) {
-    dispatch(showMessage(response.data, "success"));
-    dispatch(currentMapping());
-    dispatch(mappingJson());
-    dispatch(hideSpinner());
-    dispatch(selectedInstanceTable());
-    dispatch(selectedEnrollmentsTable());
-    dispatch(selectedEventTable());
-    dispatch(filteredInstanceTables());
-
-    history.push("/dhis-integration/mapping");
-}
 
 
 function isJSON(type) {

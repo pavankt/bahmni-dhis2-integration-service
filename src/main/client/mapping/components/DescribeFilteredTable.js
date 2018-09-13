@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
     currentMapping,
-    filteredInstanceTables,
     getMapping,
     getTables,
     mappingJson,
@@ -49,7 +48,6 @@ class DescribeFilteredTable extends Component {
     this.props.dispatch(selectedInstanceTable());
     this.props.dispatch(selectedEnrollmentsTable());
     this.props.dispatch(selectedEventTable());
-    this.props.dispatch(filteredInstanceTables());
     this.props.dispatch(currentMapping());
     this.props.dispatch(mappingJson());
     this.props.history.push('/dhis-integration/mapping');
