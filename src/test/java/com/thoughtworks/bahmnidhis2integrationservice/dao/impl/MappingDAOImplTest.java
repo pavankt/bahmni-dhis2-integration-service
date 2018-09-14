@@ -52,7 +52,7 @@ public class MappingDAOImplTest {
         Date dateMock = mock(Date.class);
         whenNew(Date.class).withNoArguments().thenReturn(dateMock);
         SimpleDateFormat simpleDateFormat = mock(SimpleDateFormat.class);
-        whenNew(SimpleDateFormat.class).withArguments("dd-MM-yyyy HH:mm:ss").thenReturn(simpleDateFormat);
+        whenNew(SimpleDateFormat.class).withArguments("yyyy-MM-dd HH:mm:ss").thenReturn(simpleDateFormat);
         TimeZone timeZone = mock(TimeZone.class);
         mockStatic(TimeZone.class);
         when(TimeZone.getTimeZone("UTC")).thenReturn(timeZone);
