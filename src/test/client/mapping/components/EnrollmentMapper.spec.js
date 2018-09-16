@@ -31,8 +31,8 @@ describe('EnrollmentMapper', function () {
     });
 
 
-    it('should render ColumnMapping component when selectedEnrollmentTable have value', () => {
-        expect(rendered.find('.mapping-table-div')).toHaveLength(1);
+    it('should not render ColumnMapping component when selectedEnrollmentTable have value', () => {
+        expect(rendered.find('.mapping-table-div')).toHaveLength(0);
     });
 
     it('should render DisplayColumns', () => {
@@ -43,7 +43,7 @@ describe('EnrollmentMapper', function () {
         expect(rendered.find('.table-input')).toHaveLength(1);
     });
 
-    it('should have a span with class name Enrollment-table-span', ()=> {
-        expect(rendered.find('.enrollment-table-span')).toHaveLength(1);
+    it('should not have a span with class name Enrollment-table-span', ()=> {
+        expect(rendered.find('.enrollment-table-span')).toHaveLength(0);
     });
 });

@@ -53,15 +53,6 @@ class EnrollmentMapper extends Component {
               category="enrollments"
               filteredTablesAction={()=>{this.setState({filteredTables:[]})}}
             />
-
-            {(this.props.selectedTable) && (
-            <ColumnMappings
-              columns={this.props.columns}
-              mappingJson={this.props.mappingJson.enrollments}
-              category="enrollments"
-              mappingType="program enrollment"
-            />
-                )}
           </div>
         )
     }

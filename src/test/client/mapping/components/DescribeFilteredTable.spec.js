@@ -94,8 +94,6 @@ describe('DescribeFilteredTable', () => {
         let docMock = sandbox.mock(document);
         let instanceMapping = docMock.expects("getElementsByClassName")
             .withArgs("instance");
-        let enrollmentsMapping = docMock.expects("getElementsByClassName")
-            .withArgs("enrollments");
         let eventMapping = docMock.expects("getElementsByClassName")
             .withArgs("events");
         let saveMappingMock = mappingActions.expects("saveMappings")
@@ -106,7 +104,6 @@ describe('DescribeFilteredTable', () => {
 
         docMock.verify();
         instanceMapping.verify();
-        enrollmentsMapping.verify();
         eventMapping.verify();
         saveMappingMock.verify();
         sandbox.restore();

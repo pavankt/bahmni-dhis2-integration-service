@@ -178,7 +178,7 @@ describe('#mappingActions', () => {
         it('should dispatch showMessage with AtLeaseOneProgramEnrollmentColumnShouldHaveMapping when no enrollment mapping is entered', async () => {
             let expectedActions = [{
                 type: "showMessage",
-                responseMessage: "Please provide at least one mapping for program enrollment",
+                responseMessage: "Please select a table for program enrollment",
                 responseType: "error"
             }];
 
@@ -207,13 +207,15 @@ describe('#mappingActions', () => {
             });
 
             let instanceMappingColumns = document.getElementsByClassName('instance');
-            let enrollmentsMappingColumns = document.getElementsByClassName('enrollments');
 
             let allMappings = {
                 instance: instanceMappingColumns,
-                enrollments: enrollmentsMappingColumns
             };
-            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
+            let lookupTable = {
+                instance: "instance_lookup_table",
+                enrollments: ""
+            };
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, lookupTable));
             expect(store.getActions()).toEqual(expectedActions);
         });
 
@@ -253,14 +255,17 @@ describe('#mappingActions', () => {
                 allMappingNames: []
             });
             let instanceMappingColumns = document.getElementsByClassName('instance');
-            let enrollmentsMappingColumns = document.getElementsByClassName('enrollments');
             let eventMappingColumns = document.getElementsByClassName('events');
             let allMappings = {
                 instance: instanceMappingColumns,
-                enrollments: enrollmentsMappingColumns,
                 event: eventMappingColumns
             };
-            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, ""));
+            let lookupTable = {
+                instance: "instance_lookup_table",
+                enrollments: "enrolment_lookup_table",
+                event: ""
+            };
+            await store.dispatch(MappingActions.saveMappings("Mapping Name", allMappings, lookupTable));
             expect(store.getActions()).toEqual(expectedActions);
         });
 
@@ -311,7 +316,6 @@ describe('#mappingActions', () => {
 
         it('should dispatch necessary actions on ajax success', async () => {
             let mappingName = "Mapping Name 2";
-            let lookupTable = "patient_details";
             let ajax = new Ajax();
             let expectedActions = [
                 {
@@ -403,8 +407,12 @@ describe('#mappingActions', () => {
 
             let allMappings = {
                 instance: document.getElementsByClassName("instance"),
-                enrollments: document.getElementsByClassName("enrollments"),
                 event: document.getElementsByClassName("events")
+            };
+            let lookupTable = {
+                instance: "selectedInstanceTable",
+                enrollments: "selectedEnrollmentsTable",
+                event: "selectedEventTable"
             };
             await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable, history));
 
@@ -417,7 +425,6 @@ describe('#mappingActions', () => {
 
         it('should dispatch showMessage on ajax call fails', async () => {
             let mappingName = "Mapping Name 2";
-            let lookupTable = "patient_details";
             let ajax = new Ajax();
             let expectedActions = [
                 {
@@ -468,8 +475,12 @@ describe('#mappingActions', () => {
             try {
                 let allMappings = {
                     instance: document.getElementsByClassName("instance"),
-                    enrollments: document.getElementsByClassName("enrollments"),
                     event: document.getElementsByClassName("event")
+                };
+                let lookupTable = {
+                    instance: "selectedInstanceTable",
+                    enrollments: "selectedEnrollmentsTable",
+                    event: "selectedEventTable"
                 };
                 await store.dispatch(MappingActions.saveMappings(mappingName, allMappings, lookupTable));
             } catch (e) {

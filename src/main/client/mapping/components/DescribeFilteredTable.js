@@ -57,7 +57,6 @@ class DescribeFilteredTable extends Component {
     let mappingName = this.refs.mappingName.value;
     let mappings = {};
     mappings.instance = document.getElementsByClassName('instance');
-    mappings.enrollments = document.getElementsByClassName('enrollments');
     mappings.event = document.getElementsByClassName('events');
     let lookupTable = {
         instance: this.props.selectedInstanceTable,

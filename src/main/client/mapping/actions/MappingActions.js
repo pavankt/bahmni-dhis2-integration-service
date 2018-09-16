@@ -127,8 +127,8 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
             dispatch(showMessage("Mapping Name should be unique", "error"));
         } else if (hasNoMappings(mappingObj.instance)) {
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
-        } else if (hasNoMappings(mappingObj.enrollments)) {
-            dispatch(showMessage("Please provide at least one mapping for program enrollment", "error"));
+        } else if (!lookupTable.enrollments.length) {
+            dispatch(showMessage("Please select a table for program enrollment", "error"));
         } else if (hasNoMappings(mappingObj.event)) {
             dispatch(showMessage("Please provide at least one mapping for program event", "error"));
         } else {
