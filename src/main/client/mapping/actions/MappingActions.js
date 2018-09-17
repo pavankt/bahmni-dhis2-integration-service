@@ -40,13 +40,6 @@ export function instanceTableColumns(columns = []) {
     };
 }
 
-export function enrollmentTableColumns(columns = []) {
-    return {
-        type: 'selectedEnrollmentTableColumns',
-        selectedEnrollmentTableColumns: columns
-    };
-}
-
 export function eventTableColumns(columns = []) {
     return {
         type: 'selectedEventTableColumns',
@@ -182,7 +175,7 @@ export function getMapping(mappingNameToEdit, history) {
             let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingNameToEdit}));
             dispatch(mappingJson(response.mapping_json.value));
             await dispatchInstanceTableDetails(response.lookup_table.value.instance, dispatch, ajax);
-            await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch, ajax);
+            await dispatchEnrollmentTableDetails(response.lookup_table.value.enrollments, dispatch);
             await dispatchEventTableDetails(response.lookup_table.value.event, dispatch, ajax);
             dispatch(currentMapping(response.mapping_name));
             history.push('/dhis-integration/mapping/edit/' + mappingNameToEdit);
@@ -234,10 +227,8 @@ async function dispatchInstanceTableDetails(tableName, dispatch, ajax) {
     dispatch(instanceTableColumns(response));
 }
 
-async function dispatchEnrollmentTableDetails(tableName, dispatch, ajax) {
-    let response = await getColumnNames(ajax, tableName);
+async function dispatchEnrollmentTableDetails(tableName, dispatch) {
     dispatch(selectedEnrollmentsTable(tableName));
-    dispatch(enrollmentTableColumns(response));
 }
 
 async function dispatchEventTableDetails(tableName, dispatch, ajax) {
@@ -252,7 +243,7 @@ async function dispatchTableDetails(tableName, category, dispatch, ajax) {
     if (category === "instance") {
         await dispatchInstanceTableDetails(tableName, dispatch, ajax);
     } else if (category === "enrollments") {
-        await dispatchEnrollmentTableDetails(tableName, dispatch, ajax);
+        await dispatchEnrollmentTableDetails(tableName, dispatch);
     } else if(category === "events") {
         await dispatchEventTableDetails(tableName, dispatch, ajax);
     }

@@ -44,15 +44,6 @@ export function selectedInstanceTableColumns(state = [], action = {}) {
   }
 }
 
-export function selectedEnrollmentTableColumns(state = [], action = {}) {
-  switch (action.type) {
-    case 'selectedEnrollmentTableColumns':
-      return action.selectedEnrollmentTableColumns;
-    default:
-      return state;
-  }
-}
-
 export function selectedEventTableColumns(state = [], action = {}) {
   switch (action.type) {
     case 'selectedEventTableColumns':

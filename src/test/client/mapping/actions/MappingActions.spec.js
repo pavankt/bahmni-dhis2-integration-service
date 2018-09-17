@@ -89,22 +89,6 @@ describe('#mappingActions', () => {
         });
     });
 
-    describe('enrollmentTableColumns', () => {
-        it('should return an empty array on default', () => {
-            expect(MappingActions.enrollmentTableColumns()).toEqual({
-                type: 'selectedEnrollmentTableColumns',
-                selectedEnrollmentTableColumns: []
-            });
-        });
-
-        it('should return selected table columns in an array', () => {
-            expect(MappingActions.enrollmentTableColumns(['pat_id', 'pat_name', 'age'])).toEqual({
-                type: 'selectedEnrollmentTableColumns',
-                selectedEnrollmentTableColumns: ['pat_id', 'pat_name', 'age']
-            });
-        });
-    });
-
     describe('eventTableColumns', () => {
         it('should return an empty array on default', () => {
             expect(MappingActions.eventTableColumns()).toEqual({
@@ -562,10 +546,6 @@ describe('#mappingActions', () => {
                     selectedEnrollmentsTable: "enroll"
                 },
                 {
-                    type: "selectedEnrollmentTableColumns",
-                    selectedEnrollmentTableColumns: tableColumns
-                },
-                {
                     type: "selectedEventTable",
                     selectedEventTable: "event_table"
                 },
@@ -634,11 +614,6 @@ describe('#mappingActions', () => {
                 .withArgs("/dhis-integration/api/getColumns", {tableName: "patient_details"})
                 .returns(Promise.resolve(tableColumns));
 
-            let getEnrollmentsColumnsMock = ajaxMock
-                .expects("get")
-                .withArgs("/dhis-integration/api/getColumns", {tableName: "enroll"})
-                .returns(Promise.resolve(tableColumns));
-
             let eventColumnsMock = ajaxMock
                 .expects("get")
                 .withArgs("/dhis-integration/api/getColumns", {tableName: "event_table"})
@@ -654,7 +629,6 @@ describe('#mappingActions', () => {
 
             ajaxGetMock.verify();
             getInstanceColumnsMock.verify();
-            getEnrollmentsColumnsMock.verify();
             eventColumnsMock.verify();
             pushMock.verify();
             sandbox.restore();
@@ -861,10 +835,6 @@ describe('#mappingActions', () => {
                 {
                     type: "selectedEnrollmentsTable",
                     selectedEnrollmentsTable: tableName
-                },
-                {
-                    type: "selectedEnrollmentTableColumns",
-                    selectedEnrollmentTableColumns: tableColumns
                 },
                 {
                     type: "hideSpinner",

@@ -6,7 +6,6 @@ import {
     currentMapping,
     mappingJson,
     selectedEnrollmentsTable,
-    selectedEnrollmentTableColumns,
     selectedEventTable,
     selectedEventTableColumns
 } from '../../../../main/client/mapping/reducers/MappingReducer';
@@ -133,29 +132,6 @@ describe('#mappingReducers', () => {
 
         it('should return state when "action.type" is anything other than "selectedInstanceTableColumns"', () => {
             expect(selectedInstanceTableColumns()).toEqual([]);
-        });
-    });
-
-    describe('selectedEnrollmentTableColumns', () => {
-        beforeEach(() => {
-            action = {
-                type: 'selectedEnrollmentTableColumns',
-                selectedEnrollmentTableColumns: []
-            };
-        });
-
-        it('should return state when "action.type" is anything other than "selectedEnrollmentTableColumns"', () => {
-            state = ['someValue'];
-            expect(selectedEnrollmentTableColumns(state)).toEqual(['someValue']);
-        });
-
-        it('should return action.selectedEnrollmentTableColumns when "action.type" is selectedEnrollmentTableColumns', () => {
-            action.selectedEnrollmentTableColumns = ['patient_identifier', 'tb-service'];
-            expect(selectedEnrollmentTableColumns(state, action)).toEqual(['patient_identifier', 'tb-service']);
-        });
-
-        it('should return state when "action.type" is anything other than "selectedEnrollmentTableColumns"', () => {
-            expect(selectedEnrollmentTableColumns()).toEqual([]);
         });
     });
 
