@@ -86,7 +86,7 @@ class DescribeFilteredTable extends Component {
         <EventMapper />
 
         <div className="footer">
-          {(this.props.selectedInstanceTable || this.props.selectedEnrollmentsTable || this.props.selectedEventTable) && (
+          {(this.props.selectedInstanceTable && this.props.selectedEnrollmentsTable && this.props.selectedEventTable) && (
           <button type="button" className="save" onClick={this._onSave}>
             Save
           </button>

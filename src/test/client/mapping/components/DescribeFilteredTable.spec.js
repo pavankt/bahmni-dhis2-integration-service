@@ -36,8 +36,8 @@ describe('DescribeFilteredTable', () => {
         expect(describeRenderer.find('.save')).toHaveLength(0);
     });
 
-    it('should have a save className when there is selected table', () => {
-        let describeRenderer = getDescribeRenderer({instance:"someTable", enrollments:"", event: ""});
+    it('should have a save className when there are 3 selected tables', () => {
+        let describeRenderer = getDescribeRenderer({instance:"someTable", enrollments:"someTable", event: "someTable"});
         expect(describeRenderer.find('.footer')).toHaveLength(1);
         expect(describeRenderer.find('.cancel')).toHaveLength(1);
         expect(describeRenderer.find('.save')).toHaveLength(1);
