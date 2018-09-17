@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
 
 class EnrollmentMapper extends Component {
@@ -61,16 +60,12 @@ class EnrollmentMapper extends Component {
 EnrollmentMapper.propTypes = {
     selectedTable: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    tables: PropTypes.array.isRequired,
-    columns: PropTypes.array.isRequired,
-    mappingJson: PropTypes.object.isRequired
+    tables: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => ({
     selectedTable: state.selectedEnrollmentsTable,
-    tables: state.allTables,
-    columns: state.selectedEnrollmentTableColumns,
-    mappingJson: state.mappingJson
+    tables: state.allTables
 });
 
 export default connect(mapStateToProps)(EnrollmentMapper);
