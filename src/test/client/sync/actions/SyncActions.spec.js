@@ -19,9 +19,7 @@ describe('#syncActions', () => {
             let mappingName = "HTS Service";
             let user = "admin";
             let expectedActions = [
-                {"hideSpinner": false, "type": "hideSpinner"},
-                {"responseMessage": "Sync started for HTS Service", "responseType": "success", "type": "showMessage"},
-                {"hideSpinner": true, "type": "hideSpinner"}
+                {"responseMessage": "Sync started for HTS Service", "responseType": "success", "type": "showMessage"}
             ];
 
             let store = mockStore({});

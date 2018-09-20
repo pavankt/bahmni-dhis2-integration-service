@@ -4,17 +4,14 @@ import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
 
 export function syncData(mappingName = '', user = '') {
-    return async dispatch => {
-        dispatch(hideSpinner(false));
+    return dispatch => {
         try {
             let ajax = Ajax.instance();
-            await ajax.put(sync.URI + '?service=' + mappingName + '&user=' + user);
-            auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
+            ajax.put(sync.URI + '?service=' + mappingName + '&user=' + user);
             dispatch(showMessage("Sync started for " + mappingName, "success"));
+            auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
         } catch (e) {
             window.location.pathname = '/home';
-        } finally {
-            dispatch(hideSpinner());
         }
     }
 }
