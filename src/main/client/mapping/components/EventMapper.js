@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
+import {filterTables} from "../../utils/MappingUtil";
 
 class EventMapper extends Component {
 
     constructor(){
         super();
-        this.searchTables = this.searchTables.bind(this);
+        this.updateFilteredTables = this.updateFilteredTables.bind(this);
         this.state = {
             filteredTables : []
         };
@@ -19,17 +20,13 @@ class EventMapper extends Component {
             :this.props.selectedTable;
     }
 
-    searchTables() {
-        const searchText = this.refs.tablesSearch.value;
-
-        if (searchText.length > 2) {
-            const result = this.props.tables.filter(
-                tableName => tableName.includes(searchText)
-            );
-            this.setState({filteredTables:result});
-        }else{
-            this.setState({filteredTables:[]});
-        }
+    updateFilteredTables() {
+        this.setState({
+            filteredTables: filterTables(
+                this.refs.tablesSearch.value,
+                this.props.tables
+            )
+        });
     }
 
     render(){
@@ -43,7 +40,7 @@ class EventMapper extends Component {
               ref="tablesSearch"
               name="tableName"
               placeholder="Enter at least 3 characters of the table name to search"
-              onKeyUp={this.searchTables}
+              onKeyUp={this.updateFilteredTables}
               className="table-input"
             />
 

@@ -3,36 +3,34 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import ColumnMappings from "./ColumnMappings";
 import DisplayTableNames from "./DisplayTableNames";
+import {filterTables} from "../../utils/MappingUtil";
 
 class InstanceMapper extends Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.searchTables = this.searchTables.bind(this);
+        this.updateFilteredTables = this.updateFilteredTables.bind(this);
         this.state = {
-            filteredTables : []
+            filteredTables: []
         };
     }
-    componentWillReceiveProps(nextProps){
+
+    componentWillReceiveProps(nextProps) {
         this.refs.tablesSearch.value = nextProps.selectedTable !== this.props.selectedTable ?
             nextProps.selectedTable
-            :this.props.selectedTable;
-     }
-
-    searchTables() {
-        const searchText = this.refs.tablesSearch.value;
-
-        if (searchText.length > 2) {
-            const result = this.props.tables.filter(
-                tableName => tableName.includes(searchText)
-            );
-            this.setState({filteredTables:result});
-        }else{
-            this.setState({filteredTables:[]});
-        }
+            : this.props.selectedTable;
     }
 
-    render(){
+    updateFilteredTables() {
+        this.setState({
+            filteredTables: filterTables(
+                this.refs.tablesSearch.value,
+                this.props.tables
+            )
+        });
+    }
+
+    render() {
         return (
           <div className="mapper">
             <span className="instance-table-span">
@@ -43,7 +41,7 @@ class InstanceMapper extends Component {
               ref="tablesSearch"
               name="tableName"
               placeholder="Enter at least 3 characters of the table name to search"
-              onKeyUp={this.searchTables}
+              onKeyUp={this.updateFilteredTables}
               className="table-input"
             />
 
@@ -51,7 +49,9 @@ class InstanceMapper extends Component {
               filteredTables={this.state.filteredTables}
               dispatch={this.props.dispatch}
               category="instance"
-              filteredTablesAction={()=>{this.setState({filteredTables:[]})}}
+              filteredTablesAction={() => {
+                        this.setState({filteredTables: []})
+                    }}
             />
 
             {(this.props.selectedTable) && (
@@ -61,9 +61,9 @@ class InstanceMapper extends Component {
               category="instance"
               mappingType="patient instance"
             />
-)}
+                )}
           </div>
-)
+        )
     }
 }
 
