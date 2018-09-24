@@ -150,8 +150,6 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
     };
 }
 
-
-
 function isJSON(type) {
     return type !== undefined && type.toLowerCase() === 'json';
 }
