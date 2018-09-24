@@ -1,5 +1,5 @@
-import {hideSpinner, showMessage} from "../../common/Actions";
-import {sync, auditLogEventDetails} from '../../common/constants';
+import {showMessage} from "../../common/Actions";
+import {auditLogEventDetails, sync} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
 
