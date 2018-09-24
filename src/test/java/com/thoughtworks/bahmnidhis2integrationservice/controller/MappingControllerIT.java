@@ -60,7 +60,7 @@ public class MappingControllerIT{
         params.put("currentMapping", "");
         params.put("user", "superman");
 
-        String expectedMessage = "Successfully Added New Mapping";
+        String expectedMessage = "Successfully Saved Mapping";
 
         Map<String, String> actualMessage = mappingController.saveMappings(params);
 
@@ -83,7 +83,7 @@ public class MappingControllerIT{
         params.put("currentMapping", "HTS Service");
         params.put("user", "superman");
 
-        String expectedMessage = "Successfully Added New Mapping";
+        String expectedMessage = "Successfully Saved Mapping";
 
         Map<String, String> actualMessage = mappingController.saveMappings(params);
 

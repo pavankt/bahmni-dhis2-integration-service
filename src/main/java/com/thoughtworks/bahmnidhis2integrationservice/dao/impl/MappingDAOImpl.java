@@ -37,7 +37,7 @@ public class MappingDAOImpl implements MappingDAO {
         int result = jdbcTemplate.update(sql);
 
         if (result == SUCCESS) {
-            return "Successfully Added New Mapping";
+            return "Successfully Saved Mapping";
         }
 
         throw new Exception("Could not add Mapping");

@@ -68,7 +68,7 @@ public class MappingDAOImplTest {
         String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
 
         verify(jdbcTemplate, times(1)).update(sql);
-        assertEquals("Successfully Added New Mapping", result);
+        assertEquals("Successfully Saved Mapping", result);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MappingDAOImplTest {
         String result = mappingDAO.saveMapping(mappingName, lookupTable, mappingJson, currentMapping, user);
 
         verify(jdbcTemplate, times(1)).update(sql);
-        assertEquals("Successfully Added New Mapping", result);
+        assertEquals("Successfully Saved Mapping", result);
     }
 
     @Test

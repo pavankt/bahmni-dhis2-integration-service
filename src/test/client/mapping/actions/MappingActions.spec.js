@@ -308,7 +308,7 @@ describe('#mappingActions', () => {
                 },
                 {
                     type: "showMessage",
-                    responseMessage: "Successfully Added new mapping",
+                    responseMessage: "Successfully Saved Mapping",
                     responseType: "success"
                 },
                 {
@@ -385,7 +385,7 @@ describe('#mappingActions', () => {
             let pushMock = sandbox.mock(history).expects("push");
             sandbox.stub(Ajax, "instance").returns(ajax);
             let putMock = sandbox.mock(ajax).expects("put")
-                .returns(Promise.resolve({data: "Successfully Added new mapping"}));
+                .returns(Promise.resolve({data: "Successfully Saved Mapping"}));
 
             history.push = pushMock;
 
