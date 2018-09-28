@@ -38,5 +38,40 @@ describe('#syncActions', () => {
             ajaxPutMock.verify();
             sandbox.restore();
         });
+
+        it('should dispatch error message when there is error from ajax', async () => {
+            let ajax = new Ajax();
+            let mappingName = "HTS Service";
+            let user = "admin";
+            let expectedActions = [
+                {
+                    "responseMessage": "Sync started for HTS Service",
+                    "responseType": "success",
+                    "type": "showMessage"
+                },
+                {
+                    "responseMessage": "No data to sync for " + mappingName,
+                    "responseType": "error",
+                    "type": "showMessage"
+                }
+            ];
+
+            let store = mockStore({});
+
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxMock = sandbox.mock(ajax);
+            let ajaxPutMock = ajaxMock
+                .expects("put")
+                .withArgs(sync.URI + '?service=' + mappingName + '&user=' + user)
+                .returns(Promise.reject({"message" : "no data to sync"}));
+
+            await store.dispatch(SyncActions.syncData(mappingName, user));
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            ajaxPutMock.verify();
+            sandbox.restore();
+        });
     });
 });

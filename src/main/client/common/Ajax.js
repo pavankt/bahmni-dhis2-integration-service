@@ -1,4 +1,4 @@
-import {audit} from './constants';
+import {audit, sync} from './constants';
 
 const responseCodes = {
     "INTERNAL_SERVER_ERROR": 500,
@@ -59,13 +59,11 @@ export default class Ajax {
             return;
         }
 
-        let responseJson = response;
-        if (url !== audit.URI) {
-            responseJson = await response.json();
-        }
-
         if (response.status === responseCodes.OK) {
-            return responseJson;
+            if (url !== audit.URI && !url.includes(sync.URI)) {
+                return await response.json();
+            }
+            return response;
         } else if (response.status === responseCodes.INTERNAL_SERVER_ERROR) {
             throw "Could not able to connect to server";
         } else if (response.status === responseCodes.FORBIDDEN) {
