@@ -14,7 +14,7 @@ describe('#syncActions', () => {
 
     describe('#syncData', () => {
 
-        it.only('should dispatch success message after an ajax call', async () => {
+        it('should dispatch success message after an ajax call', async () => {
             let ajax = new Ajax();
             let mappingName = "HTS Service";
             let user = "admin";

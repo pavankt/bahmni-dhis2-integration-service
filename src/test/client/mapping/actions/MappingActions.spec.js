@@ -140,6 +140,24 @@ describe('#mappingActions', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
 
+        it('should dispatch showMessage with ShouldAddMappingName when mapping name has invalid characters', async () => {
+            let expectedActions = [{
+                type: "showMessage",
+                responseMessage: "Should have only letters, numbers and spaces in Mapping Name",
+                responseType: "error"
+            }];
+
+            let store = mockStore({
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                }
+            });
+
+            await store.dispatch(MappingActions.saveMappings("$%#^", {instance: {}, enrollments: {}}, ""));
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
         it('should dispatch showMessage with AtLeaseOnePatientInstanceColumnShouldHaveMapping when no instance mapping is entered', async () => {
             let expectedActions = [{
                 type: "showMessage",

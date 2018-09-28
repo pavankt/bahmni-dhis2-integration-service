@@ -5,6 +5,8 @@ import auditLog from '../../common/AuditLog';
 
 const isEmptyString = (aString) => aString === "";
 
+const hasInvalidString = (aString) => !aString.match(/^[0-9a-zA-Z ]+$/);
+
 export function allTables(tables = []) {
     return {
         type: 'allTables',
@@ -116,6 +118,8 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
 
         if (isEmptyString(mappingName)) {
             dispatch(showMessage("Should have Mapping Name", "error"));
+        } else if (hasInvalidString(mappingName)) {
+            dispatch(showMessage("Should have only letters, numbers and spaces in Mapping Name", "error"));
         } else if (mappingNameIsNotUnique(state,mappingName)) {
             dispatch(showMessage("Mapping Name should be unique", "error"));
         } else if (hasNoMappings(mappingObj.instance)) {
