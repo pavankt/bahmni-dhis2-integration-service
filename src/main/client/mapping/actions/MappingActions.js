@@ -95,7 +95,8 @@ export function createJson(allMappings) {
 }
 
 function mappingNameIsNotUnique(state, mappingName) {
-    return state.allMappingNames.includes(mappingName.trim()) &&
+    mappingName = mappingName.trim();
+    return state.allMappingNames.includes(mappingName) &&
         (state.currentMapping === "" || mappingName !== state.currentMapping);
 }
 
