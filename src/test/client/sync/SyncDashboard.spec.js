@@ -45,9 +45,8 @@ describe('Sync dashboard', function () {
         expect(rendered.find('.mapping-name')).toHaveLength(2);
     });
 
-    it('should have two elements for comment with classnames starting with "comment_" and ending with mappingName', function () {
-        expect(rendered.find('.comment_HTS Service')).toHaveLength(1);
-        expect(rendered.find('.comment_TB Service')).toHaveLength(1);
+    it('should have two elements with class name "sync-comment"', function () {
+        expect(rendered.find('.sync-comment')).toHaveLength(2);
     });
 
     it('should have two elements with class name "edit-mapping-button"', function () {
