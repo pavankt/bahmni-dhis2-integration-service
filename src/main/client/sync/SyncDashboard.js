@@ -23,7 +23,7 @@ class SyncDashboard extends React.Component {
                 <td className="mapping-name">
                   {mappingName}
                 </td>
-                <td >
+                <td className="center sync-comment-border">
                     <textarea className="sync-comment" ref={unique_ref + mappingName}
                               placeholder='Please provide comments (Mandatory)' />
                 </td>
