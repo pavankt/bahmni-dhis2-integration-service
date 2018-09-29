@@ -1,4 +1,4 @@
-import {hideSpinner, showMessage, ensureActiveSession} from "../../common/Actions";
+import {ensureActiveSession, hideSpinner, showMessage} from "../../common/Actions";
 import {auditLogEventDetails} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
@@ -77,6 +77,8 @@ export function hasNoMappings(mappings) {
 
 export function createJson(allMappings) {
     let mappingObj = {};
+    let columnName;
+    let mappingValue;
 
     Object.keys(allMappings).forEach((mappingType) => {
         let columnMapping = allMappings[mappingType];
@@ -84,11 +86,11 @@ export function createJson(allMappings) {
         mappingObj[mappingType] = {};
 
         Array.from(columnMapping).forEach(mappingRow => {
-            let columnName = mappingRow.firstElementChild.innerText;
-            let mappingValue = mappingRow.lastChild.firstElementChild.value;
-            let mapping = mappingObj[mappingType];
-
-            mapping[columnName] = mappingValue;
+            columnName = mappingRow.firstElementChild.innerText;
+            mappingValue = mappingRow.lastChild.firstElementChild.value;
+            if (mappingValue) {
+                mappingObj[mappingType][columnName] = mappingValue;
+            }
         });
     });
     return mappingObj;
@@ -121,7 +123,7 @@ export function saveMappings(mappingName = "", allMappings, lookupTable, history
             dispatch(showMessage("Should have Mapping Name", "error"));
         } else if (hasInvalidString(mappingName)) {
             dispatch(showMessage("Should have only letters, numbers and spaces in Mapping Name", "error"));
-        } else if (mappingNameIsNotUnique(state,mappingName)) {
+        } else if (mappingNameIsNotUnique(state, mappingName)) {
             dispatch(showMessage("Mapping Name should be unique", "error"));
         } else if (hasNoMappings(mappingObj.instance)) {
             dispatch(showMessage("Please provide at least one mapping for patient instance", "error"));
@@ -247,7 +249,7 @@ async function dispatchTableDetails(tableName, category, dispatch, ajax) {
         await dispatchInstanceTableDetails(tableName, dispatch, ajax);
     } else if (category === "enrollments") {
         await dispatchEnrollmentTableDetails(tableName, dispatch);
-    } else if(category === "events") {
+    } else if (category === "events") {
         await dispatchEventTableDetails(tableName, dispatch, ajax);
     }
 }
