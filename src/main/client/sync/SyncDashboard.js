@@ -16,17 +16,23 @@ class SyncDashboard extends React.Component {
     }
 
     renderMappingNames() {
+        let unique_ref = 'comment_';
         return (
             this.props.mappingNames.sort().map(mappingName => (
               <tr key={mappingName} className="table-row">
                 <td className="mapping-name">
                   {mappingName}
                 </td>
+                <td >
+                    <textarea className="sync-comment" ref={unique_ref + mappingName}
+                              placeholder='Please provide comments (Mandatory)' />
+                </td>
                 <td className="edit-mapping-button">
                   <button
                     type="submit"
                     className="center send-button"
-                    onClick={() => this.props.dispatch(syncData(mappingName, this.props.session.user))}
+                    onClick={() => this.props.dispatch(
+                        syncData(mappingName, this.props.session.user, this.refs[unique_ref + mappingName].value))}
                   >
                             Sync to DHIS2
                   </button>

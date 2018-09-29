@@ -3,14 +3,20 @@ import {auditLogEventDetails, sync} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
 
-export function syncData(mappingName = '', user = '') {
+export function syncData(mappingName = '', user = '', comment = '') {
     return async dispatch => {
+        if (comment === '') {
+            dispatch(showMessage("Enter comment before syncing " + mappingName, "error"));
+            return;
+        }
         try {
             let ajax = Ajax.instance();
             let body = {
                 service: mappingName,
-                user: user
-            }
+                user: user,
+                comment: comment
+            };
+            console.log('body ', body);
             dispatch(showMessage("Sync started for " + mappingName, "success"));
             auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             await ajax.put(sync.URI, body);

@@ -12,12 +12,29 @@ const mockStore = configureMockStore(middleWares);
 
 describe('#syncActions', () => {
 
+    describe('#comment', () => {
+
+        it('should dispatch error message in the absence of comment', async () => {
+            let mappingName = "HTS Service";
+            let user = "admin";
+            let expectedActions = [
+                {"responseMessage": "Enter comment before syncing HTS Service", "responseType": "error", "type": "showMessage"}
+            ];
+
+            let store = mockStore({});
+            await store.dispatch(SyncActions.syncData(mappingName, user, ''));
+
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
     describe('#syncData', () => {
 
         it('should dispatch success message after an ajax call', async () => {
             let ajax = new Ajax();
             let mappingName = "HTS Service";
             let user = "admin";
+            let comment = "First Sync";
             let expectedActions = [
                 {"responseMessage": "Sync started for HTS Service", "responseType": "success", "type": "showMessage"}
             ];
@@ -29,9 +46,9 @@ describe('#syncActions', () => {
             let ajaxMock = sandbox.mock(ajax);
             let ajaxPutMock = ajaxMock
                 .expects("put")
-                .withArgs(sync.URI + '?service=' + mappingName + '&user=' + user);
+                .withArgs(sync.URI, {service: mappingName, user: user, comment: comment});
 
-            await store.dispatch(SyncActions.syncData(mappingName, user));
+            await store.dispatch(SyncActions.syncData(mappingName, user, comment));
 
             expect(store.getActions()).toEqual(expectedActions);
 
