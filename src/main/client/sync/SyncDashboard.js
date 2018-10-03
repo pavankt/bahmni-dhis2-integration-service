@@ -16,7 +16,7 @@ class SyncDashboard extends React.Component {
     }
 
     renderMappingNames() {
-        let unique_ref = 'comment_';
+        let unique_ref_prefix = 'comment_';
         return (
             this.props.mappingNames.sort().map(mappingName => (
               <tr key={mappingName} className="table-row">
@@ -24,15 +24,15 @@ class SyncDashboard extends React.Component {
                   {mappingName}
                 </td>
                 <td className="center sync-comment-border">
-                    <textarea className="sync-comment" ref={unique_ref + mappingName}
-                              placeholder='Please provide comments (Mandatory)' />
+                    <textarea className="sync-comment" ref={unique_ref_prefix + mappingName}
+                              placeholder='Please provide comments' />
                 </td>
                 <td className="edit-mapping-button">
                   <button
                     type="submit"
                     className="center send-button"
                     onClick={() => this.props.dispatch(
-                        syncData(mappingName, this.props.session.user, this.refs[unique_ref + mappingName].value))}
+                        syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value))}
                   >
                             Sync to DHIS2
                   </button>
@@ -49,11 +49,13 @@ class SyncDashboard extends React.Component {
             <div className="center service-names-table">
               <Spinner hide={this.props.hideSpinner} />
               <section className="all-mappings-sections">
-                <h2 className="section-title">
-                            Name
-                </h2>
                 <table className="mapping-table">
                   <tbody>
+                  <tr className="section-title">
+                      <td className="title-name">Name</td>
+                      <td className="title-comments">Comments</td>
+                      <td></td>
+                  </tr>
                     {this.renderMappingNames()}
                   </tbody>
                 </table>

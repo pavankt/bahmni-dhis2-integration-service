@@ -54,7 +54,15 @@ describe('Sync dashboard', function () {
     });
 
     it('should have a section header with class name "section-title" button', function () {
-        expect(rendered.find('.edit-mapping-button')).toHaveLength(2);
+        expect(rendered.find('.section-title')).toHaveLength(1);
+    });
+
+    it('should have a section header with class name "title-name" button', function () {
+        expect(rendered.find('.title-name')).toHaveLength(1);
+    });
+
+    it('should have a section header with class name "title-comments" button', function () {
+        expect(rendered.find('.title-comments')).toHaveLength(1);
     });
 
     it('should dispatch sendData on send-button click', () => {

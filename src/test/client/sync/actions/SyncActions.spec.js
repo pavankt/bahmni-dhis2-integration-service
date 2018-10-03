@@ -60,6 +60,7 @@ describe('#syncActions', () => {
             let ajax = new Ajax();
             let mappingName = "HTS Service";
             let user = "admin";
+            let comment = "some comments";
             let expectedActions = [
                 {
                     "responseMessage": "Sync started for HTS Service",
@@ -80,10 +81,10 @@ describe('#syncActions', () => {
             let ajaxMock = sandbox.mock(ajax);
             let ajaxPutMock = ajaxMock
                 .expects("put")
-                .withArgs(sync.URI + '?service=' + mappingName + '&user=' + user)
+                .withArgs(sync.URI, {service: mappingName, user: user, comment: comment})
                 .returns(Promise.reject({"message" : "no data to sync"}));
 
-            await store.dispatch(SyncActions.syncData(mappingName, user));
+            await store.dispatch(SyncActions.syncData(mappingName, user, comment));
 
             expect(store.getActions()).toEqual(expectedActions);
 

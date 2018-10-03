@@ -5,6 +5,7 @@ import auditLog from '../../common/AuditLog';
 
 export function syncData(mappingName = '', user = '', comment = '') {
     return async dispatch => {
+        comment = comment.trim();
         if (comment === '') {
             dispatch(showMessage("Enter comment before syncing " + mappingName, "error"));
             return;
@@ -16,7 +17,6 @@ export function syncData(mappingName = '', user = '', comment = '') {
                 user: user,
                 comment: comment
             };
-            console.log('body ', body);
             dispatch(showMessage("Sync started for " + mappingName, "success"));
             auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             await ajax.put(sync.URI, body);
