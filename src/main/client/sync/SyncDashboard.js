@@ -27,6 +27,9 @@ class SyncDashboard extends React.Component {
                     <textarea className="sync-comment" ref={unique_ref_prefix + mappingName}
                               placeholder='Please provide comments' />
                 </td>
+                <td className="mapping-name">
+                      Some date
+                </td>
                 <td className="edit-mapping-button">
                   <button
                     type="submit"
@@ -54,6 +57,7 @@ class SyncDashboard extends React.Component {
                   <tr className="section-title">
                       <td className="title-name">Name</td>
                       <td className="title-comments">Comments</td>
+                      <td className="title-name">Last Successful Sync</td>
                       <td></td>
                   </tr>
                     {this.renderMappingNames()}
