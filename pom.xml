@@ -165,6 +165,9 @@
 							<source>
 								<location>migrations/liquibase.xml</location>
 							</source>
+							<source>
+								<location>migrations/liquibase_DHIS_Sync_Role.xml</location>
+							</source>
 						</sources>
 					</mapping>
 					<mapping>
