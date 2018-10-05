@@ -64,20 +64,20 @@ class Preview extends Component {
 
     render() {
         if (this.state.deltaData.error) {
+            return <span className="message">{this.state.deltaData.error}</span>
+        } else if (!this.state.deltaData.result) {
+            return null;
+        } else if (this.state.deltaData.result.length === 0) {
             return (
               <div>
+                <span className="message">No Delta Data to Sync</span>
                 <span className="time-stamp">
-                    Generated on 
+                    Generated on
                   {' '}
                   {this.state.deltaData.generatedDate}
                 </span>
-                <span className="message">{this.state.deltaData.error}</span>
               </div>
-);
-        } else if (this.state.deltaData.result && this.state.deltaData.result.length === 0) {
-            return <span className="message">No Delta Data to Sync</span>;
-        } else if (!this.state.deltaData.result) {
-            return null;
+            );
         }
         return (
           <div className="container">
@@ -85,7 +85,7 @@ class Preview extends Component {
               {this.state.serviceName}
             </span>
             <span className="time-stamp">
-                    Generated on 
+              Generated on
               {' '}
               {this.state.deltaData.generatedDate}
             </span>
