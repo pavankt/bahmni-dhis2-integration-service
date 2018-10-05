@@ -18,6 +18,10 @@ describe('Sync dashboard', function () {
     beforeEach(() => {
         store = createStore(() => ({
             allMappingNames: ['HTS Service', 'TB Service'],
+            mappingDetails: {
+                'HTS Service': {date: "Wednesday October 03, 2018 11:21:32 AM", status: ""},
+                'TB Service': {date: "Friday October 05, 2018 04:08:07 PM", status: ""}
+            },
             hideSpinner: false,
             showMessage : {
                 responseMessage : "",
@@ -42,7 +46,7 @@ describe('Sync dashboard', function () {
     });
 
     it('should have two elements with class name "mapping-name"', function () {
-        expect(rendered.find('.mapping-name')).toHaveLength(2);
+        expect(rendered.find('.mapping-name')).toHaveLength(4);
     });
 
     it('should have two elements with class name "sync-comment"', function () {
@@ -58,7 +62,7 @@ describe('Sync dashboard', function () {
     });
 
     it('should have a section header with class name "title-name" button', function () {
-        expect(rendered.find('.title-name')).toHaveLength(1);
+        expect(rendered.find('.title-name')).toHaveLength(2);
     });
 
     it('should have a section header with class name "title-comments" button', function () {
