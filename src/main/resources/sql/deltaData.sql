@@ -1,14 +1,19 @@
 Select coalesce( instanceTable."Patient_Identifier",  programEnrollmentsTable."Patient_Identifier",
-                 eventsTable."Patient_Identifier")                                                   as identifier,
-       coalesce( instanceTable."OrgUnit",  programEnrollmentsTable."OrgUnit",  eventsTable."OrgUnit") as Org,
+                 eventsTable."Patient_Identifier")                                                   as "Patient Identifier",
+       (Select orgunit from orgunit_tracker where orgunit = coalesce( instanceTable."OrgUnit",  programEnrollmentsTable."OrgUnit",  eventsTable."OrgUnit") )as "Org Unit",
+       instanceTable.date_created as "Instance Date Created",
        %s,
-        programEnrollmentsTable.enrollment_date,
-        programEnrollmentsTable.incident_date,
-        programEnrollmentsTable.status enrollment_status,
-        eventsTable.event_date,
-       %s,
-        eventsTable.program_start_date,
-        eventsTable.status event_status
+        programEnrollmentsTable.enrollment_date "Enrollment Date",
+        programEnrollmentsTable.incident_date "Incident Date",
+        programEnrollmentsTable.status "Enrollment Status",
+        programEnrollmentsTable.date_created as "Prog Enrollment Date Created",
+        eventsTable.event_date "Event Date",
+        eventsTable.program "Program",
+        eventsTable.program_stage "Program Stage",
+        eventsTable.program_start_date "Enrollment Date",
+        eventsTable.status "Event Status",
+        eventsTable.date_created as "Event Date Created",
+       %s
 from (Select pi.*
       from %s pi
              inner join marker m on pi.date_created > coalesce(m.last_synced_date, '-infinity')
