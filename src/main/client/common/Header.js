@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 class Header extends Component {
 
@@ -19,6 +19,9 @@ class Header extends Component {
     }
 
     render() {
+        if (!this.props.showHeader) {
+            return null;
+        }
         return (
           <div className='opt-header-wrapper'>
             <header className='center header-wrap-dhis'>
@@ -34,11 +37,13 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    showHomeButton : PropTypes.bool.isRequired
+    showHomeButton : PropTypes.bool.isRequired,
+    showHeader : PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    showHomeButton : state.showHomeButton
+    showHomeButton : state.showHomeButton,
+    showHeader : state.showHeader
 });
 
 export default connect(mapStateToProps)(Header);

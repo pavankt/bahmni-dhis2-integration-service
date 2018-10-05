@@ -18,7 +18,8 @@ describe('Header', () => {
 
     beforeEach(() => {
         store = createStore(() => ({
-            showHomeButton : true
+            showHomeButton : true,
+            showHeader: true
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(

@@ -8,3 +8,64 @@
   background-image: linear-gradient(#a1d030, #88af28);
   color: white;
 }
+
+.preview-button{
+  font-size: 14px;
+  width: 135px;
+  background-image: linear-gradient(#a1d030, #88af28);
+  color: white;
+  margin: auto;
+}
+
+.service-name{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 18px;
+  line-height: 1.1635742;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.time-stamp{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.1635742;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.preview-table{
+  display: table;
+  margin-top: 15px;
+}
+
+.preview-element{
+  padding: 5px;
+  font-size: 10px;
+  color: black;
+}
+
+.side-bordered-cell{
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.message{
+  display: block;
+  text-align: center;
+  font-size: 25px;
+  margin-top: 45px;
+}
+
+.bordered-cell{
+  border: 1px solid black;
+}
+
+.table-header{
+  background-color: #c0c0c0;
+}

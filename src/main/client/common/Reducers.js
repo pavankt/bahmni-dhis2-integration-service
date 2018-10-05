@@ -25,6 +25,15 @@ export function showHomeButton(state = true, action = {}) {
     }
 }
 
+export function showHeader(state = true, action = {}) {
+    switch (action.type) {
+    case 'showHeader':
+        return action.show;
+    default :
+        return state;
+    }
+}
+
 export function session(state = {user: '', privileges: []}, action = {}) {
     switch(action.type) {
         case 'session' :

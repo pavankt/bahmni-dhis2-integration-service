@@ -1,7 +1,9 @@
-import {hideSpinner,
+import {
+    hideSpinner,
     showHomeButton,
     showMessage,
-    session
+    session,
+    showHeader
 } from '../../../main/client/common/Reducers';
 
 describe('Reducers', () => {
@@ -62,6 +64,28 @@ describe('Reducers', () => {
                 type: 'hideHome'
             };
             expect(showHomeButton(false, action)).toBeFalsy();
+        })
+    });
+
+
+    describe('ShowHeaderReducer', () => {
+        it('should return true with default params', () => {
+            expect(showHeader()).toBeTruthy();
+        });
+
+        it('should return showHomeButton value as action.show value when action type is showHome', () => {
+            const action = {
+                type: 'showHeader',
+                show: true
+            };
+            expect(showHeader(false, action)).toBeTruthy();
+        });
+
+        it('should return state value when action.type is not showHome', () => {
+            const action = {
+                type: 'hideHome'
+            };
+            expect(showHeader(false, action)).toBeFalsy();
         })
     });
 

@@ -7,6 +7,7 @@ import MappingDashboard from "./mapping/MappingDashboard";
 import SyncDashboard from "./sync/SyncDashboard";
 import App from './App';
 import DescribeFilteredTable from "./mapping/components/DescribeFilteredTable";
+import Preview from "./sync/components/Preview";
 
 const browserHistory = createBrowserHistory();
 
@@ -21,6 +22,7 @@ return (
       <Route exact path="/dhis-integration/logs" component={LogDashboard} />
       <Route exact path="/dhis-integration/mapping/new" component={DescribeFilteredTable} />
       <Route exact path="/dhis-integration/mapping/edit/:mappingName" component={DescribeFilteredTable} />
+      <Route exact path="/dhis-integration/preview/:service" component={Preview} />
     </switch>
   </BrowserRouter>);
 }

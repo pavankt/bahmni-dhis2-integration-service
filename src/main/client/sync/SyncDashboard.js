@@ -30,6 +30,15 @@ class SyncDashboard extends React.Component {
                 <td className="edit-mapping-button">
                   <button
                     type="submit"
+                    className="center preview-button"
+                    onClick={() => {
+                        window.open(`/dhis-integration/preview/${mappingName}`);
+                    }}
+                  >
+                            Preview
+                  </button>
+                  <button
+                    type="submit"
                     className="center send-button"
                     onClick={() => this.props.dispatch(
                         syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value))}

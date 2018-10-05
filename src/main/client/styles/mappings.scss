@@ -122,7 +122,7 @@
 
 .add-mapping-button{
   width: 150px;
-  margin-left: 450px;
+  margin-left: 500px;
   margin-top: 80px;
   color: #fff;
   background-image: linear-gradient(#a1d030, #88af28);
@@ -154,10 +154,11 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 .mapping-names-table{
-  width: 600px;
+  width: 650px;
 }
 
 .all-mappings-sections {
@@ -241,8 +242,7 @@
 
 .edit-button {
   border-radius: 3px;
-  background: linear-gradient(to bottom, #fff, #ddd);
-  background-color: #ddd;
+  background: #ddd linear-gradient(to bottom, #fff, #ddd);
   border: #ddd 1px solid;
   padding: 6px 20px 7px;
   display: inline-block;

@@ -2,12 +2,14 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
-import {hideSpinner,
+import {
+    hideSpinner,
     showHome,
     showMessage,
     session,
     getSession,
-    ensureActiveSession
+    ensureActiveSession,
+    showHeader
 } from '../../../main/client/common/Actions';
 import Ajax from '../../../main/client/common/Ajax';
 
@@ -72,6 +74,26 @@ describe('Actions', () => {
                 show: false
             };
             let result = showHome(false);
+            expect(expected).toEqual(result);
+        })
+    });
+
+    describe('showHeaderAction', () => {
+        it('should return showHeader value as true as default', () => {
+            const expected = {
+                type: "showHeader",
+                show: true
+            };
+            let result = showHeader();
+            expect(expected).toEqual(result);
+        });
+
+        it('should return given value as showHeader value', () => {
+            const expected = {
+                type: "showHeader",
+                show: false
+            };
+            let result = showHeader(false);
             expect(expected).toEqual(result);
         })
     });

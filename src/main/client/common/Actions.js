@@ -23,6 +23,13 @@ export function showHome(show = true) {
     }
 }
 
+export function showHeader(show = true) {
+    return {
+        type: "showHeader",
+        show
+    }
+}
+
 export function session(session = {user: '', privileges: []}) {
     return {
         type: "session",
