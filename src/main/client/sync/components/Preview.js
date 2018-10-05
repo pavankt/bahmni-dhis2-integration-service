@@ -8,9 +8,7 @@ class Preview extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            deltaData: {
-                result: []
-            },
+            deltaData: {},
             serviceName: this.props.match.params.service
         };
         this.getHeader = this.getHeader.bind(this);
@@ -66,22 +64,33 @@ class Preview extends Component {
 
     render() {
         if (this.state.deltaData.error) {
-            return <span className="message">{this.state.deltaData.error}</span>;
-        } else if (this.state.deltaData.result.length === 0) {
-            return <span className="message">No Delta Data to Sync</span>;
-        } else {
             return (
-              <div className="container">
-                <span className="service-name">
-                  {this.state.serviceName}
-                </span>
+              <div>
                 <span className="time-stamp">
-                    Generated on
+                    Generated on 
+                  {' '}
                   {this.state.deltaData.generatedDate}
                 </span>
-                {(this.formatDeltaData())}
-              </div>);
+                <span className="message">{this.state.deltaData.error}</span>
+              </div>
+);
+        } else if (this.state.deltaData.result && this.state.deltaData.result.length === 0) {
+            return <span className="message">No Delta Data to Sync</span>;
+        } else if (!this.state.deltaData.result) {
+            return null;
         }
+        return (
+          <div className="container">
+            <span className="service-name">
+              {this.state.serviceName}
+            </span>
+            <span className="time-stamp">
+                    Generated on 
+              {' '}
+              {this.state.deltaData.generatedDate}
+            </span>
+            {this.formatDeltaData()}
+          </div>);
     }
 
 }

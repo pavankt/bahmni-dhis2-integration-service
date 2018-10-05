@@ -27,10 +27,10 @@ public class PreviewController {
         Map<String, Object> resultObj = new HashMap<>();
         try {
             resultObj.put("result", previewService.getDeltaData(mappingName));
-            resultObj.put("generatedDate", dateFormat.format(new Date()));
         } catch (BadSqlGrammarException bsge) {
-            resultObj.put("error", "Invalid Mapping");
+            resultObj.put("error", "There is an error in the preview. Please contact Admin.");
         }
+        resultObj.put("generatedDate", dateFormat.format(new Date()));
         return resultObj;
     }
 }
