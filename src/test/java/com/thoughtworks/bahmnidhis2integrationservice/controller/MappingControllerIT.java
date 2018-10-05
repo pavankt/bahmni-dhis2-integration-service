@@ -3,6 +3,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 import com.thoughtworks.bahmnidhis2integrationservice.BahmniDhis2IntegrationServiceApplication;
 import com.thoughtworks.bahmnidhis2integrationservice.SystemPropertyActiveProfileResolver;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import model.MappingDetails;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,15 +41,15 @@ public class MappingControllerIT{
     @Test
     @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingNames() {
-        List<String> mappingNames = mappingController.getAllMappingNames();
+        Map<String, MappingDetails> expected = new HashMap<>();
+        expected.put("HTS Service", new MappingDetails("Wednesday October 03, 2018 11:21:32 AM", ""));
+        expected.put("TB Service", new MappingDetails("Thursday October 04, 2018 11:21:32 AM", ""));
 
-        int expectedRows = 2;
-        List<String> expectedList = Arrays.asList("HTS Service","TB Service");
+        Map<String, MappingDetails> mappings = mappingController.getAllMappingNames();
 
-        assertEquals(expectedRows, mappingNames.size());
-        assertTrue(mappingNames.containsAll(expectedList));
-        truncateMapping();
-        truncateMarker();
+        assertEquals(expected, mappings);
+//        truncateMapping();
+//        truncateMarker();
     }
 
     @Test
@@ -134,8 +135,22 @@ public class MappingControllerIT{
                 ");");
     }
 
+    private void truncateLog() {
+        jdbcTemplate.execute("DROP TABLE IF EXISTS log CASCADE;\n" +
+                "CREATE TABLE \"public\".\"log\"(\n" +
+                "log_id SERIAL PRIMARY KEY,\n" +
+                "program text,\n" +
+                "synced_by text,\n" +
+                "comments text,\n" +
+                "status text,\n" +
+                "failure_reason text,\n" +
+                "date_created TIMESTAMP\n" +
+                ");");
+    }
+
     @After
     public void tearDown() {
         truncateMarker();
+        truncateLog();
     }
 }

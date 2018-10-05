@@ -29,12 +29,9 @@ public class LogDAOImpl implements LogDAO {
         String dateInString = "";
 
         String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = '%s';", mappingName, SUCCESS);
-        System.out.println("\n sql: " + sql);
         Object maxDateCreated = jdbcTemplate.queryForList(sql).get(0).get("max");
-        System.out.println("\n maxDateCreated " + maxDateCreated);
         if (maxDateCreated != null) {
             dateInString = getFormattedDateString(maxDateCreated.toString(), DATEFORMAT, DATEFORMAT_IN_WORDS);
-            System.out.println("datestring: " + dateInString);
         }
         return dateInString;
     }

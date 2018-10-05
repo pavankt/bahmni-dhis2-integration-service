@@ -8,10 +8,7 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.setValuesForMemberFields;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 public class LogServiceImplTest {
@@ -29,12 +26,12 @@ public class LogServiceImplTest {
 
     @Test
     public void shouldMakeACallToMarkerDAOToCreateEntries() {
-//
-//        doNothing().when(logDAO).createMarkerEntries(oldMappingName, newMappingName);
-//
-//        logService.createEntriesForNewService(oldMappingName, newMappingName);
-//
-//        verify(logDAO, times(1)).createMarkerEntries(oldMappingName, newMappingName);
-        assertEquals(1,1);
+        String mappingName = "My service";
+
+        when(logDAO.getLastSuccessfulSyncDate(mappingName)).thenReturn("2018-10-03 11:21:32.000000");
+
+        logService.getSyncDateForService(mappingName);
+
+        verify(logDAO, times(1)).getLastSuccessfulSyncDate(mappingName);
     }
 }

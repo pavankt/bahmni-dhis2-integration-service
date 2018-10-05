@@ -27,8 +27,8 @@ public class TableMetaDataControllerIT{
     public void shouldReturnAllTableNames() {
         List<String> allTableNames = tableMetaDataController.getAllTableNames();
 
-        int expectedTablesCount = 4;
-        List<String> expectedTables = Arrays.asList("person_details_default", "patient_identifier", "mapping", "marker");
+        int expectedTablesCount = 5;
+        List<String> expectedTables = Arrays.asList("person_details_default", "patient_identifier", "mapping", "marker", "log");
 
         assertEquals(expectedTablesCount, allTableNames.size());
         assertTrue(expectedTables.containsAll(allTableNames));
