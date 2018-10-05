@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import {
+    mappingDetails,
     allMappingNames,
     allTables,
     selectedInstanceTable,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   selectedInstanceTableColumns,
   selectedEventTableColumns,
   allMappingNames,
+  mappingDetails,
   hideSpinner,
   showMessage,
   currentMapping,

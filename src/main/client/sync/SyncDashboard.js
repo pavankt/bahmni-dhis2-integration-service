@@ -28,7 +28,7 @@ class SyncDashboard extends React.Component {
                               placeholder='Please provide comments' />
                 </td>
                 <td className="mapping-name">
-                      Some date
+                    {this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].date}
                 </td>
                 <td className="edit-mapping-button">
                   <button
@@ -73,12 +73,14 @@ class SyncDashboard extends React.Component {
 SyncDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
+    mappingDetails: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     session: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
     mappingNames: state.allMappingNames,
+    mappingDetails: state.mappingDetails,
     hideSpinner: state.hideSpinner,
     session : state.session
 });

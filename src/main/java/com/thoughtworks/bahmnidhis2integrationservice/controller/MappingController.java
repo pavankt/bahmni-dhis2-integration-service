@@ -1,8 +1,10 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LogServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
+import model.MappingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,9 @@ public class MappingController {
     @Autowired
     private MarkerServiceImpl markerService;
 
+    @Autowired
+    private LogServiceImpl logService;
+
     @PutMapping(value = "/saveMapping")
     @ResponseBody
     public Map<String, String> saveMappings(@RequestBody Map<String, String> params) throws Exception {
@@ -45,8 +50,17 @@ public class MappingController {
 
     @GetMapping(value = "/getMappingNames")
     @ResponseBody
-    public List<String> getAllMappingNames() {
-        return mappingService.getMappingNames();
+    public Map<String, MappingDetails> getAllMappingNames() {
+
+        Map<String, MappingDetails> response = new HashMap<>();
+
+        List<String> mappingNames = mappingService.getMappingNames();
+        mappingNames.forEach(mapping -> {
+            MappingDetails mappingDetails = new MappingDetails(logService.getSyncDateForService(mapping), "");
+            response.put(mapping, mappingDetails);
+        });
+
+        return response;
     }
 
     @GetMapping(value = "/getMapping")
