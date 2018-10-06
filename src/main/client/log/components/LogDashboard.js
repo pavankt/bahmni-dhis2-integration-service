@@ -12,7 +12,7 @@ class LogDashboard extends Component {
                 <LogFilters/>
                 <LogTable/>
                 <LogNavigation/>
-                <span className="no-events">No more events to be displayed !!</span>
+                <div className="no-events">No more events to be displayed !!</div>
             </div>
         );
     }
