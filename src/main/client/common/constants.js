@@ -22,3 +22,13 @@ export const auditLogEventDetails = {
 export const sync = {
     URI: '/sync/pushData'
 };
+
+export const actualLogHeaders = {
+  log_id: "LogId",
+  program: "Service",
+  synced_by: "Username",
+  comments: "Comments",
+  status: "Status",
+  failure_reason: "Failure Reason",
+  date_created: "Date Created",
+};
