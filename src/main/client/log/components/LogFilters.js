@@ -4,17 +4,22 @@ import {connect} from "react-redux";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { getLogs, filterValues, getUtcFromLocal } from '../actions/LogActions';
+import {showMessage} from "../../common/Actions";
+import Message from "../../common/Message";
 
 class LogFilters extends Component {
     constructor() {
         super();
         this.onDateChange = this.onDateChange.bind(this);
         this.onTimeChange = this.onTimeChange.bind(this);
-        this.onSelect = this.onSelect.bind(this);
+        this.onDateEnter = this.onDateEnter.bind(this);
         this.onFilterClick = this.onFilterClick.bind(this);
+        this.onTimeEnter = this.onTimeEnter.bind(this);
+        this.isValidMoment = this.isValidMoment.bind(this);
         this.state = {
             date: moment(),
-            time: moment("12:00 AM", "hh:mm A")
+            time: moment("12:00 AM", "hh:mm A"),
+            disableButton: false
         }
     }
 
@@ -22,20 +27,44 @@ class LogFilters extends Component {
         this.setState({
             date: date
         });
-
+        this.props.dispatch(showMessage());
+        this.setState({
+            disableButton: false
+        });
     }
 
     onTimeChange(time) {
         this.setState({
             time: time
         });
+        this.props.dispatch(showMessage());
+        this.setState({
+            disableButton: false
+        });
     }
 
-    onSelect(_event) {
+    onDateEnter(_event) {
         let date = moment(_event.target.value, "MM/DD/YYYY", true);
+        this.isValidMoment(date, "date", "MM/DD/YYYY");
+    }
 
-        if (!date.isValid()) {
-            console.log("not valid");
+    onTimeEnter(_event) {
+        let time = moment(_event.target.value, "hh:mm A", true);
+        this.isValidMoment(time, "time", "hh:mm A");
+    }
+
+    isValidMoment(momentObj, invalidField, format) {
+        let errorMessage = "Please Enter Valid " + invalidField + " and format should be " + format;
+        if (!momentObj.isValid()) {
+            this.props.dispatch(showMessage(errorMessage, "error"));
+            this.setState({
+                disableButton: true
+            });
+        } else {
+            this.props.dispatch(showMessage());
+            this.setState({
+                disableButton: false
+            });
         }
     }
 
@@ -52,6 +81,7 @@ class LogFilters extends Component {
     render() {
         return (
             <div className="filters">
+                <Message/>
                 <div className="filter-text">Filters</div>
                 <span className="filter-on">Start From</span>
                 <DatePicker
@@ -59,7 +89,7 @@ class LogFilters extends Component {
                     onChange={this.onDateChange}
                     dropdownMode="select"
                     className="date-picker"
-                    onChangeRaw={this.onSelect}
+                    onChangeRaw={this.onDateEnter}
                 />
                 <DatePicker
                     selected={this.state.time}
@@ -71,12 +101,13 @@ class LogFilters extends Component {
                     dateFormat="LT"
                     timeCaption="Time"
                     className="time-picker"
+                    onChangeRaw={this.onTimeEnter}
                 />
                 <span className="filter-on">Service</span>
                 <input className="filter-input" ref="service"/>
                 <span className="filter-on">Username</span>
                 <input className="filter-input" ref="user"/>
-                <button className="filter-button" onClick={this.onFilterClick}>
+                <button className="filter-button" onClick={this.onFilterClick} disabled={this.state.disableButton}>
                     <i className="fa fa-filter"/>
                     Filter
                 </button>
