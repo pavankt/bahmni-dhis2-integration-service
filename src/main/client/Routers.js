@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Header from "./common/Header";
-import LogDashboard from "./log/LogDashboard";
+import LogDashboard from "./log/components/LogDashboard";
 import MappingDashboard from "./mapping/MappingDashboard";
 import SyncDashboard from "./sync/SyncDashboard";
 import App from './App';

@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import {
     mappingDetails,
     allMappingNames,
@@ -12,13 +12,18 @@ import {
     mappingJson,
 } from './mapping/reducers/MappingReducer';
 
-import {
-    hideSpinner,
+import { hideSpinner,
     showMessage,
     showHomeButton,
     session,
     showHeader
 } from './common/Reducers';
+
+import {
+    logs,
+    filters,
+    noEventsToDisplay
+} from './log/reducers/LogReducer';
 
 const reducers = combineReducers({
   selectedInstanceTable,
@@ -34,8 +39,11 @@ const reducers = combineReducers({
   currentMapping,
   showHomeButton,
   mappingJson,
+  showHeader,
   session,
-  showHeader
+  logs,
+  filters,
+  noEventsToDisplay
 });
 
 export default reducers;
