@@ -18,6 +18,12 @@ import { hideSpinner,
     session
 } from './common/Reducers';
 
+import {
+    logs,
+    filters,
+    noEventsToDisplay
+} from './log/reducers/LogReducer';
+
 const reducers = combineReducers({
   selectedInstanceTable,
   selectedEnrollmentsTable,
@@ -32,7 +38,10 @@ const reducers = combineReducers({
   currentMapping,
   showHomeButton,
   mappingJson,
-  session
+  session,
+  logs,
+  filters,
+  noEventsToDisplay
 });
 
 export default reducers;
