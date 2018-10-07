@@ -64,7 +64,7 @@ describe("LogTable", () => {
             </Provider>
         );
 
-        expect(rendered.find('.log-header')).toHaveLength(4);
+        expect(rendered.find('.log-header')).toHaveLength(3);
     });
 
     it('should have log-row class name for all rows when logs are there', () => {
