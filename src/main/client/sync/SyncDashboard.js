@@ -27,6 +27,9 @@ class SyncDashboard extends React.Component {
                     <textarea className="sync-comment" ref={unique_ref_prefix + mappingName}
                               placeholder='Please provide comments' />
                 </td>
+                <td className="mapping-name">
+                    {this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].date}
+                </td>
                 <td className="preview-cell-border">
                   <button
                     type="submit"
@@ -63,6 +66,7 @@ class SyncDashboard extends React.Component {
                   <tr className="section-title">
                       <td className="title-name">Name</td>
                       <td className="title-comments">Comments</td>
+                      <td className="title-name">Last Successful Sync</td>
                       <td></td>
                   </tr>
                     {this.renderMappingNames()}
@@ -78,12 +82,14 @@ class SyncDashboard extends React.Component {
 SyncDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
+    mappingDetails: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     session: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
     mappingNames: state.allMappingNames,
+    mappingDetails: state.mappingDetails,
     hideSpinner: state.hideSpinner,
     session : state.session
 });

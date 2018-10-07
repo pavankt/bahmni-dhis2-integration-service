@@ -1,8 +1,11 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.service.LogService;
+import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LogServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
+import model.MappingDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +35,9 @@ public class MappingControllerTest {
     @Mock
     private MarkerServiceImpl markerService;
 
+    @Mock
+    private LogServiceImpl logService;
+
     private String mappingName = "patient_details";
     private String lookupTable = "patient";
     private String mappingJson = "{'patient_id': 'Asj8X', 'patient_name': 'jghTk9'}";
@@ -45,6 +51,8 @@ public class MappingControllerTest {
         mappingController = new MappingController();
         setValuesForMemberFields(mappingController, "mappingService", mappingService);
         setValuesForMemberFields(mappingController, "markerService", markerService);
+        setValuesForMemberFields(mappingController, "logService", logService);
+
         params.put("mappingName", mappingName);
         params.put("lookupTable", lookupTable);
         params.put("mappingJson", mappingJson);
@@ -87,10 +95,16 @@ public class MappingControllerTest {
 
     @Test
     public void shouldReturnAllMappingNames() {
-        List<String> expected = Arrays.asList("HTS Service", "TB Service");
-        when(mappingService.getMappingNames()).thenReturn(expected);
+        Map<String, MappingDetails> expected = new HashMap<>();
+        expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.000000", ""));
+        expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.000000", ""));
 
-        List<String> allMappings = mappingController.getAllMappingNames();
+        List<String> mappingNames = Arrays.asList("HTS Service", "TB Service");
+        when(mappingService.getMappingNames()).thenReturn(mappingNames);
+        when(logService.getSyncDateForService("HTS Service")).thenReturn("2018-10-03 11:21:32.000000");
+        when(logService.getSyncDateForService("TB Service")).thenReturn("2018-10-04 11:21:32.000000");
+
+        Map<String, MappingDetails> allMappings = mappingController.getAllMappingNames();
 
         assertEquals(allMappings, expected);
     }

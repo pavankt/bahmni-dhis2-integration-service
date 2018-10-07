@@ -64,6 +64,14 @@ export function allMappingNames(state = [], action = {}){
     }
 }
 
+export function mappingDetails(state = {}, action = {}){
+    if (action.type === 'mappingDetails') {
+        return action.mappingDetails;
+    } else {
+        return state;
+    }
+}
+
 export function currentMapping(state = '', action = {}) {
     switch (action.type) {
         case 'currentMapping':

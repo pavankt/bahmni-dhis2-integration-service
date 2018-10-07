@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {
+    mappingDetails,
     allMappingNames,
     allTables,
     selectedInstanceTable,
@@ -20,20 +21,21 @@ import {
 } from './common/Reducers';
 
 const reducers = combineReducers({
-    selectedInstanceTable,
-    selectedEnrollmentsTable,
-    selectedEventTable,
-    allTables,
-    selectedInstanceTableColumns,
-    selectedEventTableColumns,
-    allMappingNames,
-    hideSpinner,
-    showMessage,
-    currentMapping,
-    showHomeButton,
-    showHeader,
-    mappingJson,
-    session
+  selectedInstanceTable,
+  selectedEnrollmentsTable,
+  selectedEventTable,
+  allTables,
+  selectedInstanceTableColumns,
+  selectedEventTableColumns,
+  allMappingNames,
+  mappingDetails,
+  hideSpinner,
+  showMessage,
+  currentMapping,
+  showHomeButton,
+  mappingJson,
+  session,
+  showHeader
 });
 
 export default reducers;

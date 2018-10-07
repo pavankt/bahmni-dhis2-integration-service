@@ -51,3 +51,14 @@ CREATE TABLE "public"."marker"
   category         TEXT,
   last_synced_date TIMESTAMP
 );
+
+DROP TABLE IF EXISTS log CASCADE;
+CREATE TABLE "public"."log"(
+	log_id SERIAL PRIMARY KEY,
+	program text,
+	synced_by text,
+	comments text,
+	status text,
+	failure_reason text,
+	date_created TIMESTAMP
+);
