@@ -470,6 +470,10 @@ describe('LogActions', () => {
                     logs: []
                 },
                 {
+                    type: "noEventsToDisplay",
+                    noEvents: false
+                },
+                {
                     type: "noFilterEventsToDisplay",
                     noFilterEvents: true
                 }

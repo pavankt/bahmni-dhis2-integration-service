@@ -23,7 +23,10 @@ class LogTable extends Component{
     renderTableHeader() {
         let logs = this.props.logs;
         let keys = logs.length > 0 ? Object.keys(logs[0]) : [];
-        return keys.map(header => (
+        let keysWithoutLogId = keys.filter(key => {
+            return key !== 'log_id';
+        });
+        return keysWithoutLogId.map(header => (
             <th key={displayHeaderNames[header]} className="log-header">
                 {displayHeaderNames[header]}
             </th>
@@ -39,11 +42,13 @@ class LogTable extends Component{
     }
 
     renderValues(rowObj) {
-        return Object.keys(rowObj).map(key => (
+        let newRowObj = Object.assign({}, rowObj);
+        delete newRowObj['log_id'];
+        return Object.keys(newRowObj).map(key => (
             <td key={key} className="log-table-data-values">
                 { key === 'date_created'
-                    ? getLocalFromUtc(rowObj[key])
-                    : rowObj[key]
+                    ? getLocalFromUtc(newRowObj[key])
+                    : newRowObj[key]
                 }
             </td>
         ));

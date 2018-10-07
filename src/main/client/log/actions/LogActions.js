@@ -69,6 +69,7 @@ export function getLogsOnFilter(date, service = '', user = '') {
                 dispatch(noFilterEventsToDisplay());
             } else {
                 dispatch(logs([]));
+                dispatch(noEventsToDisplay());
                 dispatch(noFilterEventsToDisplay(true));
             }
         } catch (e) {
