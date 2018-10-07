@@ -22,7 +22,7 @@ class LogNavigation extends Component{
 
     render() {
         return (
-          <div>
+          <div className="log-navigation">
               <p className="log-table-buttons">
                   <button
                       className="prev-page"
