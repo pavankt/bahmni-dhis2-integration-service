@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.PreviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,10 @@ public class PreviewController {
             resultObj.put("result", previewService.getDeltaData(mappingName));
         } catch (BadSqlGrammarException bsge) {
             resultObj.put("error", "There is an error in the preview. Please contact Admin.");
+        }catch (EmptyResultDataAccessException erdae){
+            resultObj.put("error", "No mapping specified with the name "+ mappingName);
+        }catch (Exception e){
+            resultObj.put("error", "Internal Server Error");
         }
         resultObj.put("generatedDate", dateFormat.format(new Date()));
         return resultObj;
