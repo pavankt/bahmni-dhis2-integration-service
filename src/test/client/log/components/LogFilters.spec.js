@@ -64,7 +64,7 @@ describe("LogFilters", () => {
         let logActionsMock = sandBox.mock(LogActions);
         let filterValuesMock = logActionsMock.expects('filterValues').returns({type: ''});
         let getUrcMock = logActionsMock.expects('getUtcFromLocal').returns({type: ''});
-        let getLogsMock = logActionsMock.expects('getLogs').returns({type: ''});
+        let getLogsMock = logActionsMock.expects('getLogsOnFilter').returns({type: ''});
 
         store = createStore(() => ({
             showMessage: {

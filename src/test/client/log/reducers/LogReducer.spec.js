@@ -1,7 +1,8 @@
 import {
     logs,
     filters,
-    noEventsToDisplay
+    noEventsToDisplay,
+    noFilterEventsToDisplay
 } from "../../../../main/client/log/reducers/LogReducer"
 
 describe("LogReducer", () => {
@@ -70,7 +71,7 @@ describe("LogReducer", () => {
            expect(noEventsToDisplay()).toBeFalsy()
        });
 
-       it('should return action filters when action type is filterOn', () => {
+       it('should return action filters when action type is noEventsToDisplay', () => {
            let state = false;
            let action = {
                type: 'noEventsToDisplay',
@@ -79,13 +80,37 @@ describe("LogReducer", () => {
            expect(noEventsToDisplay(state, action)).toBeTruthy()
        });
 
-       it('should return state when action type is other than filterOn', () => {
+       it('should return state when action type is other than noEventsToDisplay', () => {
            let state = false;
            let action = {
                type: 'no events',
                noEvents: true
            };
            expect(noEventsToDisplay(state, action)).toBeFalsy()
+       });
+   });
+
+   describe("noFilterEventsToDisplay", () => {
+       it('should return default state when no parameters sent', () => {
+           expect(noFilterEventsToDisplay()).toBeFalsy()
+       });
+
+       it('should return action filters when action type is noFilterEventsToDisplay', () => {
+           let state = false;
+           let action = {
+               type: 'noFilterEventsToDisplay',
+               noFilterEvents: true
+           };
+           expect(noFilterEventsToDisplay(state, action)).toBeTruthy()
+       });
+
+       it('should return state when action type is other than noFilterEventsToDisplay', () => {
+           let state = false;
+           let action = {
+               type: 'no filter events',
+               noFilterEvents: true
+           };
+           expect(noFilterEventsToDisplay(state, action)).toBeFalsy()
        });
    });
 });

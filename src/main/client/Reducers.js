@@ -22,7 +22,8 @@ import { hideSpinner,
 import {
     logs,
     filters,
-    noEventsToDisplay
+    noEventsToDisplay,
+    noFilterEventsToDisplay
 } from './log/reducers/LogReducer';
 
 const reducers = combineReducers({
@@ -43,7 +44,8 @@ const reducers = combineReducers({
   session,
   logs,
   filters,
-  noEventsToDisplay
+  noEventsToDisplay,
+  noFilterEventsToDisplay
 });
 
 export default reducers;

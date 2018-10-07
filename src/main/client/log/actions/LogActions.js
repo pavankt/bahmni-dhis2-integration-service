@@ -27,6 +27,13 @@ export function noEventsToDisplay(noEvents = false) {
     }
 }
 
+export function noFilterEventsToDisplay(noFilterEvents = false) {
+    return {
+        type: "noFilterEventsToDisplay",
+        noFilterEvents
+    }
+}
+
 async function get(date, service, user, getAbove, logId, dispatch) {
     let ajax = Ajax.instance();
     try {
@@ -50,6 +57,25 @@ export function getLogs(date, service = '', user = '') {
     }
 }
 
+export function getLogsOnFilter(date, service = '', user = '') {
+    return async dispatch => {
+        let ajax = Ajax.instance();
+        let logId = 0;
+        try {
+            let response = await ajax.get("/dhis-integration/api/logs", {date, service, user, getAbove: true, logId});
+            if (response.length > 0) {
+                dispatch(logs(response));
+                dispatch(noEventsToDisplay());
+                dispatch(noFilterEventsToDisplay());
+            } else {
+                dispatch(logs([]));
+                dispatch(noFilterEventsToDisplay(true));
+            }
+        } catch (e) {
+            dispatch(showMessage("Could not get Events", "error"));
+        }
+    }
+}
 
 export function getNextPageLogs(service = '', user = '') {
     return async (dispatch, getState) => {
