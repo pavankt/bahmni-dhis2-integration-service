@@ -15,6 +15,7 @@ describe('LogDashboard', function () {
     beforeEach(() => {
         store = createStore(() => ({
             noEventsToDisplay: true,
+            noFilterEventsToDisplay: true,
             logs: [],
             filters: {
                 date: '',
@@ -46,13 +47,14 @@ describe('LogDashboard', function () {
         expect(rendered.find('.log-navigation')).toHaveLength(1)
     });
 
-    it('should have no-events class name when noEvents from store is true', function () {
-        expect(rendered.find('.no-events')).toHaveLength(1)
+    it('should have no-events class name when noEvents or noFilterEvents from store is true', function () {
+        expect(rendered.find('.no-events')).toHaveLength(2)
     });
 
-    it('should not have no-events class name when noEvents from store is false', function () {
+    it('should not have no-events class name when noEvents or noFilterEvents from store is false', function () {
         store = createStore(() => ({
             noEventsToDisplay: false,
+            noFilterEventsToDisplay: false,
             logs: [],
             filters: {
                 date: '',
@@ -71,5 +73,29 @@ describe('LogDashboard', function () {
             </Provider>
         );
         expect(rendered.find('.no-events')).toHaveLength(0)
+    });
+
+    it('should have no-events class name when either of noEvents or noFilterEvents from store is true', function () {
+        store = createStore(() => ({
+            noEventsToDisplay: false,
+            noFilterEventsToDisplay: true,
+            logs: [],
+            filters: {
+                date: '',
+                service: '',
+                user: ''
+            },
+            showMessage: {
+                responseMessage: '',
+                responseType: ''
+            }
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+            <Provider store={store}>
+                <LogDashboard />
+            </Provider>
+        );
+        expect(rendered.find('.no-events')).toHaveLength(1);
     });
 });

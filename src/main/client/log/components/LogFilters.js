@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import { getLogs, filterValues, getUtcFromLocal } from '../actions/LogActions';
+import { getLogsOnFilter, filterValues, getUtcFromLocal } from '../actions/LogActions';
 import {showMessage} from "../../common/Actions";
 import Message from "../../common/Message";
 
@@ -75,7 +75,7 @@ class LogFilters extends Component {
         let formattedDate = this.state.date.format("YYYY-MM-DD");
         let dateCreated = formattedDate + " " + formattedTime;
         this.props.dispatch(filterValues(dateCreated, service, user));
-        this.props.dispatch(getLogs(getUtcFromLocal(dateCreated), service, user));
+        this.props.dispatch(getLogsOnFilter(getUtcFromLocal(dateCreated), service, user));
     }
 
     render() {

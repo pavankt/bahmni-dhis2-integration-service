@@ -1,9 +1,12 @@
 import {
     filterValues,
     getLogs,
-    getNextPageLogs, getPrevPageLogs, getUtcFromLocal,
+    getNextPageLogs,
+    getPrevPageLogs,
     logs,
-    noEventsToDisplay
+    noEventsToDisplay,
+    noFilterEventsToDisplay,
+    getLogsOnFilter
 } from '../../../../main/client/log/actions/LogActions';
 
 import sinon from 'sinon';
@@ -72,6 +75,22 @@ describe('LogActions', () => {
             expect(noEventsToDisplay(true)).toEqual({
                 type: "noEventsToDisplay",
                 noEvents: true
+            });
+        });
+    });
+
+    describe('noFilterEventsToDisplay', () => {
+        it('should return object with noFilterEventsToDisplay as type and false as default value', () => {
+            expect(noFilterEventsToDisplay()).toEqual({
+                type: "noFilterEventsToDisplay",
+                noFilterEvents: false
+            });
+        });
+
+        it('should return object with noFilterEventsToDisplay as type and given values', () => {
+            expect(noFilterEventsToDisplay(true)).toEqual({
+                type: "noFilterEventsToDisplay",
+                noFilterEvents: true
             });
         });
     });
@@ -392,6 +411,116 @@ describe('LogActions', () => {
                 .returns(Promise.reject([]));
 
             await store.dispatch(getPrevPageLogs(service, user));
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            getMock.verify();
+            sandbox.restore();
+        });
+    });
+
+    describe('getLogsOnFilter', () => {
+        it('should dispatch logs and noFilterEventsToDisplay as false on server has results', async () => {
+            let logsArr = [{date_created: "2018-10-12 13:30:30", user: "superman", service: "HT Service"}];
+            let date = "2019-10-01 12:00:00";
+            let service = "HT Service";
+            let user = "superman";
+            let api = "/dhis-integration/api/logs";
+            let expectedActions = [
+                {
+                    type: "logs",
+                    logs: logsArr
+                },
+                {
+                    type: "noEventsToDisplay",
+                    noEvents: false
+                },
+                {
+                    type: "noFilterEventsToDisplay",
+                    noFilterEvents: false
+                }
+            ];
+            let store = mockStore({
+                logs: [],
+                noFilterEventsToDisplay: false
+            });
+            let ajax = Ajax.instance();
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let getMock = sandbox.mock(ajax).expects("get")
+                .withExactArgs(api, {date, service, user, getAbove: true, logId: 0})
+                .returns(Promise.resolve(logsArr));
+
+            await store.dispatch(getLogsOnFilter(date, service, user));
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            getMock.verify();
+            sandbox.restore();
+        });
+
+        it('should dispatch noEventsToDisplay as true when server has no results', async () => {
+            let date = "2019-10-01 12:00:00";
+            let service = "HT Service";
+            let user = "superman";
+            let api = "/dhis-integration/api/logs";
+            let expectedActions = [
+                {
+                    type: "logs",
+                    logs: []
+                },
+                {
+                    type: "noFilterEventsToDisplay",
+                    noFilterEvents: true
+                }
+            ];
+            let store = mockStore({
+                logs: [],
+                noFilterEventsToDisplay: false
+            });
+            let ajax = Ajax.instance();
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let getMock = sandbox.mock(ajax).expects("get")
+                .withExactArgs(api, {date, service, user, getAbove: true, logId: 0})
+                .returns(Promise.resolve([]));
+
+            await store.dispatch(getLogsOnFilter(date, service, user));
+
+            expect(store.getActions()).toEqual(expectedActions);
+
+            getMock.verify();
+            sandbox.restore();
+        });
+
+        it('should dispatch error message on ajax fail', async () => {
+            let date = "2019-10-01 12:00:00";
+            let service = "HT Service";
+            let user = "superman";
+            let api = "/dhis-integration/api/logs";
+            let expectedActions = [
+                {
+                    type: "showMessage",
+                    responseMessage: "Could not get Events",
+                    responseType: "error"
+                }
+            ];
+            let store = mockStore({
+                logs: [],
+                noEventsToDisplay: false,
+                showMessage: {
+                    responseMessage: "",
+                    responseType: ""
+                }
+            });
+            let ajax = Ajax.instance();
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let getMock = sandbox.mock(ajax).expects("get")
+                .withExactArgs(api, {date, service, user, getAbove: true, logId: 0})
+                .returns(Promise.reject([]));
+
+            await store.dispatch(getLogsOnFilter(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 

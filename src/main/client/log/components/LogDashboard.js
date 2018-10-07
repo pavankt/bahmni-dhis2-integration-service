@@ -13,6 +13,7 @@ class LogDashboard extends Component {
                 <LogTable/>
                 <LogNavigation/>
                 {this.props.noEvents && <div className="no-events">No more events to be displayed !!</div>}
+                {this.props.noFilterEvents && <div className="no-events">No matching events found for given criteria !!</div>}
             </div>
         );
     }
@@ -24,7 +25,8 @@ LogDashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    noEvents: state.noEventsToDisplay
+    noEvents: state.noEventsToDisplay,
+    noFilterEvents: state.noFilterEventsToDisplay
 });
 
 export default connect(mapStateToProps)(LogDashboard);
