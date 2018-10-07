@@ -21,7 +21,7 @@ from (Select pi.*
        OUTER JOIN (Select prog.*
                    from %s prog
                           inner join marker m on prog.date_created > coalesce(m.last_synced_date, '-infinity')
-                                                   and category = 'enrollments' AND
+                                                   and category = 'enrollment' AND
                                                  program_name =  '%s') as  programEnrollmentsTable
          On  instanceTable."Patient_Identifier" =  programEnrollmentsTable."Patient_Identifier" FULL
        OUTER JOIN (Select event.*
