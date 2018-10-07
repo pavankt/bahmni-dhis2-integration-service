@@ -25,3 +25,12 @@ export function noEventsToDisplay(state = false, action = {}) {
     }
 }
 
+export function noFilterEventsToDisplay(state = false, action = {}) {
+    switch (action.type) {
+    case 'noFilterEventsToDisplay':
+        return action.noFilterEvents;
+    default:
+        return state;
+    }
+}
+
