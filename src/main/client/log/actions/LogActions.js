@@ -27,7 +27,7 @@ export function noEventsToDisplay(noEvents = false) {
     }
 }
 
-export async function get(date, service, user, getAbove, logId, dispatch) {
+async function get(date, service, user, getAbove, logId, dispatch) {
     let ajax = Ajax.instance();
     try {
         let response = await ajax.get("/dhis-integration/api/logs", {date, service, user, getAbove, logId});

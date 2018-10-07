@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import { actualLogHeaders } from "../../common/constants";
+import { displayHeaderNames } from "../../common/constants";
 import { getLogs, getUtcFromLocal, getLocalFromUtc } from "../actions/LogActions";
 import moment from 'moment';
 
@@ -24,8 +24,8 @@ class LogTable extends Component{
         let logs = this.props.logs;
         let keys = logs.length > 0 ? Object.keys(logs[0]) : [];
         return keys.map(header => (
-            <th className="log-header">
-                {actualLogHeaders[header]}
+            <th key={displayHeaderNames[header]} className="log-header">
+                {displayHeaderNames[header]}
             </th>
         ));
     }

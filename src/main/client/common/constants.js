@@ -23,7 +23,7 @@ export const sync = {
     URI: '/sync/pushData'
 };
 
-export const actualLogHeaders = {
+export const displayHeaderNames = {
   log_id: "LogId",
   program: "Service",
   synced_by: "Username",
