@@ -27,10 +27,10 @@ class SyncDashboard extends React.Component {
                     <textarea className="sync-comment" ref={unique_ref_prefix + mappingName}
                               placeholder='Please provide comments' />
                 </td>
-                <td className="edit-mapping-button">
+                <td className="preview-cell-border">
                   <button
                     type="submit"
-                    className="center preview-button"
+                    className="preview-button"
                     onClick={() => {
                         window.open(`/dhis-integration/preview/${mappingName}`);
                     }}
@@ -39,7 +39,7 @@ class SyncDashboard extends React.Component {
                   </button>
                   <button
                     type="submit"
-                    className="center send-button"
+                    className="send-button"
                     onClick={() => this.props.dispatch(
                         syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value))}
                   >
