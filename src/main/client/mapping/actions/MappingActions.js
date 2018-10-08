@@ -169,7 +169,7 @@ function isJSON(type) {
 let parseResponse = (res) => {
     let keys = Object.keys(res);
     keys.forEach((key) => {
-        if (isJSON(res[key].type)) {
+        if (res[key] !== null && isJSON(res[key].type)) {
             res[key].value = JSON.parse(res[key].value)
         }
     });
@@ -277,14 +277,20 @@ export function getTables() {
 }
 
 export async function exportMapping(mappingName, dispatch) {
+    dispatch(hideSpinner(false));
     try {
-        dispatch(hideSpinner(false));
+        auditLogEventDetails.EXPORT_MAPPING_SERVICE.message = `User exported ${mappingName} Mapping Service`;
+        auditLog(auditLogEventDetails.EXPORT_MAPPING_SERVICE);
+    } catch (e) {
+        window.location.pathname = '/home';
+    }
+    try {
         let ajax = Ajax.instance();
         let response = parseResponse(await ajax.get('/dhis-integration/api/exportMapping', {"mappingName": mappingName}));
+        dispatch(hideSpinner());
         return JSON.stringify(response);
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
-    } finally {
-        dispatch(hideSpinner());
     }
+    dispatch(hideSpinner());
 }
