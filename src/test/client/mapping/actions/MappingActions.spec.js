@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
 import * as MappingActions from '../../../../main/client/mapping/actions/MappingActions';
+import * as Actions from '../../../../main/client/common/Actions';
 import Ajax from "../../../../main/client/common/Ajax";
 
 const middleWares = [thunk];
@@ -1054,6 +1055,91 @@ describe('#mappingActions', () => {
             } finally {
                 sandbox.restore();
             }
+        });
+    });
+
+    describe('exportMapping', function () {
+        it('should return stringify json on ajax success', () => {
+            let mappingName = "HTS Service";
+            let responseJson = {
+                "mapping_name": mappingName,
+                "lookup_table": {
+                    "value": '{' +
+                        '"instance": "patient_details",' +
+                        '"enrollments": "enroll",' +
+                        '"event": "event_table"' +
+                        '}',
+                    "type": "json"
+                },
+                "mapping_json": {
+                    "value": '{' +
+                        '"instance": {' +
+                        '"patient_identifier": "fYj7U",' +
+                        '"patient_name": "ert76HK"' +
+                        '},' +
+                        '"enrollments": {' +
+                        '"enrollment_id": "fYj7U",' +
+                        '"patient_name": "ert76HK"' +
+                        '},' +
+                        '"event": {' +
+                        '"event_id": "fYj7U",' +
+                        '"patient_name": "ert76HK"' +
+                        '}' +
+                        '}',
+                    "type": "json"
+                },
+                "created_by": "superman",
+                "date_created": "2019-10-18",
+                "modified_by": null,
+                "date_modified": null
+            };
+            let dispatchMock = jest.fn();
+            let ajax = Ajax.instance();
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxMock = sandbox.mock(ajax);
+            let ajaxGetMock = ajaxMock
+                .expects("get")
+                .withArgs("/dhis-integration/api/exportMapping", {"mappingName": mappingName})
+                .returns(Promise.resolve(responseJson));
+            let actionsMock = sandbox.mock(Actions);
+            let hideSpinnerMock = actionsMock.expects("hideSpinner");
+            let hideSpinnerFalse = hideSpinnerMock.withArgs(false);
+
+            MappingActions.exportMapping(mappingName, dispatchMock);
+
+            ajaxGetMock.verify();
+            hideSpinnerFalse.verify();
+            hideSpinnerMock.verify();
+            sandbox.restore();
+        });
+
+        it('should call showMessage on ajax fail', () => {
+            let mappingName = "HTS Service";
+            let dispatchMock = jest.fn();
+            let ajax = Ajax.instance();
+            let sandbox = sinon.createSandbox();
+            sandbox.stub(Ajax, "instance").returns(ajax);
+            let ajaxMock = sandbox.mock(ajax);
+            let ajaxGetMock = ajaxMock
+                .expects("get")
+                .withArgs("/dhis-integration/api/exportMapping", {"mappingName": mappingName})
+                .returns(Promise.reject({ message: 'Could not get mapping info' }));
+            let actionsMock = sandbox.mock(Actions);
+            let hideSpinnerMock = actionsMock.expects("hideSpinner");
+            let hideSpinnerFalse = hideSpinnerMock.withArgs(false);
+            let showMsgMock = actionsMock.expects('showMessage')
+                .withArgs("Could not get mapping info", "error");
+
+            try {
+                MappingActions.exportMapping(mappingName, dispatchMock);
+            } catch (e) {
+                ajaxGetMock.verify();
+                hideSpinnerFalse.verify();
+                hideSpinnerMock.verify();
+                showMsgMock.verify();
+            }
+            sandbox.restore();
         });
     });
 });
