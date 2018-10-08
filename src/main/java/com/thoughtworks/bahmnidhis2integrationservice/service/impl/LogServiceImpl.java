@@ -15,4 +15,9 @@ public class LogServiceImpl implements LogService {
     public String getSyncDateForService(String mappingName) {
         return logDAO.getLastSuccessfulSyncDate(mappingName);
     }
+
+    @Override
+    public String getLatestSyncStatus(String mappingName) {
+        return logDAO.getLatestSyncStatus(mappingName);
+    }
 }

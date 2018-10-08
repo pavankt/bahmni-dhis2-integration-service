@@ -56,7 +56,8 @@ public class MappingController {
 
         List<String> mappingNames = mappingService.getMappingNames();
         mappingNames.forEach(mapping -> {
-            MappingDetails mappingDetails = new MappingDetails(logService.getSyncDateForService(mapping), "");
+            MappingDetails mappingDetails = new MappingDetails(
+                    logService.getSyncDateForService(mapping), logService.getLatestSyncStatus(mapping));
             response.put(mapping, mappingDetails);
         });
 

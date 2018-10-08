@@ -16,6 +16,8 @@ import java.util.Map;
 public class LogDAOImpl implements LogDAO {
 
     private static final String SUCCESS = "success";
+    private static final String PENDING = "pending";
+    private static final String EMPTY_STATUS = "";
 
     private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATEFORMAT_IN_WORDS = "EEEEEE MMMMMM dd, yyyy hh:mm:ss a";
@@ -34,6 +36,16 @@ public class LogDAOImpl implements LogDAO {
             dateInString = getFormattedDateString(maxDateCreated.toString(), DATEFORMAT, DATEFORMAT_IN_WORDS);
         }
         return dateInString;
+    }
+
+    @Override
+    public String getLatestSyncStatus(String mappingName) {
+
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", mappingName);
+        if (jdbcTemplate.queryForList(sql).isEmpty()) {
+            return EMPTY_STATUS;
+        }
+        return (String) jdbcTemplate.queryForList(sql).get(0).get("status");
     }
 
     private static String getFormattedDateString(String date, String existingFormat, String expectedFormat) {
