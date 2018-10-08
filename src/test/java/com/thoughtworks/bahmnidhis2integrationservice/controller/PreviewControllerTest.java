@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +39,9 @@ public class PreviewControllerTest {
     @Mock
     private BadSqlGrammarException badSqlGrammarException;
 
+    @Mock
+    private EmptyResultDataAccessException emptyResultDataAccessException;
+
     @Before
     public void setUp() throws Exception {
         previewController = new PreviewController();
@@ -68,7 +72,6 @@ public class PreviewControllerTest {
         when(previewService.getDeltaData(mappingName)).thenReturn((List<Map<String, Object>>) expected.get("result"));
         whenNew(SimpleDateFormat.class).withArguments(PreviewController.DATE_FORMAT_WITH_24HR_TIME).thenReturn(simpleDateFormatMock);
         whenNew(Date.class).withNoArguments().thenReturn(dateMock);
-
         when(simpleDateFormatMock.format(dateMock)).thenReturn(generatedDate);
 
         Map<String, Object> actual = previewController.getDeltaData(mappingName);
@@ -79,17 +82,27 @@ public class PreviewControllerTest {
     }
 
     @Test
-    public void shouldReturnAHashMapWithKeyErrorWhenMappingIsNotValid() {
-        String generatedDate = "2018-10-01 15:09:04";
-
+    public void shouldReturnAHashMapWithKeyErrorAndShouldSayErrorInPreviewWhenMappingIsNotValid() {
         String mappingName = "invalidMapping";
-        Map<String, Object> expected = new HashMap();
 
         when(previewService.getDeltaData(mappingName)).thenThrow(badSqlGrammarException);
 
         Map<String, Object> actual = previewController.getDeltaData(mappingName);
 
         assertTrue(actual.containsKey("error"));
+        assertEquals("There is an error in the preview. Please contact Admin.", actual.get("error"));
+    }
+
+    @Test
+    public void shouldReturnAHashMapWithKeyErrorAndShouldSayNoMappingWhenNoMappingWithTheGivenName() {
+        String mappingName = "invalidMapping";
+
+        when(previewService.getDeltaData(mappingName)).thenThrow(emptyResultDataAccessException);
+
+        Map<String, Object> actual = previewController.getDeltaData(mappingName);
+
+        assertTrue(actual.containsKey("error"));
+        assertEquals("No mapping specified with the name invalidMapping", actual.get("error") );
     }
 
     private void assignValuesToMap(Map<String, Object> map, String patientIdentifier, String orgUnit, String enrollmentDate, String incidentDate, String enrollmentStatus, String program_start_date) {
