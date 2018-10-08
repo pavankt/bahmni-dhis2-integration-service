@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Spinner from '../common/Spinner';
-import {getAllMappings} from './actions/MappingActions';
+import {getAllMappings, exportMapping} from './actions/MappingActions';
 import Message from '../common/Message';
+import fileDownload from 'react-file-download';
+import { showMessage } from '../common/Actions';
 
 class MappingDashboard extends Component {
     constructor() {
         super();
         this.renderMappingNames = this.renderMappingNames.bind(this);
         this.redirectToAddEditMapping = this.redirectToAddEditMapping.bind(this);
+        this.exportMapping = this.exportMapping.bind(this);
     }
 
     componentDidMount() {
@@ -19,6 +22,12 @@ class MappingDashboard extends Component {
 
     redirectToAddEditMapping() {
         this.props.history.push('/dhis-integration/mapping/new');
+    }
+
+    async exportMapping(mappingName) {
+        let mappingDetails = await exportMapping(mappingName, this.props.dispatch);
+        fileDownload(mappingDetails, `${mappingName}.json`);
+        this.props.dispatch(showMessage(`Successfully exported ${mappingName} Mapping`, "success"));
     }
 
     renderMappingNames() {
@@ -32,6 +41,9 @@ class MappingDashboard extends Component {
                   <Link to={`/dhis-integration/mapping/edit/${mappingName}`} className="center edit-button">
                             Edit
                   </Link>
+                  <button className="export-button" onClick={() => this.exportMapping(mappingName)}>
+                      Export
+                  </button>
                 </td>
               </tr>
             ))
