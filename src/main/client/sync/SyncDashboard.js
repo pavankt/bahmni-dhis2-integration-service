@@ -15,11 +15,15 @@ class SyncDashboard extends React.Component {
         await this.props.dispatch(ensureActiveSession());
     }
 
-    disableButtons(mappingName) {
-        if(this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending') {
-            document.getElementById("preview_" + mappingName).disabled = true;
-            document.getElementById("send_" + mappingName).disabled = true;
-        }
+    async onClick(unique_ref_prefix, mappingName) {
+        this.props.mappingDetails[mappingName].status = 'pending';
+        this.setState({mappingDetails: this.props.mappingDetails});
+
+        await this.props.dispatch(
+            syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value));
+
+        this.props.mappingDetails[mappingName].status = '';
+        this.setState({mappingDetails: this.props.mappingDetails});
     }
 
     renderMappingNames() {
@@ -41,7 +45,7 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="preview-button"
-                    id={"preview_" + mappingName}
+                    disabled={this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending'}
                     onClick={() => {
                         window.open(`/dhis-integration/preview/${mappingName}`);
                     }}
@@ -51,13 +55,11 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="send-button"
-                    id={"send_" + mappingName}
-                    onClick={() => this.props.dispatch(
-                        syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value))}
+                    disabled={this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending'}
+                    onClick={this.onClick.bind(this, unique_ref_prefix, mappingName)}
                   >
                             Sync to DHIS2
                   </button>
-                  {this.disableButtons(mappingName)}
                 </td>
               </tr>
             ))
