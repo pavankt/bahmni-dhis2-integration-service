@@ -277,3 +277,16 @@ export function getTables() {
         }
     }
 }
+
+export async function exportMapping(mappingName, dispatch) {
+    try {
+        dispatch(hideSpinner(false));
+        let ajax = Ajax.instance();
+        let response = parseResponse(await ajax.get('/dhis-integration/api/exportMapping', {"mappingName": mappingName}));
+        return JSON.stringify(response);
+    } catch (e) {
+        dispatch(showMessage(e.message, "error"))
+    } finally {
+        dispatch(hideSpinner());
+    }
+}
