@@ -32,8 +32,6 @@ public class PreviewController {
             resultObj.put("error", "There is an error in the preview. Please contact Admin.");
         }catch (EmptyResultDataAccessException erdae){
             resultObj.put("error", "No mapping specified with the name "+ mappingName);
-        }catch (Exception e){
-            resultObj.put("error", "Internal Server Error");
         }
         resultObj.put("generatedDate", dateFormat.format(new Date()));
         return resultObj;

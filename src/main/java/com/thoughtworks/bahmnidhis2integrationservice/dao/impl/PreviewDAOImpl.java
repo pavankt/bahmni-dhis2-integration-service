@@ -9,7 +9,6 @@ import com.thoughtworks.bahmnidhis2integrationservice.util.PreviewUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +29,7 @@ public class PreviewDAOImpl implements PreviewDAO {
     private String ALIAS_NAME_OF_EVENT_TABLE = "eventsTable";
 
     @Override
-    public List<Map<String, Object>> getDeltaData(String mappingName) throws BadSqlGrammarException {
+    public List<Map<String, Object>> getDeltaData(String mappingName){
         String deltaDataSql = "";
 
         String mappingSql = getMappingQuery(mappingName);
