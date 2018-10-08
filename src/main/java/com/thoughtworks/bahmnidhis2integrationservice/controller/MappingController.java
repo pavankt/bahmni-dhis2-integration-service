@@ -68,4 +68,10 @@ public class MappingController {
     public Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException {
         return mappingService.getMapping(mappingName);
     }
+
+    @GetMapping(value = "/exportMapping")
+    @ResponseBody
+    public Map<String, Object> exportMapping(String mappingName) throws NoMappingFoundException {
+        return mappingService.exportMapping(mappingName);
+    }
 }

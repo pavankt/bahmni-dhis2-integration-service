@@ -1,7 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
-import com.thoughtworks.bahmnidhis2integrationservice.service.LogService;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LogServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
@@ -137,5 +136,24 @@ public class MappingControllerTest {
         } catch (NoMappingFoundException e) {
             assertEquals(e.getMessage(), "No mapping found with name " + mappingName);
         }
+    }
+
+    @Test
+    public void shouldGetMappingToExport() throws NoMappingFoundException {
+        Map<String, Object> HTSMapping = new HashMap<>();
+
+        HTSMapping.put("mapping_name", "HTS Service");
+        HTSMapping.put("lookup_table", "{\"instance\" : \"patient\"}");
+        HTSMapping.put("mapping_json", "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
+        HTSMapping.put("created_by", "Superman");
+        HTSMapping.put("date_created", "2018-10-12");
+        HTSMapping.put("modified_by", "Admin");
+        HTSMapping.put("date_modified", "2018-11-02");
+
+        when(mappingService.exportMapping("HTS Service")).thenReturn(HTSMapping);
+
+        assertEquals(HTSMapping, mappingController.exportMapping("HTS Service"));
+
+        verify(mappingService, times(1)).exportMapping("HTS Service");
     }
 }
