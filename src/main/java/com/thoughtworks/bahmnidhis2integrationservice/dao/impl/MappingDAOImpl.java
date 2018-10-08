@@ -60,6 +60,17 @@ public class MappingDAOImpl implements MappingDAO {
         }
     }
 
+    @Override
+    public Map<String, Object> exportMapping(String mappingName) throws NoMappingFoundException {
+        String sql = String.format("SELECT mapping_name, lookup_table, mapping_json, created_by, date_created, " +
+                "modified_by, date_modified FROM mapping WHERE mapping_name= '%s'", mappingName);
+        try{
+            return jdbcTemplate.queryForMap(sql);
+        }catch (EmptyResultDataAccessException e){
+            throw new NoMappingFoundException(mappingName);
+        }
+    }
+
     private String getCurrentTime() {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

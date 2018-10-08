@@ -29,4 +29,9 @@ public class MappingServiceImpl implements MappingService {
     public Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException {
         return mappingDAO.getMapping(mappingName);
     }
+
+    @Override
+    public Map<String, Object> exportMapping(String mappingName) throws NoMappingFoundException {
+        return mappingDAO.exportMapping(mappingName);
+    }
 }
