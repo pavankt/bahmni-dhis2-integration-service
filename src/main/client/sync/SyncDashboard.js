@@ -15,8 +15,15 @@ class SyncDashboard extends React.Component {
         await this.props.dispatch(ensureActiveSession());
     }
 
+    disableButtons(mappingName) {
+        if(this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending') {
+            document.getElementById("preview_" + mappingName).disabled = true;
+            document.getElementById("send_" + mappingName).disabled = true;
+        }
+    }
+
     renderMappingNames() {
-        let unique_ref_prefix = 'comment_';
+        let unique_ref_prefix = 'prefix_';
         return (
             this.props.mappingNames.sort().map(mappingName => (
               <tr key={mappingName} className="table-row">
@@ -34,6 +41,7 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="preview-button"
+                    id={"preview_" + mappingName}
                     onClick={() => {
                         window.open(`/dhis-integration/preview/${mappingName}`);
                     }}
@@ -43,11 +51,13 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="send-button"
+                    id={"send_" + mappingName}
                     onClick={() => this.props.dispatch(
                         syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value))}
                   >
                             Sync to DHIS2
                   </button>
+                  {this.disableButtons(mappingName)}
                 </td>
               </tr>
             ))

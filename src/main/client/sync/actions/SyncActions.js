@@ -20,6 +20,8 @@ export function syncData(mappingName = '', user = '', comment = '') {
             dispatch(showMessage("Sync started for " + mappingName, "success"));
             auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             await ajax.put(sync.URI, body);
+            document.getElementById("preview_" + mappingName).disabled = true;
+            document.getElementById("send_" + mappingName).disabled = true;
         } catch (e) {
             dispatch(showMessage("No data to sync for " + mappingName, "error"));
         }
