@@ -90,4 +90,8 @@ describe('Mapping dashboard', function () {
         pushMock.verify();
         sandbox.restore();
     });
+
+    it('should have export button for each service', () => {
+        expect(rendered.find('.export-button')).toHaveLength(2);
+    });
 });
