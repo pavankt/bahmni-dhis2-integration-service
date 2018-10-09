@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import Spinner from '../common/Spinner';
 import {getAllMappings, exportMapping} from './actions/MappingActions';
 import Message from '../common/Message';
-import fileDownload from 'react-file-download';
+import fileDownload from 'js-file-download';
 import { showMessage } from '../common/Actions';
 
 class MappingDashboard extends Component {
