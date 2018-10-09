@@ -95,13 +95,15 @@ public class MappingControllerTest {
     @Test
     public void shouldReturnAllMappingNames() {
         Map<String, MappingDetails> expected = new HashMap<>();
-        expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.000000", ""));
-        expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.000000", ""));
+        expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.000000", "success"));
+        expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.000000", "success"));
 
         List<String> mappingNames = Arrays.asList("HTS Service", "TB Service");
         when(mappingService.getMappingNames()).thenReturn(mappingNames);
         when(logService.getSyncDateForService("HTS Service")).thenReturn("2018-10-03 11:21:32.000000");
+        when(logService.getLatestSyncStatus("HTS Service")).thenReturn("success");
         when(logService.getSyncDateForService("TB Service")).thenReturn("2018-10-04 11:21:32.000000");
+        when(logService.getLatestSyncStatus("TB Service")).thenReturn("success");
 
         Map<String, MappingDetails> allMappings = mappingController.getAllMappingNames();
 

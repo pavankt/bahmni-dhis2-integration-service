@@ -25,10 +25,21 @@ public class LogServiceImplTest {
     }
 
     @Test
-    public void shouldMakeACallToMarkerDAOToCreateEntries() {
+    public void shouldMakeACallToLogDAOToGetLastSuccessfulSyncDate() {
         String mappingName = "My service";
 
         when(logDAO.getLastSuccessfulSyncDate(mappingName)).thenReturn("2018-10-03 11:21:32.000000");
+
+        logService.getSyncDateForService(mappingName);
+
+        verify(logDAO, times(1)).getLastSuccessfulSyncDate(mappingName);
+    }
+
+    @Test
+    public void shouldMakeACallToLogDAOToGetLatestSyncStatus() {
+        String mappingName = "My service";
+
+        when(logDAO.getLatestSyncStatus(mappingName)).thenReturn("success");
 
         logService.getSyncDateForService(mappingName);
 

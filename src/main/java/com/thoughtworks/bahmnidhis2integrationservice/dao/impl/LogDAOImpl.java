@@ -42,10 +42,11 @@ public class LogDAOImpl implements LogDAO {
     public String getLatestSyncStatus(String mappingName) {
 
         String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", mappingName);
-        if (jdbcTemplate.queryForList(sql).isEmpty()) {
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        if (list.isEmpty()) {
             return EMPTY_STATUS;
         }
-        return (String) jdbcTemplate.queryForList(sql).get(0).get("status");
+        return (String) list.get(0).get("status");
     }
 
     private static String getFormattedDateString(String date, String existingFormat, String expectedFormat) {

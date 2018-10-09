@@ -1,5 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,11 @@ public class LogDAOImplTest {
         setValuesForMemberFields(logDAO, "jdbcTemplate", jdbcTemplate);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        list.clear();
+    }
+
     @Test
     public void shouldGetLastSuccessfulSyncDateForAGivenService() {
         String programName = "My Service";
@@ -53,7 +59,7 @@ public class LogDAOImplTest {
     }
 
     @Test
-    public void shouldReturnEmptyStringForAServiceWhichHasNotYetSyncedAnyData(){
+    public void shouldReturnEmptyStringForDateForAServiceWhichHasNotYetSyncedAnyData(){
         String programName = "My Service";
         String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = 'success';", programName);
 
@@ -64,6 +70,36 @@ public class LogDAOImplTest {
         when(jdbcTemplate.queryForList(sql)).thenReturn(list);
 
         String actual = logDAO.getLastSuccessfulSyncDate(programName);
+
+        assertEquals("", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldGetLatestSyncDateForAGivenService() {
+        String programName = "My Service";
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", "success");
+        list.add(map);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = logDAO.getLatestSyncStatus(programName);
+
+        assertEquals("success", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldReturnEmptyStringAsStatusForAServiceWhichHasNotYetSyncedAnyData(){
+        String programName = "My Service";
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = logDAO.getLatestSyncStatus(programName);
 
         assertEquals("", actual);
         verify(jdbcTemplate, times(1)).queryForList(sql);
