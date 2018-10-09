@@ -103,11 +103,29 @@ public class PreviewDAOImplTest {
         Map<String, Object> record1 = new HashMap<>();
         Map<String, Object> record2 = new HashMap<>();
 
-        assignValuesToMap(record1, "NAH0000000001", "PSI-ZIMB-NAH", "2018-09-12", "2018-09-08", "ACTIVE", "2018-09-24");
+        assignValuesToMap(
+                record1,
+                "NAH0000000001",
+                "PSI-ZIMB-NAH",
+                "2018-09-12",
+                "2018-09-08",
+                "2018-09-08 11:20:29.693000",
+                "ACTIVE",
+                "2018-09-24 00:00:00.000000"
+        );
         record1.put("UIC", "KLNTRA190606M");
         record1.put("self_test_outcome", "Positive");
 
-        assignValuesToMap(record2, "NAH0000000002", "PSI-ZIMB-NAH", "2018-08-12", "2018-08-11", "COMPLETED", "2018-09-24");
+        assignValuesToMap(
+                record2,
+                "NAH0000000002",
+                "PSI-ZIMB-NAH",
+                "2018-08-12",
+                "2018-08-11",
+                "2018-09-08 11:20:29.693000",
+                "COMPLETED",
+                "2018-09-24 00:00:00.000000"
+        );
         record2.put("UIC", "KLSTTA180773F");
         record2.put("self_test_outcome", "Positive");
 
@@ -172,16 +190,27 @@ public class PreviewDAOImplTest {
     }
 
 
-    private void assignValuesToMap(Map<String, Object> map, String patientIdentifier, String orgUnit, String enrollmentDate, String incidentDate, String enrollmentStatus, String program_start_date) {
-        map.put("Patient_Identifier", patientIdentifier);
-        map.put("OrgUnit", orgUnit);
+    private void assignValuesToMap(
+            Map<String, Object> map,
+            String patientIdentifier,
+            String orgUnit,
+            String enrollmentDate,
+            String incidentDate,
+            String enrollmentCreatedDate,
+            String eventStatus,
+            String eventDateCreated
+            ) {
+        map.put("Patient Identifier", patientIdentifier);
+        map.put("Org Unit", orgUnit);
 
-        map.put("enrollment_date", enrollmentDate);
-        map.put("incident_date", incidentDate);
+        map.put("Enrollment Date", enrollmentDate);
+        map.put("Incident Date", incidentDate);
+        map.put("Enrollment Date Created", enrollmentCreatedDate);
         map.put("status", "ACTIVE");
 
-        map.put("event_date", "2018-09-27");
-        map.put("event_status", enrollmentStatus);
-        map.put("program_start_date", program_start_date);
+        map.put("Event Date", "2018-09-27");
+        map.put("Event Status", eventStatus);
+        map.put("Event Date Created", eventDateCreated);
+        map.put("Prog Enrollment Date Created", enrollmentCreatedDate);
     }
 }

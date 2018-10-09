@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {getDeltaData} from "../../utils/PreviewUtil";
 import {showHeader} from "../../common/Actions";
+import {getLocalFromUtc} from "../../log/actions/LogActions";
 
 class Preview extends Component {
     constructor(props) {
@@ -31,10 +32,10 @@ class Preview extends Component {
         return (
           <tr>
             {
-                    Object.keys(this.state.deltaData.result[0]).map((field) => {
-                        return <th key={field} className="table-header bordered-cell preview-element">{field}</th>
-                    })
-                }
+              Object.keys(this.state.deltaData.result[0]).map((field) => {
+                  return <th key={field} className="table-header bordered-cell preview-element">{field}</th>
+              })
+          }
           </tr>
         );
     }
@@ -44,10 +45,18 @@ class Preview extends Component {
             return (
               <tr className="table-row" key={record}>
                 {
-                        Object.keys(record).map((field) => {
-                            return <td key={field} className="preview-element side-bordered-cell">{record[field]}</td>;
-                        })
-                    }
+                  Object.keys(record).map((field) => {
+                      return (
+                        <td key={field} className="preview-element side-bordered-cell">
+                          {
+                          (field.includes("Date Created") && record[field])
+                              ? getLocalFromUtc(record[field])
+                              : record[field]
+                      }
+                        </td>
+);
+                  })
+              }
               </tr>
             );
         });

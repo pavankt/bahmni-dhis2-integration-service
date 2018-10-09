@@ -13,8 +13,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.thoughtworks.bahmnidhis2integrationservice.util.DateUtil.getDateStringInUTC;
 
 @Component
 public class PreviewDAOImpl implements PreviewDAO {
@@ -29,8 +34,9 @@ public class PreviewDAOImpl implements PreviewDAO {
     private String ALIAS_NAME_OF_EVENT_TABLE = "eventsTable";
 
     @Override
-    public List<Map<String, Object>> getDeltaData(String mappingName){
+    public List<Map<String, Object>> getDeltaData(String mappingName) {
         String deltaDataSql = "";
+        ZoneId zoneId = ZonedDateTime.now().getZone();
 
         String mappingSql = getMappingQuery(mappingName);
 
@@ -61,8 +67,29 @@ public class PreviewDAOImpl implements PreviewDAO {
                 mappingName
         );
 
-        return jdbcTemplate.queryForList(sql);
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+
+        changeDatesToUtc(result, zoneId);
+
+        return result;
     }
+
+    private void changeDatesToUtc(List<Map<String, Object>> result, ZoneId zoneId) {
+        List<String> datesInDeltaData = new LinkedList<>();
+
+        datesInDeltaData.add("Prog Enrollment Date Created");
+        datesInDeltaData.add("Event Date Created");
+
+        result.forEach(deltaDataRecord ->
+            datesInDeltaData.forEach(date -> {
+                try {
+                    String currentDate = deltaDataRecord.get(date).toString();
+                    deltaDataRecord.put(date, getDateStringInUTC(currentDate, zoneId));
+                }catch (NullPointerException ignored){}
+            })
+        );
+    }
+
 
     private String getMappingQuery(String mappingName) {
         StringBuilder mappingSql = new StringBuilder("SELECT * FROM mapping WHERE mapping_name='");
