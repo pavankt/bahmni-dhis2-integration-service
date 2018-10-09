@@ -10,7 +10,7 @@ Select coalesce( instanceTable."Patient_Identifier",  programEnrollmentsTable."P
         eventsTable.event_date "Event Date",
         eventsTable.program "Program",
         eventsTable.program_stage "Program Stage",
-        eventsTable.program_start_date "Enrollment Date",
+        eventsTable.enrollment_date "event Enrollment Date",
         eventsTable.status "Event Status",
         eventsTable.date_created as "Event Date Created",
        %s
