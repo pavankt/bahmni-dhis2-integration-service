@@ -117,15 +117,17 @@
 }
 
 .log-header {
-  padding: 10px;
+  text-align: left;
+  padding: 10px 10px 10px 20px;
 }
 
 .log-table-data-values {
-  border: 1px solid #dddddd;
-  padding: 10px;
+  padding: 10px 10px 10px 20px;
+  word-break: break-word;
+  max-width: 150px;
 }
 
-.log-row:nth-child(even){
+.log-row:nth-child(odd){
   background: #f3f3f3;
 }
 
@@ -156,4 +158,34 @@
   font-weight: bold;
   font-size: 14px;
   text-align: center;
+}
+
+.log-row {
+  height: 80px;
+}
+
+.failed, .success, .pending {
+  border-radius: 15px;
+  padding: 5px 25px;
+  display: inline-block;
+  color: #FFFFFF;
+  font-size: 14px;
+  width: 120px;
+  text-align: center;
+  text-transform: capitalize
+}
+
+.failed {
+  background-color: #FB7777;
+  border: #FB7777 1px solid;
+}
+
+.success {
+  background-color: #9EC93E;
+  border: #9EC93E 1px solid;
+}
+
+.pending {
+  background-color: #F5A623;
+  border: #F5A623 1px solid;
 }

@@ -48,7 +48,9 @@ class LogTable extends Component{
             <td key={key} className="log-table-data-values">
                 { key === 'date_created'
                     ? getLocalFromUtc(newRowObj[key])
-                    : newRowObj[key]
+                    : key === 'status' ?
+                        <span className={newRowObj[key]}>{newRowObj[key]}</span>
+                        :newRowObj[key]
                 }
             </td>
         ));
