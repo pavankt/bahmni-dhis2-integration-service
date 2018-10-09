@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { displayHeaderNames } from "../../common/constants";
-import { getLogs, getUtcFromLocal, getLocalFromUtc } from "../actions/LogActions";
+import { getLogs, getUtcFromLocal, getLocalFromUtc, filterValues } from "../actions/LogActions";
 import moment from 'moment';
 
 class LogTable extends Component{
@@ -17,6 +17,7 @@ class LogTable extends Component{
         let date = moment(new Date()).format("YYYY-MM-DD");
         let time = moment("12:00 AM", "hh:mm A", true).format("HH:mm:ss");
         let dateTime = date + " " + time;
+        this.props.dispatch(filterValues(dateTime));
         this.props.dispatch(getLogs(getUtcFromLocal(dateTime)));
     }
 

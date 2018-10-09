@@ -228,7 +228,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: false, logId: 2})
                 .returns(Promise.resolve(logsArr));
 
-            await store.dispatch(getNextPageLogs(service, user));
+            await store.dispatch(getNextPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -261,7 +261,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: false, logId: 2})
                 .returns(Promise.resolve([]));
 
-            await store.dispatch(getNextPageLogs(service, user));
+            await store.dispatch(getNextPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -299,7 +299,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: false, logId: 2})
                 .returns(Promise.reject([]));
 
-            await store.dispatch(getNextPageLogs(service, user));
+            await store.dispatch(getNextPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -309,7 +309,7 @@ describe('LogActions', () => {
     });
 
     describe('getPrevPageLog', () => {
-        it('should dispatch logs and noEventsToDisplay as false on server has results for prev page', async () => {
+        it('should dispatch logs and noEventsToDisplay as false when server has results for prev page', async () => {
             let logsArr = [{date_created: "2018-10-12 13:30:30", user: "superman", service: "HT Service"}];
             let date = "2018-10-12 13:30:30";
             let service = "HT Service";
@@ -339,7 +339,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: true, logId: 1})
                 .returns(Promise.resolve(logsArr));
 
-            await store.dispatch(getPrevPageLogs(service, user));
+            await store.dispatch(getPrevPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -372,7 +372,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: true, logId: 1})
                 .returns(Promise.resolve([]));
 
-            await store.dispatch(getPrevPageLogs(service, user));
+            await store.dispatch(getPrevPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 
@@ -410,7 +410,7 @@ describe('LogActions', () => {
                 .withExactArgs(api, {date, service, user, getAbove: true, logId: 1})
                 .returns(Promise.reject([]));
 
-            await store.dispatch(getPrevPageLogs(service, user));
+            await store.dispatch(getPrevPageLogs(date, service, user));
 
             expect(store.getActions()).toEqual(expectedActions);
 

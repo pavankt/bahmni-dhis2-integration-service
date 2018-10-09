@@ -109,7 +109,7 @@ public class LoggerDAOImplTest {
         String serverDate = "2018-10-31 15:00:00";
         String sql = String.format("SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
                 "FROM log \n" +
-                "WHERE date_created <= '%s' \n" +
+                "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%%') \n" +
                 "AND upper(program) LIKE upper('%%%%')\n" +
                 "AND log_id < 0\n" +

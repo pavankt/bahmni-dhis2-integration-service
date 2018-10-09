@@ -15,10 +15,13 @@ configure({ adapter: new Adapter() });
 
 describe("LogNavigation", () => {
     let rendered, store;
+    let date = '2018-10-10 12:08:00';
+    let utc = '2018-10-10 06:38:00';
 
     beforeEach(() => {
         store = createStore(() => ({
             filters: {
+                date,
                 service: '',
                 user: ''
             }
@@ -54,11 +57,15 @@ describe("LogNavigation", () => {
     it('should dispatch getPrevPageLogs on prev-page button click', function () {
         let sandbox = sinon.createSandbox();
 
-        let prevPageMock = sandbox.mock(LogActions).expects('getPrevPageLogs')
-            .withArgs('', '').returns({ type: '' });
+        let logActions = sandbox.mock(LogActions);
+        let utcMock = logActions.expects('getUtcFromLocal')
+            .withArgs(date).returns(utc);
+        let prevPageMock = logActions.expects('getPrevPageLogs')
+            .withArgs(utc, '', '').returns({ type: '' });
 
         store = createStore(() => ({
             filters: {
+                date,
                 service: '',
                 user: ''
             }
@@ -73,17 +80,22 @@ describe("LogNavigation", () => {
         rendered.find('.prev-page').first().simulate('click');
 
         prevPageMock.verify();
+        utcMock.verify();
         sandbox.restore();
     });
 
     it('should dispatch getNextPageLogs on next-page button click', function () {
         let sandbox = sinon.createSandbox();
 
-        let nextPageMock = sandbox.mock(LogActions).expects('getNextPageLogs')
-            .withArgs('', '').returns({ type: '' });
+        let logActions = sandbox.mock(LogActions);
+        let utcMock = logActions.expects('getUtcFromLocal')
+            .withArgs(date).returns(utc);
+        let nextPageMock = logActions.expects('getNextPageLogs')
+            .withArgs(utc, '', '').returns({ type: '' });
 
         store = createStore(() => ({
             filters: {
+                date,
                 service: '',
                 user: ''
             }
@@ -98,6 +110,7 @@ describe("LogNavigation", () => {
         rendered.find('.next-page').first().simulate('click');
 
         nextPageMock.verify();
+        utcMock.verify();
         sandbox.restore();
     });
 });

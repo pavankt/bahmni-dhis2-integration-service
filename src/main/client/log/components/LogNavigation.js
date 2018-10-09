@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import { getNextPageLogs, getPrevPageLogs } from '../actions/LogActions';
+import { getNextPageLogs, getPrevPageLogs, getUtcFromLocal } from '../actions/LogActions';
 
 class LogNavigation extends Component{
     constructor(props) {
@@ -12,12 +12,12 @@ class LogNavigation extends Component{
 
     onPrevPage() {
         let filters = this.props.filters;
-        this.props.dispatch(getPrevPageLogs(filters.service, filters.user));
+        this.props.dispatch(getPrevPageLogs(getUtcFromLocal(filters.date), filters.service, filters.user));
     }
 
     onNextPage() {
         let filters = this.props.filters;
-        this.props.dispatch(getNextPageLogs(filters.service, filters.user));
+        this.props.dispatch(getNextPageLogs(getUtcFromLocal(filters.date), filters.service, filters.user));
     }
 
     render() {

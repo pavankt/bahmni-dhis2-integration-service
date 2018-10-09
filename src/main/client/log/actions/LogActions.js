@@ -78,21 +78,23 @@ export function getLogsOnFilter(date, service = '', user = '') {
     }
 }
 
-export function getNextPageLogs(service = '', user = '') {
+export function getNextPageLogs(date, service = '', user = '') {
     return async (dispatch, getState) => {
-        let StateLogs = getState().logs;
-        let logId = StateLogs[StateLogs.length - 1]["log_id"];
-        let date = StateLogs[StateLogs.length - 1]["date_created"];
+        let stateLogs = getState().logs;
+        let logId = stateLogs.length > 0 ?
+            stateLogs[stateLogs.length - 1]["log_id"]
+            : 0;
 
         await get(date, service, user, false, logId, dispatch);
     }
 }
 
-export function getPrevPageLogs(service = '', user = '') {
+export function getPrevPageLogs(date, service = '', user = '') {
     return async (dispatch, getState) => {
-        let StateLogs = getState().logs;
-        let logId = StateLogs[0]["log_id"];
-        let date = StateLogs[0]["date_created"];
+        let stateLogs = getState().logs;
+        let logId = stateLogs.length > 0 ?
+            stateLogs[0]["log_id"]
+            : 0;
 
         await get(date, service, user, true, logId, dispatch);
     }

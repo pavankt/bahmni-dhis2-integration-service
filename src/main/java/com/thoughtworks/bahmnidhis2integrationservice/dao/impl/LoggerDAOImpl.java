@@ -59,7 +59,7 @@ public class LoggerDAOImpl {
     private String getNextPageSql() {
         return "SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
                 "FROM log \n" +
-                "WHERE date_created <= '%s' \n" +
+                "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%s%%') \n" +
                 "AND upper(program) LIKE upper('%%%s%%')\n" +
                 "AND log_id < %s\n" +

@@ -89,7 +89,9 @@ describe("LogTable", () => {
     it('should dispatch getLogs on component did mount', () => {
         let sandbox = sinon.createSandbox();
 
-        let getLogsMock = sandbox.mock(LogActions).expects('getLogs').returns({type: {}});
+        let logActions = sandbox.mock(LogActions);
+        let getLogsMock = logActions.expects('getLogs').returns({type: {}});
+        let filterMock = logActions.expects('filterValues').returns({type: {}});
 
         store = createStore(() => ({
             logs: []
@@ -103,6 +105,7 @@ describe("LogTable", () => {
         );
 
         getLogsMock.verify();
+        filterMock.verify();
         sandbox.restore();
     });
 });
