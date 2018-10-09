@@ -25,7 +25,8 @@ describe('LogDashboard', function () {
             showMessage: {
                 responseMessage: '',
                 responseType: ''
-            }
+            },
+            hideSpinner: true
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -64,7 +65,8 @@ describe('LogDashboard', function () {
             showMessage: {
                 responseMessage: '',
                 responseType: ''
-            }
+            },
+            hideSpinner: true
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -88,7 +90,8 @@ describe('LogDashboard', function () {
             showMessage: {
                 responseMessage: '',
                 responseType: ''
-            }
+            },
+            hideSpinner: true
         }), applyMiddleware(thunkMiddleware));
 
         rendered = render(
@@ -97,5 +100,34 @@ describe('LogDashboard', function () {
             </Provider>
         );
         expect(rendered.find('.no-events')).toHaveLength(1);
+    });
+
+    it('should not have overlay class name when hideSpinner is true', () => {
+       expect(rendered.find('.overlay')).toHaveLength(0);
+    });
+
+    it('should have overlay class name when hideSpinner is false', () => {
+        store = createStore(() => ({
+            noEventsToDisplay: false,
+            noFilterEventsToDisplay: true,
+            logs: [],
+            filters: {
+                date: '',
+                service: '',
+                user: ''
+            },
+            showMessage: {
+                responseMessage: '',
+                responseType: ''
+            },
+            hideSpinner: false
+        }), applyMiddleware(thunkMiddleware));
+
+        rendered = render(
+            <Provider store={store}>
+                <LogDashboard />
+            </Provider>
+        );
+        expect(rendered.find('.overlay')).toHaveLength(1);
     });
 });
