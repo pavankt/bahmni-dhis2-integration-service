@@ -1,6 +1,6 @@
 import Ajax from '../../common/Ajax';
+import {hideSpinner, showMessage} from "../../common/Actions";
 import moment from "moment";
-import {showMessage} from "../../common/Actions";
 
 export function logs(logs = []) {
     return {
@@ -46,12 +46,15 @@ async function get(date, service, user, getAbove, logId, dispatch) {
         }
     } catch (e) {
         dispatch(showMessage("Could not get Events", "error"));
+    } finally {
+        dispatch(hideSpinner());
     }
 }
 
 
 export function getLogs(date, service = '', user = '') {
     return async dispatch => {
+        dispatch(hideSpinner(false));
         let logId = 0;
         await get(date, service, user, true, logId, dispatch);
     }
@@ -59,6 +62,7 @@ export function getLogs(date, service = '', user = '') {
 
 export function getLogsOnFilter(date, service = '', user = '') {
     return async dispatch => {
+        dispatch(hideSpinner(false));
         let ajax = Ajax.instance();
         let logId = 0;
         try {
@@ -74,12 +78,15 @@ export function getLogsOnFilter(date, service = '', user = '') {
             }
         } catch (e) {
             dispatch(showMessage("Could not get Events", "error"));
+        } finally {
+            dispatch(hideSpinner());
         }
     }
 }
 
 export function getNextPageLogs(date, service = '', user = '') {
     return async (dispatch, getState) => {
+        dispatch(hideSpinner(false));
         let stateLogs = getState().logs;
         let logId = stateLogs.length > 0 ?
             stateLogs[stateLogs.length - 1]["log_id"]
@@ -91,6 +98,7 @@ export function getNextPageLogs(date, service = '', user = '') {
 
 export function getPrevPageLogs(date, service = '', user = '') {
     return async (dispatch, getState) => {
+        dispatch(hideSpinner(false));
         let stateLogs = getState().logs;
         let logId = stateLogs.length > 0 ?
             stateLogs[0]["log_id"]

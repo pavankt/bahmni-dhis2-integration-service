@@ -104,12 +104,20 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                  type: "hideSpinner",
+                  hideSpinner: false
+                },
+                {
                     type: "logs",
                     logs: logsArr
                 },
                 {
                     type: "noEventsToDisplay",
                     noEvents: false
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -138,8 +146,16 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "noEventsToDisplay",
                     noEvents: true
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -168,9 +184,17 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "showMessage",
                     responseMessage: "Could not get Events",
                     responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -206,12 +230,20 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "logs",
                     logs: logsArr
                 },
                 {
                     type: "noEventsToDisplay",
                     noEvents: false
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -243,8 +275,16 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "noEventsToDisplay",
                     noEvents: true
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -276,9 +316,17 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "showMessage",
                     responseMessage: "Could not get Events",
                     responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -317,12 +365,20 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "logs",
                     logs: logsArr
                 },
                 {
                     type: "noEventsToDisplay",
                     noEvents: false
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -354,8 +410,16 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "noEventsToDisplay",
                     noEvents: true
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -387,9 +451,17 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "showMessage",
                     responseMessage: "Could not get Events",
                     responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -428,6 +500,10 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "logs",
                     logs: logsArr
                 },
@@ -438,6 +514,10 @@ describe('LogActions', () => {
                 {
                     type: "noFilterEventsToDisplay",
                     noFilterEvents: false
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -466,6 +546,10 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "logs",
                     logs: []
                 },
@@ -476,6 +560,10 @@ describe('LogActions', () => {
                 {
                     type: "noFilterEventsToDisplay",
                     noFilterEvents: true
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
@@ -504,9 +592,17 @@ describe('LogActions', () => {
             let api = "/dhis-integration/api/logs";
             let expectedActions = [
                 {
+                    type: "hideSpinner",
+                    hideSpinner: false
+                },
+                {
                     type: "showMessage",
                     responseMessage: "Could not get Events",
                     responseType: "error"
+                },
+                {
+                    type: "hideSpinner",
+                    hideSpinner: true
                 }
             ];
             let store = mockStore({
