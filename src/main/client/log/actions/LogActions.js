@@ -106,5 +106,5 @@ export function getUtcFromLocal(date) {
 }
 
 export function getLocalFromUtc(date) {
-   return moment(moment.utc(date)).local().format("YYYY-MM-DD HH:mm:ss")
+   return moment(moment.utc(date)).local().format("YYYY-MM-DD hh:mm:ss A")
 }
