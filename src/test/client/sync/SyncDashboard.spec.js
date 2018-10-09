@@ -53,8 +53,8 @@ describe('Sync dashboard', function () {
         expect(rendered.find('.sync-comment')).toHaveLength(2);
     });
 
-    it('should have two elements with class name "edit-mapping-button"', function () {
-        expect(rendered.find('.edit-mapping-button')).toHaveLength(2);
+    it('should have two elements with class name "preview-button"', function () {
+        expect(rendered.find('.preview-button')).toHaveLength(2);
     });
 
     it('should have a section header with class name "section-title" button', function () {
