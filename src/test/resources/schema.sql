@@ -59,6 +59,6 @@ CREATE TABLE "public"."log"(
 	synced_by text,
 	comments text,
 	status text,
-	failure_reason text,
+	status_info text,
 	date_created TIMESTAMP
 );

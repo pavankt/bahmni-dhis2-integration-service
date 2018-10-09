@@ -9,5 +9,5 @@ INSERT INTO marker (program_name, category, last_synced_date) VALUES ('TB Servic
 INSERT INTO marker (program_name, category, last_synced_date) VALUES ('TB Service', 'enrollment', null);
 INSERT INTO marker (program_name, category, last_synced_date) VALUES ('TB Service', 'events', null);
 
-INSERT INTO log (log_id, program, synced_by, comments, status, failure_reason, date_created) VALUES (1, 'HTS Service', 'superman', 'First Comment', 'success', '', '2018-10-03 11:21:32.000000');
-INSERT INTO log (log_id, program, synced_by, comments, status, failure_reason, date_created) VALUES (2, 'TB Service', 'superman', 'Second Comment', 'success', '', '2018-10-04 11:21:32.000000');
+INSERT INTO log (log_id, program, synced_by, comments, status, status_info, date_created) VALUES (1, 'HTS Service', 'superman', 'First Comment', 'success', '', '2018-10-03 11:21:32.000000');
+INSERT INTO log (log_id, program, synced_by, comments, status, status_info, date_created) VALUES (2, 'TB Service', 'superman', 'Second Comment', 'success', '', '2018-10-04 11:21:32.000000');

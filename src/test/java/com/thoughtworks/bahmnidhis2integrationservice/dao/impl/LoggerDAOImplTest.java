@@ -50,7 +50,7 @@ public class LoggerDAOImplTest {
     public void shouldReturnResultsWhichAreGreaterThanGivenDate() {
         String utcDate = "2018-10-31 13:00:00";
         String serverDate = "2018-10-31 15:00:00";
-        String sql = String.format("SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
+        String sql = String.format("SELECT log_id, program, synced_by, comments, status, status_info, date_created \n" +
                 "FROM log \n" +
                 "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%%') \n" +
@@ -107,7 +107,7 @@ public class LoggerDAOImplTest {
     public void shouldReturnResultsWhichAreBelowToTheGivenDate() {
         String utcDate = "2018-10-31 13:00:00";
         String serverDate = "2018-10-31 15:00:00";
-        String sql = String.format("SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
+        String sql = String.format("SELECT log_id, program, synced_by, comments, status, status_info, date_created \n" +
                 "FROM log \n" +
                 "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%%') \n" +
@@ -165,7 +165,7 @@ public class LoggerDAOImplTest {
         String utcDate = "2018-10-31 13:00:00";
         String serverDate = "2018-10-31 15:00:00";
         String user = "superman";
-        String sql = String.format("SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
+        String sql = String.format("SELECT log_id, program, synced_by, comments, status, status_info, date_created \n" +
                 "FROM log \n" +
                 "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%s%%') \n" +
@@ -224,7 +224,7 @@ public class LoggerDAOImplTest {
         String serverDate = "2018-10-31 15:00:00";
         String user = "superman";
         String programName = "HT Service";
-        String sql = String.format("SELECT log_id, program, synced_by, comments, status, failure_reason, date_created \n" +
+        String sql = String.format("SELECT log_id, program, synced_by, comments, status, status_info, date_created \n" +
                 "FROM log \n" +
                 "WHERE date_created >= '%s' \n" +
                 "AND upper(synced_by) LIKE upper('%%%s%%') \n" +

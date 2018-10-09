@@ -143,7 +143,7 @@ public class MappingControllerIT{
                 "synced_by text,\n" +
                 "comments text,\n" +
                 "status text,\n" +
-                "failure_reason text,\n" +
+                "status_info text,\n" +
                 "date_created TIMESTAMP\n" +
                 ");");
     }

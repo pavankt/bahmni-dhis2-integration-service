@@ -30,6 +30,6 @@ export const displayHeaderNames = {
   synced_by: "Username",
   comments: "Comments",
   status: "Status",
-  failure_reason: "Failure Reason",
+  status_info: "Status Info",
   date_created: "Date Created",
 };
