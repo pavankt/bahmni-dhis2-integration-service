@@ -8,15 +8,18 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+
+import static com.thoughtworks.bahmnidhis2integrationservice.util.DateUtil.getDateStringInLocalFromUtc;
 
 @Component
 public class LogDAOImpl implements LogDAO {
 
     private static final String SUCCESS = "success";
-    private static final String PENDING = "pending";
     private static final String EMPTY_STATUS = "";
 
     private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -33,7 +36,14 @@ public class LogDAOImpl implements LogDAO {
         String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = '%s';", mappingName, SUCCESS);
         Object maxDateCreated = jdbcTemplate.queryForList(sql).get(0).get("max");
         if (maxDateCreated != null) {
-            dateInString = getFormattedDateString(maxDateCreated.toString(), DATEFORMAT, DATEFORMAT_IN_WORDS);
+            try {
+                SimpleDateFormat clientDateFormat = new SimpleDateFormat(DATEFORMAT);
+                Date date = clientDateFormat.parse(String.valueOf(maxDateCreated));
+
+                clientDateFormat = new SimpleDateFormat(DATEFORMAT_IN_WORDS);
+                clientDateFormat.setTimeZone(TimeZone.getTimeZone(ZonedDateTime.now().getZone()));
+                dateInString = clientDateFormat.format(date);
+            } catch (ParseException e) {}
         }
         return dateInString;
     }
@@ -48,24 +58,4 @@ public class LogDAOImpl implements LogDAO {
         }
         return (String) list.get(0).get("status");
     }
-
-    private static String getFormattedDateString(String date, String existingFormat, String expectedFormat) {
-        return getStringFromDate(getDateFromString(date, existingFormat), expectedFormat);
-    }
-
-    private static Date getDateFromString(String date, String format) {
-        SimpleDateFormat outputFormat = new SimpleDateFormat(format);
-        try {
-            return outputFormat.parse(date);
-        } catch (ParseException ignored) {
-
-        }
-        return new Date(Long.MIN_VALUE);
-    }
-
-    private static String getStringFromDate(Date date, String format) {
-        SimpleDateFormat outputFormat = new SimpleDateFormat(format);
-        return outputFormat.format(date);
-    }
-
 }

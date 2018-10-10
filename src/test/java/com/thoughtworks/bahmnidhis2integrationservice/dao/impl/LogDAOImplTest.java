@@ -76,7 +76,7 @@ public class LogDAOImplTest {
     }
 
     @Test
-    public void shouldGetLatestSyncDateForAGivenService() {
+    public void shouldGetLatestSyncStatusForAGivenService() {
         String programName = "My Service";
         String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
 
