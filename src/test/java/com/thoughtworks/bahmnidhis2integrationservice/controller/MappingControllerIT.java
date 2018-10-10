@@ -3,7 +3,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.controller;
 import com.thoughtworks.bahmnidhis2integrationservice.BahmniDhis2IntegrationServiceApplication;
 import com.thoughtworks.bahmnidhis2integrationservice.SystemPropertyActiveProfileResolver;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
-import model.MappingDetails;
+import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

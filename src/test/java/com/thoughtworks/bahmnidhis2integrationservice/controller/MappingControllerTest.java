@@ -4,7 +4,7 @@ import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundEx
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LogServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
-import model.MappingDetails;
+import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
