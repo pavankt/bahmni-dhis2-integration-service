@@ -290,7 +290,9 @@ export async function exportMapping(mappingName, dispatch) {
         let ajax = Ajax.instance();
         let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingName}));
         dispatch(hideSpinner());
-        return JSON.stringify(response);
+        let mappingArray = [];
+        mappingArray.push(response);
+        return JSON.stringify(mappingArray);
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
     }
