@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from "moment";
 import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {syncData} from './actions/SyncActions';
@@ -39,7 +40,8 @@ class SyncDashboard extends React.Component {
                               placeholder='Please provide comments' />
                 </td>
                 <td className="mapping-name">
-                    {this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].date}
+                    {this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].date &&
+                    moment(moment.utc(this.props.mappingDetails[mappingName].date)).local().format("dddd MMMM DD, YYYY hh:mm:ss A")}
                 </td>
                 <td className="preview-cell-border">
                   <button

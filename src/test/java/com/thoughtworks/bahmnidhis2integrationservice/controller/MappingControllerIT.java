@@ -42,8 +42,8 @@ public class MappingControllerIT{
     @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingNames() {
         Map<String, MappingDetails> expected = new HashMap<>();
-        expected.put("HTS Service", new MappingDetails("Wednesday October 03, 2018 11:21:32 AM", "success"));
-        expected.put("TB Service", new MappingDetails("Thursday October 04, 2018 11:21:32 AM", "success"));
+        expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.0", "success"));
+        expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.0", "success"));
 
         Map<String, MappingDetails> mappings = mappingController.getAllMappingNames();
 

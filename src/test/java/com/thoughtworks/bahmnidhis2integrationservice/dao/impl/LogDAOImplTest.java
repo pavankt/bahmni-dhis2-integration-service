@@ -54,7 +54,7 @@ public class LogDAOImplTest {
 
         String actual = logDAO.getLastSuccessfulSyncDate(programName);
 
-        assertEquals("Wednesday October 03, 2018 11:21:32 AM", actual);
+        assertEquals("2018-10-03 11:21:32.000000", actual);
         verify(jdbcTemplate, times(1)).queryForList(sql);
     }
 
@@ -76,7 +76,7 @@ public class LogDAOImplTest {
     }
 
     @Test
-    public void shouldGetLatestSyncDateForAGivenService() {
+    public void shouldGetLatestSyncStatusForAGivenService() {
         String programName = "My Service";
         String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
 
