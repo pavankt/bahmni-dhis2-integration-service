@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.SimpleDateFormat;
@@ -131,38 +130,5 @@ public class MappingDAOImplTest {
         assertEquals(HTSMapping, mappingDAO.getMapping("HTS Service"));
 
         verify(jdbcTemplate, times(1)).queryForMap(sql);
-    }
-
-    @Test
-    public void shouldGetMappingDetailsToExport() throws NoMappingFoundException {
-        String sql = "SELECT mapping_name, lookup_table, mapping_json, created_by, date_created, modified_by, date_modified FROM mapping WHERE mapping_name= 'HTS Service'";
-        Map<String, Object> HTSMapping = new HashMap<>();
-
-        HTSMapping.put("mapping_name", "HTS Service");
-        HTSMapping.put("lookup_table", "{\"instance\" : \"patient\"}");
-        HTSMapping.put("mapping_json", "{\"instance\" : {\"patient_id\": \"Asj8X\", \"patient_name\": \"jghTk9\"}}");
-        HTSMapping.put("date_created", "Superman");
-        HTSMapping.put("created_by", "2018-10-12");
-        HTSMapping.put("modified_by", null);
-        HTSMapping.put("date_modified", null);
-
-        when(jdbcTemplate.queryForMap(sql)).thenReturn(HTSMapping);
-
-        assertEquals(HTSMapping, mappingDAO.exportMapping("HTS Service"));
-
-        verify(jdbcTemplate, times(1)).queryForMap(sql);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenMappingFails() throws NoMappingFoundException {
-        String sql = "SELECT mapping_name, lookup_table, mapping_json, created_by, date_created, modified_by, date_modified FROM mapping WHERE mapping_name= 'HTS Service'";
-
-        when(jdbcTemplate.queryForMap(sql)).thenThrow(new EmptyResultDataAccessException(0));
-        try {
-            mappingDAO.exportMapping("HTS Service");
-        } catch (NoMappingFoundException e) {
-            verify(jdbcTemplate, times(1)).queryForMap(sql);
-            assertEquals("No mapping found with name HTS Service", e.getMessage());
-        }
     }
 }
