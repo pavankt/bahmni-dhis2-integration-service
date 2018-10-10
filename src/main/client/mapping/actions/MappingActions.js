@@ -291,7 +291,11 @@ export async function exportMapping(mappingName, dispatch, user) {
         let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingName}));
         dispatch(hideSpinner());
         let mappingArray = [];
-        mappingArray.push(response);
+        mappingArray.push({
+            mapping_name: response.mapping_name,
+            lookup_table: response.lookup_table.value,
+            mapping_json: response.mapping_json.value
+        });
         return JSON.stringify(mappingArray);
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
