@@ -22,6 +22,9 @@ describe('Mapping dashboard', function () {
             showMessage : {
                 responseMessage : "",
                 responseType: ""
+            },
+            session: {
+                user: "superman"
             }
         }), applyMiddleware(thunkMiddleware));
 

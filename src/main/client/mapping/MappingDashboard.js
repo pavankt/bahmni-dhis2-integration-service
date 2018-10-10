@@ -25,7 +25,7 @@ class MappingDashboard extends Component {
     }
 
     async exportMapping(mappingName) {
-        let mappingDetails = await exportMapping(mappingName, this.props.dispatch);
+        let mappingDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
         fileDownload(mappingDetails, `${mappingName}.json`);
         this.props.dispatch(showMessage(`Successfully exported ${mappingName} Mapping`, "success"));
     }
@@ -84,12 +84,14 @@ MappingDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    user: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
     mappingNames: state.allMappingNames,
-    hideSpinner: state.hideSpinner
+    hideSpinner: state.hideSpinner,
+    user: state.session.user
 });
 
 export default connect(mapStateToProps)(MappingDashboard);

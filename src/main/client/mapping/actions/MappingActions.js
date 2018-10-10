@@ -278,10 +278,10 @@ export function getTables() {
     }
 }
 
-export async function exportMapping(mappingName, dispatch) {
+export async function exportMapping(mappingName, dispatch, user) {
     dispatch(hideSpinner(false));
     try {
-        auditLogEventDetails.EXPORT_MAPPING_SERVICE.message = `User exported ${mappingName} Mapping Service`;
+        auditLogEventDetails.EXPORT_MAPPING_SERVICE.message = `User ${user} exported ${mappingName} Mapping Service`;
         auditLog(auditLogEventDetails.EXPORT_MAPPING_SERVICE);
     } catch (e) {
         window.location.pathname = '/home';
