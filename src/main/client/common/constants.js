@@ -31,5 +31,5 @@ export const displayHeaderNames = {
   comments: "Comments",
   status: "Status",
   status_info: "Status Info",
-  date_created: "Date Created",
+  date_created: "Sync Date",
 };
