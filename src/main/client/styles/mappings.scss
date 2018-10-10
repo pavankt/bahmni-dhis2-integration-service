@@ -139,7 +139,7 @@
 
 .section-title{
   font-family: OpenSans,Arial,sans-serif;
-  padding: 10px;
+  padding: 10px 25px;
   margin-top: 0;
   margin-bottom: 0;
   color: #FFF;
@@ -148,6 +148,7 @@
   background: #699;
   position: relative;
   border-radius: 2px 2px 0 0;
+  text-align: left;
 }
 
 .center {
@@ -172,8 +173,8 @@
 }
 
 .mapping-name{
-  padding: 5px 15px;
-  border: 1px solid #dddddd;
+  padding: 5px 15px 5px 25px;
+  text-align: left;
 }
 
 .mapping-name-input {
@@ -187,7 +188,6 @@
 
 .edit-mapping-button{
   padding: 5px 5%;
-  border: 1px solid #dddddd;
 }
 
 .plus-sign{
@@ -248,4 +248,8 @@ a {
     text-decoration: none;
     cursor: pointer;
   }
+}
+
+.table-row {
+  height: 60px;
 }
