@@ -49,8 +49,8 @@ class LogFilters extends Component {
     }
 
     onTimeEnter(_event) {
-        let time = moment(_event.target.value, "hh:mm A", true);
-        this.isValidMoment(time, "time", "hh:mm A");
+        let time = moment(_event.target.value, "h:mm A", true);
+        this.isValidMoment(time, "time", "h:mm A");
     }
 
     isValidMoment(momentObj, invalidField, format) {
@@ -61,10 +61,9 @@ class LogFilters extends Component {
                 disableButton: true
             });
         } else {
-            this.props.dispatch(showMessage());
-            this.setState({
-                disableButton: false
-            });
+            if(invalidField === "time") {
+                this.onTimeChange(momentObj);
+            }
         }
     }
 
