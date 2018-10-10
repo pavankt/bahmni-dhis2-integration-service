@@ -1100,7 +1100,7 @@ describe('#mappingActions', () => {
             let ajaxMock = sandbox.mock(ajax);
             let ajaxGetMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/api/exportMapping", {"mappingName": mappingName})
+                .withArgs("/dhis-integration/api/getMapping", {"mappingName": mappingName})
                 .returns(Promise.resolve(responseJson));
             let actionsMock = sandbox.mock(Actions);
             let hideSpinnerMock = actionsMock.expects("hideSpinner");
@@ -1123,7 +1123,7 @@ describe('#mappingActions', () => {
             let ajaxMock = sandbox.mock(ajax);
             let ajaxGetMock = ajaxMock
                 .expects("get")
-                .withArgs("/dhis-integration/api/exportMapping", {"mappingName": mappingName})
+                .withArgs("/dhis-integration/api/getMapping", {"mappingName": mappingName})
                 .returns(Promise.reject({ message: 'Could not get mapping info' }));
             let actionsMock = sandbox.mock(Actions);
             let hideSpinnerMock = actionsMock.expects("hideSpinner");
