@@ -4,7 +4,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Spinner from '../common/Spinner';
-import {getAllMappings, exportMapping} from './actions/MappingActions';
+import {getAllMappings, exportMapping, importMappings} from './actions/MappingActions';
 import Message from '../common/Message';
 import fileDownload from 'js-file-download';
 import { showMessage } from '../common/Actions';
@@ -16,6 +16,8 @@ class MappingDashboard extends Component {
         this.redirectToAddEditMapping = this.redirectToAddEditMapping.bind(this);
         this.exportMapping = this.exportMapping.bind(this);
         this.exportAllMappings = this.exportAllMappings.bind(this);
+        this.parseFile = this.parseFile.bind(this);
+        this.importFile = this.importFile.bind(this);
     }
 
     componentDidMount() {
@@ -41,6 +43,25 @@ class MappingDashboard extends Component {
         }));
         fileDownload(JSON.stringify(detailedMappingList), `AllMappingExport_${timestamp}.json`);
         this.props.dispatch(showMessage(`Successfully exported all the mappings`, "success"));
+    }
+
+    importFile(_event) {
+        let file = _event.target.files;
+        this.parseFile(file);
+    }
+
+    parseFile(file) {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            try {
+                let parsedInfo = JSON.parse(reader.result);
+            } catch (e) {
+                this.props.dispatch(showMessage("Got Error while validating file.. Please import valid json file"));
+            }
+        };
+
+        reader.readAsText(file[0]);
     }
 
     renderMappingNames() {
@@ -69,6 +90,20 @@ class MappingDashboard extends Component {
             <Message />
             <Spinner hide={this.props.hideSpinner} />
             <div className="center mapping-names-table">
+              <button className="import-button">
+                  <label htmlFor="formImportBtn" >Import
+                      <input accept=".json"
+                             id="formImportBtn"
+                             className="import-input"
+                             onChange={this.importFile}
+                             onClick={(e) => {
+                                 // eslint-disable-next-line
+                                 e.target.value = null;
+                             }}
+                             type="file"
+                      />
+                  </label>
+              </button>
               <button
                 type="submit"
                 className="add-mapping-button"

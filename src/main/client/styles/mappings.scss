@@ -259,3 +259,35 @@ a {
 .table-row {
   height: 60px;
 }
+
+.import-button {
+  width: 150px;
+  margin-left: 500px;
+  margin-top: 80px;
+  color: #fff;
+  background-image: linear-gradient(#a1d030, #88af28);
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: #88af28;
+  border: 1px solid #88af28;
+  padding: 5px 0;
+
+  label {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    padding: 4px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+}
+
+.import-input {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
