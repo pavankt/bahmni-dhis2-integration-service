@@ -42,8 +42,10 @@ public class MappingControllerIT{
     @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingNames() {
         Map<String, MappingDetails> expected = new HashMap<>();
-        expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.0", "success"));
-        expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.0", "success"));
+        // The date in the DB is localized. So the expected value in UTC need to account for the time-zone difference
+        // Current test data has IST date in the DB
+        expected.put("HTS Service", new MappingDetails("2018-10-03 05:51:32", "success"));
+        expected.put("TB Service", new MappingDetails("2018-10-04 05:51:32,", "success"));
 
         Map<String, MappingDetails> mappings = mappingController.getAllMappingNames();
 
