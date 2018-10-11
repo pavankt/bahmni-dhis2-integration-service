@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
@@ -30,6 +31,28 @@ public class LoggerServiceImplTest {
     public void setUp() throws Exception {
         loggerService = new LoggerServiceImpl();
         setValuesForMemberFields(loggerService, "loggerDAO", loggerDAO);
+    }
+
+    @Test
+    public void shouldMakeACallToLogDAOToGetLastSuccessfulSyncDate() {
+        String mappingName = "My service";
+
+        Mockito.when(loggerDAO.getLastSuccessfulSyncDateInUTC(mappingName)).thenReturn("2018-10-03 11:21:32.000000");
+
+        loggerService.getSyncDateForService(mappingName);
+
+        verify(loggerDAO, times(1)).getLastSuccessfulSyncDateInUTC(mappingName);
+    }
+
+    @Test
+    public void shouldMakeACallToLogDAOToGetLatestSyncStatus() {
+        String mappingName = "My service";
+
+        Mockito.when(loggerDAO.getLatestSyncStatus(mappingName)).thenReturn("success");
+
+        loggerService.getSyncDateForService(mappingName);
+
+        verify(loggerDAO, times(1)).getLastSuccessfulSyncDateInUTC(mappingName);
     }
 
     @Test

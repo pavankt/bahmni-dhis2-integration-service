@@ -1,7 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
-import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LogServiceImpl;
+import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LoggerServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
@@ -35,7 +35,7 @@ public class MappingControllerTest {
     private MarkerServiceImpl markerService;
 
     @Mock
-    private LogServiceImpl logService;
+    private LoggerServiceImpl logService;
 
     private String mappingName = "patient_details";
     private String lookupTable = "patient";

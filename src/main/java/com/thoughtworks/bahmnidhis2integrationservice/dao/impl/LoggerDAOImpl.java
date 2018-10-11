@@ -20,7 +20,10 @@ public class LoggerDAOImpl {
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
-    private final static String DATE_CREATED = "date_created";
+    private static final String DATE_CREATED = "date_created";
+    private static final String SUCCESS = "success";
+    private static final String EMPTY_STATUS = "";
+
 
     public List<Map<String, Object>> getLogs(String date, String user, String service, boolean getAbove, int logId) {
         ZoneId zoneId = ZonedDateTime.now().getZone();
@@ -30,6 +33,28 @@ public class LoggerDAOImpl {
         List<Map<String, Object>> logs = jdbcTemplate.queryForList(sql);
         changeDateToUtc(logs, zoneId);
         return logs;
+    }
+
+    public String getLastSuccessfulSyncDateInUTC(String mappingName) {
+
+        String dateInString = "";
+
+        String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = '%s';", mappingName, SUCCESS);
+        Object maxDateCreated = jdbcTemplate.queryForList(sql).get(0).get("max");
+        if (maxDateCreated != null) {
+            dateInString = getDateStringInUTC(String.valueOf(maxDateCreated), ZonedDateTime.now().getZone());
+        }
+        return dateInString;
+    }
+
+    public String getLatestSyncStatus(String mappingName) {
+
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", mappingName);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        if (list.isEmpty()) {
+            return EMPTY_STATUS;
+        }
+        return (String) list.get(0).get("status");
     }
 
     private void changeDateToUtc(List<Map<String, Object>> logs, ZoneId zoneId) {

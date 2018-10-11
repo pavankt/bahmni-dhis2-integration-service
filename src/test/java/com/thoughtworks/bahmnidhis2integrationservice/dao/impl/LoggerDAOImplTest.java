@@ -1,6 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.util.DateUtil;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.setValuesForMemberFields;
 import static org.junit.Assert.assertEquals;
@@ -37,6 +35,8 @@ public class LoggerDAOImplTest {
     @Mock
     private ZoneId zoneId;
 
+    @Mock
+    private List<Map<String, Object>> list = new ArrayList<>();
 
     private LoggerDAOImpl loggerDAO;
 
@@ -44,6 +44,75 @@ public class LoggerDAOImplTest {
     public void setUp() throws Exception {
         loggerDAO = new LoggerDAOImpl();
         setValuesForMemberFields(loggerDAO, "jdbcTemplate", jdbcTemplate);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        list.clear();
+    }
+
+    @Test
+    public void shouldGetLastSuccessfulSyncDateForAGivenService() {
+        String programName = "My Service";
+        String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = 'success';", programName);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("max", "2018-10-03 11:21:32.000000");
+        list.add(map);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = loggerDAO.getLastSuccessfulSyncDateInUTC(programName);
+
+        assertEquals("2018-10-03 11:21:32", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldReturnEmptyStringForDateForAServiceWhichHasNotYetSyncedAnyData(){
+        String programName = "My Service";
+        String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = 'success';", programName);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("max", null);
+        list.add(map);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = loggerDAO.getLastSuccessfulSyncDateInUTC(programName);
+
+        assertEquals("", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldGetLatestSyncStatusForAGivenService() {
+        String programName = "My Service";
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", "success");
+        list.add(map);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = loggerDAO.getLatestSyncStatus(programName);
+
+        assertEquals("success", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
+    }
+
+    @Test
+    public void shouldReturnEmptyStringAsStatusForAServiceWhichHasNotYetSyncedAnyData(){
+        String programName = "My Service";
+        String sql = String.format("SELECT status from log where program = '%s' ORDER BY date_created desc LIMIT 1;", programName);
+
+        when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+
+        String actual = loggerDAO.getLatestSyncStatus(programName);
+
+        assertEquals("", actual);
+        verify(jdbcTemplate, times(1)).queryForList(sql);
     }
 
     @Test

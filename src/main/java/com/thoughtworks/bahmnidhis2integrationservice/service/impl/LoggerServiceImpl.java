@@ -16,4 +16,12 @@ public class LoggerServiceImpl {
     public List<Map<String, Object>> getLogs(String date, String user, String service, boolean getAbove, int logId) {
         return loggerDAO.getLogs(date, user, service, getAbove, logId);
     }
+
+    public String getSyncDateForService(String mappingName) {
+        return loggerDAO.getLastSuccessfulSyncDateInUTC(mappingName);
+    }
+
+    public String getLatestSyncStatus(String mappingName) {
+        return loggerDAO.getLatestSyncStatus(mappingName);
+    }
 }
