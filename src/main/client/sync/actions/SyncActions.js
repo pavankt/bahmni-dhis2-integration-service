@@ -1,4 +1,4 @@
-import {showMessage} from "../../common/Actions";
+import {hideSpinner, showMessage} from "../../common/Actions";
 import {auditLogEventDetails, sync} from '../../common/constants';
 import Ajax from "../../common/Ajax";
 import auditLog from '../../common/AuditLog';
@@ -26,3 +26,32 @@ export function syncData(mappingName = '', user = '', comment = '') {
     }
 }
 
+export function getAllMappingsSyncInfo() {
+    return async dispatch => {
+        try {
+            dispatch(hideSpinner(false));
+            let ajax = Ajax.instance();
+            let response = await ajax.get('/dhis-integration/api/getMappingSyncInfo');
+            dispatch(mappingNames(Object.keys(response)));
+            dispatch(syncDetails(response));
+        } catch (e) {
+            dispatch(showMessage(e.message, "error"))
+        } finally {
+            dispatch(hideSpinner());
+        }
+    }
+}
+
+export function mappingNames(mappingNames = []) {
+    return {
+        type: 'mappingNames',
+        mappingNames
+    }
+}
+
+export function syncDetails(syncDetails = {}) {
+    return {
+        type: 'syncDetails',
+        syncDetails
+    }
+}

@@ -4,7 +4,7 @@ import moment from "moment";
 import {connect} from 'react-redux';
 import Spinner from '../common/Spinner';
 import {syncData} from './actions/SyncActions';
-import {getAllMappings} from '../mapping/actions/MappingActions';
+import {getAllMappingsSyncInfo} from '../sync/actions/SyncActions';
 import {ensureActiveSession} from "../common/Actions";
 import Message from "../common/Message";
 
@@ -12,19 +12,19 @@ import Message from "../common/Message";
 class SyncDashboard extends React.Component {
 
     async componentDidMount() {
-        this.props.dispatch(getAllMappings());
+        this.props.dispatch(getAllMappingsSyncInfo());
         await this.props.dispatch(ensureActiveSession());
     }
 
     async onClick(unique_ref_prefix, mappingName) {
-        this.props.mappingDetails[mappingName].status = 'pending';
-        this.setState({mappingDetails: this.props.mappingDetails});
+        this.props.syncDetails[mappingName].status = 'pending';
+        this.setState({syncDetails: this.props.syncDetails});
 
         await this.props.dispatch(
             syncData(mappingName, this.props.session.user, this.refs[unique_ref_prefix + mappingName].value));
 
-        this.props.mappingDetails[mappingName].status = '';
-        this.setState({mappingDetails: this.props.mappingDetails});
+        this.props.syncDetails[mappingName].status = '';
+        this.setState({syncDetails: this.props.syncDetails});
     }
 
     renderMappingNames() {
@@ -40,14 +40,14 @@ class SyncDashboard extends React.Component {
                               placeholder='Please provide comments' />
                 </td>
                 <td className="mapping-name">
-                    {this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].date &&
-                    moment(moment.utc(this.props.mappingDetails[mappingName].date)).local().format("dddd MMMM DD, YYYY hh:mm:ss A")}
+                    {this.props.syncDetails[mappingName] && this.props.syncDetails[mappingName].date &&
+                    moment(moment.utc(this.props.syncDetails[mappingName].date)).local().format("dddd MMMM DD, YYYY hh:mm:ss A")}
                 </td>
                 <td className="preview-cell-border">
                   <button
                     type="submit"
                     className="preview-button"
-                    disabled={this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending'}
+                    disabled={this.props.syncDetails[mappingName] && this.props.syncDetails[mappingName].status === 'pending'}
                     onClick={() => {
                         window.open(`/dhis-integration/preview/${mappingName}`);
                     }}
@@ -57,7 +57,7 @@ class SyncDashboard extends React.Component {
                   <button
                     type="submit"
                     className="send-button"
-                    disabled={this.props.mappingDetails[mappingName] && this.props.mappingDetails[mappingName].status === 'pending'}
+                    disabled={this.props.syncDetails[mappingName] && this.props.syncDetails[mappingName].status === 'pending'}
                     onClick={this.onClick.bind(this, unique_ref_prefix, mappingName)}
                   >
                             Sync to DHIS2
@@ -96,14 +96,14 @@ class SyncDashboard extends React.Component {
 SyncDashboard.propTypes = {
     hideSpinner: PropTypes.bool.isRequired,
     mappingNames: PropTypes.array.isRequired,
-    mappingDetails: PropTypes.object.isRequired,
+    syncDetails: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     session: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    mappingNames: state.allMappingNames,
-    mappingDetails: state.mappingDetails,
+    mappingNames: state.mappingNames,
+    syncDetails: state.syncDetails,
     hideSpinner: state.hideSpinner,
     session : state.session
 });

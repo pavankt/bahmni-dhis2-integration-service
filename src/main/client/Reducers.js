@@ -12,6 +12,11 @@ import {
     mappingJson,
 } from './mapping/reducers/MappingReducer';
 
+import {
+    mappingNames,
+    syncDetails
+} from './sync/reducers/SyncReducer';
+
 import { hideSpinner,
     showMessage,
     showHomeButton,
@@ -34,6 +39,8 @@ const reducers = combineReducers({
   selectedInstanceTableColumns,
   selectedEventTableColumns,
   allMappingNames,
+  mappingNames,
+  syncDetails,
   mappingDetails,
   hideSpinner,
   showMessage,

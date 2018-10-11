@@ -56,13 +56,6 @@ export function allMappingNames(mappingNames = []) {
     }
 }
 
-export function mappingDetails(mappingDetails = {}) {
-    return {
-        type: 'mappingDetails',
-        mappingDetails
-    }
-}
-
 export function currentMapping(mappingName = "") {
     return {
         type: 'currentMapping',
@@ -205,8 +198,7 @@ export function getAllMappings() {
             dispatch(hideSpinner(false));
             let ajax = Ajax.instance();
             let response = await ajax.get('/dhis-integration/api/getMappingNames');
-            dispatch(allMappingNames(Object.keys(response)));
-            dispatch(mappingDetails(response));
+            dispatch(allMappingNames(response));
         } catch (e) {
             dispatch(showMessage(e.message, "error"))
         } finally {

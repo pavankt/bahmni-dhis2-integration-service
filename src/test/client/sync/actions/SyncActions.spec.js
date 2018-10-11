@@ -92,4 +92,40 @@ describe('#syncActions', () => {
             sandbox.restore();
         });
     });
+
+    describe('mappingNames', () => {
+        it('should return an empty array', () => {
+            expect(SyncActions.mappingNames()).toEqual({
+                type: 'mappingNames',
+                mappingNames: []
+            });
+        });
+
+        it('should return selected table columns in an array', () => {
+            expect(SyncActions.mappingNames(['HTS Service', 'TB Service'])).toEqual({
+                type: 'mappingNames',
+                mappingNames: ['HTS Service', 'TB Service']
+            });
+        });
+    });
+
+    describe('syncDetails', () => {
+        it('should return an empty object', () => {
+            expect(SyncActions.syncDetails()).toEqual({
+                type: 'syncDetails',
+                syncDetails: {}
+            });
+        });
+
+        it('should return selected table columns in an array', () => {
+            const syncDetails = {
+                'HTS Service': {date: "2018-10-03 11:21:32.000000", status: ""},
+                'TB Service': {date: "2018-10-04 11:21:32.000000", status: ""}
+            };
+            expect(SyncActions.syncDetails(syncDetails)).toEqual({
+                type: 'syncDetails',
+                syncDetails: syncDetails
+            });
+        });
+    });
 });

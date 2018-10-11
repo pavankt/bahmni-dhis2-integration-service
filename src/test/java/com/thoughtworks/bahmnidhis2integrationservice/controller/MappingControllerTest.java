@@ -94,6 +94,16 @@ public class MappingControllerTest {
 
     @Test
     public void shouldReturnAllMappingNames() {
+        List<String> expected = Arrays.asList("HTS Service", "TB Service");
+        when(mappingService.getMappingNames()).thenReturn(expected);
+
+        List<String> allMappings = mappingController.getAllMappingNames();
+
+        assertEquals(allMappings, expected);
+    }
+
+    @Test
+    public void shouldReturnAllMappingsWithSyncInformation() {
         Map<String, MappingDetails> expected = new HashMap<>();
         expected.put("HTS Service", new MappingDetails("2018-10-03 11:21:32.000000", "success"));
         expected.put("TB Service", new MappingDetails("2018-10-04 11:21:32.000000", "success"));
@@ -105,7 +115,7 @@ public class MappingControllerTest {
         when(logService.getSyncDateForService("TB Service")).thenReturn("2018-10-04 11:21:32.000000");
         when(logService.getLatestSyncStatus("TB Service")).thenReturn("success");
 
-        Map<String, MappingDetails> allMappings = mappingController.getAllMappingNames();
+        Map<String, MappingDetails> allMappings = mappingController.getAllMappingSyncInfo();
 
         assertEquals(allMappings, expected);
     }

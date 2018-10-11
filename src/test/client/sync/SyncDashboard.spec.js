@@ -17,10 +17,10 @@ describe('Sync dashboard', function () {
 
     beforeEach(() => {
         store = createStore(() => ({
-            allMappingNames: ['HTS Service', 'TB Service'],
-            mappingDetails: {
-                'HTS Service': {date: "Wednesday October 03, 2018 11:21:32 AM", status: ""},
-                'TB Service': {date: "Friday October 05, 2018 04:08:07 PM", status: ""}
+            mappingNames: ['HTS Service', 'TB Service'],
+            syncDetails: {
+                'HTS Service': {date: "2018-10-03 11:21:32.000000", status: ""},
+                'TB Service': {date: "2018-10-04 11:21:32.000000", status: ""}
             },
             hideSpinner: false,
             showMessage : {

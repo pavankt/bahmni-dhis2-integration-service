@@ -46,7 +46,13 @@ public class MappingController {
 
     @GetMapping(value = "/getMappingNames")
     @ResponseBody
-    public Map<String, MappingDetails> getAllMappingNames() {
+    public List<String> getAllMappingNames() {
+        return mappingService.getMappingNames();
+    }
+
+    @GetMapping(value = "/getMappingSyncInfo")
+    @ResponseBody
+    public Map<String, MappingDetails> getAllMappingSyncInfo() {
 
         Map<String, MappingDetails> response = new HashMap<>();
 

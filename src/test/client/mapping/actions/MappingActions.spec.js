@@ -706,10 +706,6 @@ describe('#mappingActions', () => {
                 "HTS Service",
                 "TB Service"
             ];
-            let mappingDetails = {
-                    'HTS Service': {date: "Wednesday October 03, 2018 11:21:32 AM", status: ""},
-                    'TB Service': {date: "Friday October 05, 2018 04:08:07 PM", status: ""}
-            };
             let expectedActions = [
                 {
                     type: "hideSpinner",
@@ -718,10 +714,6 @@ describe('#mappingActions', () => {
                 {
                     type: "allMappings",
                     allMappings: mappings
-                },
-                {
-                    type: "mappingDetails",
-                    mappingDetails
                 },
                 {
                     type: "hideSpinner",
@@ -740,7 +732,7 @@ describe('#mappingActions', () => {
             let ajaxGetMock = sandbox.mock(ajax)
                 .expects("get")
                 .withArgs("/dhis-integration/api/getMappingNames")
-                .returns(Promise.resolve(mappingDetails));
+                .returns(Promise.resolve(mappings));
 
             await store.dispatch(MappingActions.getAllMappings());
 

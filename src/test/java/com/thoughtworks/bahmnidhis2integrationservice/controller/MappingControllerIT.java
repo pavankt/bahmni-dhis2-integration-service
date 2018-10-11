@@ -41,13 +41,26 @@ public class MappingControllerIT{
     @Test
     @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingNames() {
+        List<String> mappingNames = mappingController.getAllMappingNames();
+
+        int expectedRows = 2;
+        List<String> expectedList = Arrays.asList("HTS Service","TB Service");
+
+        assertEquals(expectedRows, mappingNames.size());
+        assertTrue(mappingNames.containsAll(expectedList));
+        truncateMapping();
+        truncateMarker();
+    }
+
+    @Test
+    public void shouldGetAllMappingsWithSyncInformation() {
         Map<String, MappingDetails> expected = new HashMap<>();
         // The date in the DB is localized. So the expected value in UTC need to account for the time-zone difference
         // Current test data has IST date in the DB
         expected.put("HTS Service", new MappingDetails("2018-10-03 05:51:32", "success"));
         expected.put("TB Service", new MappingDetails("2018-10-04 05:51:32", "success"));
 
-        Map<String, MappingDetails> mappings = mappingController.getAllMappingNames();
+        Map<String, MappingDetails> mappings = mappingController.getAllMappingSyncInfo();
 
         assertEquals(expected, mappings);
         truncateMapping();
