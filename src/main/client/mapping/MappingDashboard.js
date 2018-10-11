@@ -56,6 +56,7 @@ class MappingDashboard extends Component {
         reader.onload = () => {
             try {
                 let parsedInfo = JSON.parse(reader.result);
+                this.props.dispatch(importMappings(parsedInfo));
             } catch (e) {
                 this.props.dispatch(showMessage("Got Error while validating file.. Please import valid json file"));
             }

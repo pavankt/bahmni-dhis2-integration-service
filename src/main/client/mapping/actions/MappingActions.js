@@ -294,3 +294,48 @@ export async function exportMapping(mappingName, dispatch, user) {
     }
     // dispatch(hideSpinner());
 }
+
+function isEmpty(str) {
+    return str === undefined || str === null || str === "";
+}
+
+function isJsonObj(obj) {
+    return obj !== undefined && obj !== null && obj.constructor === Object;
+}
+
+function validateMappingValues(mapping, dispatch) {
+    let isValid = true;
+    let mappingName = mapping.mapping_name;
+    let lookupTable = mapping.lookup_table;
+    let mappingJson = mapping.mapping_json;
+
+    if (isEmpty(mappingName)) {
+        dispatch(showMessage("Mapping name should have value", "error"));
+        isValid = false;
+    } else if (hasInvalidString(mappingName)) {
+        dispatch(showMessage(`${mappingName} is invalid mapping name. Mapping name should be alpha numeric
+                    ..Please correct the file and import again`, "error"));
+        isValid = false;
+    } else if (!isJsonObj(lookupTable)) {
+        dispatch(showMessage("lookup_table should be Object..Please correct the file and import again"));
+        isValid = false;
+    } else if (!isJsonObj(mappingJson)) {
+        dispatch(showMessage("mapping_json should be Object..Please correct the file and import again"));
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+export function importMappings(mappings) {
+    return async (dispatch) => {
+        await dispatch(ensureActiveSession());
+        if (!Array.isArray(mappings)) {
+            return dispatch(showMessage("File should contain array of Object..Please correct the file and import again", "error"));
+        }
+
+        mappings.every((mapping) => {
+            return validateMappingValues(mapping, dispatch);
+        });
+    }
+}
