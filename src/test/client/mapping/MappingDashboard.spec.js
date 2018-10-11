@@ -49,6 +49,10 @@ describe('Mapping dashboard', function () {
         expect(rendered.find('.add-mapping-button')).toHaveLength(1);
     });
 
+    it('should have a "export-all-button" button', function () {
+        expect(rendered.find('.export-all-button')).toHaveLength(1);
+    });
+
     it('should have two elements with class name "mapping-name"', function () {
         expect(rendered.find('.mapping-name')).toHaveLength(2);
     });

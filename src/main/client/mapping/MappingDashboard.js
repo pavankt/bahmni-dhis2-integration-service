@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Spinner from '../common/Spinner';
@@ -14,6 +15,7 @@ class MappingDashboard extends Component {
         this.renderMappingNames = this.renderMappingNames.bind(this);
         this.redirectToAddEditMapping = this.redirectToAddEditMapping.bind(this);
         this.exportMapping = this.exportMapping.bind(this);
+        this.exportAllMappings = this.exportAllMappings.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +30,12 @@ class MappingDashboard extends Component {
         let mappingDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
         fileDownload(mappingDetails, `${mappingName}.json`);
         this.props.dispatch(showMessage(`Successfully exported ${mappingName} Mapping`, "success"));
+    }
+
+    async exportAllMappings() {
+        const timestamp = moment().format("DDMMMYYYY_kk:mm:ss");
+        fileDownload('', `AllMappingExport_${timestamp}.json`);
+        this.props.dispatch(showMessage(`Successfully exported all the mappings`, "success"));
     }
 
     renderMappingNames() {
@@ -63,6 +71,13 @@ class MappingDashboard extends Component {
               >
                 <i className="fa fa-plus-circle plus-sign" aria-hidden="true" />
                         Add Mapping
+              </button>
+              <button
+                  type="submit"
+                  className="export-all-button"
+                  onClick={this.exportAllMappings}
+              >
+                    Export All Mappings
               </button>
               <section className="all-mappings-sections">
                 <h2 className="section-title">
