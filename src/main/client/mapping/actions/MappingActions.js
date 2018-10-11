@@ -296,9 +296,9 @@ export async function exportMapping(mappingName, dispatch, user) {
             lookup_table: response.lookup_table.value,
             mapping_json: response.mapping_json.value
         });
-        return JSON.stringify(mappingArray);
+        return mappingArray;
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
     }
-    dispatch(hideSpinner());
+    // dispatch(hideSpinner());
 }

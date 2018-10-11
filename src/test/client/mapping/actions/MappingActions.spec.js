@@ -1059,7 +1059,7 @@ describe('#mappingActions', () => {
     });
 
     describe('exportMapping', function () {
-        it('should return stringify json on ajax success', () => {
+        it('should return array of mapping object on ajax success', () => {
             let mappingName = "HTS Service";
             let responseJson = {
                 "mapping_name": mappingName,

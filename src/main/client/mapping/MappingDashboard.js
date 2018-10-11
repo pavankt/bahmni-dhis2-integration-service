@@ -28,13 +28,18 @@ class MappingDashboard extends Component {
 
     async exportMapping(mappingName) {
         let mappingDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
-        fileDownload(mappingDetails, `${mappingName}.json`);
+        fileDownload(JSON.stringify(mappingDetails), `${mappingName}.json`);
         this.props.dispatch(showMessage(`Successfully exported ${mappingName} Mapping`, "success"));
     }
 
     async exportAllMappings() {
         const timestamp = moment().format("DDMMMYYYY_kk:mm:ss");
-        fileDownload('', `AllMappingExport_${timestamp}.json`);
+        let detailedMappingList = [];
+        await Promise.all(this.props.mappingNames.map(async mappingName => {
+            let mapDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
+            mapDetails && detailedMappingList.push(mapDetails[0]);
+        }));
+        fileDownload(JSON.stringify(detailedMappingList), `AllMappingExport_${timestamp}.json`);
         this.props.dispatch(showMessage(`Successfully exported all the mappings`, "success"));
     }
 
