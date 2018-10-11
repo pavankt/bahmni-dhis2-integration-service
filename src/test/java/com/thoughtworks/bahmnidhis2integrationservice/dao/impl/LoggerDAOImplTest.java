@@ -55,16 +55,25 @@ public class LoggerDAOImplTest {
     public void shouldGetLastSuccessfulSyncDateForAGivenService() {
         String programName = "My Service";
         String sql = String.format("SELECT max(date_created) from log where program = '%s' AND status = 'success';", programName);
+        Object localDate = "2018-10-03 11:21:32.000000";
+        String utcDate = "2018-10-03 05:51:32";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("max", "2018-10-03 11:21:32.000000");
+        map.put("max", localDate);
         list.add(map);
 
+        mockStatic(ZonedDateTime.class);
+        mockStatic(DateUtil.class);
+
         when(jdbcTemplate.queryForList(sql)).thenReturn(list);
+        when(ZonedDateTime.now()).thenReturn(zonedDateTime);
+        when(zonedDateTime.getZone()).thenReturn(zoneId);
+        when(DateUtil.getDateStringInUTC(String.valueOf(localDate), zoneId)).thenReturn(utcDate);
+
 
         String actual = loggerDAO.getLastSuccessfulSyncDateInUTC(programName);
 
-        assertEquals("2018-10-03 11:21:32", actual);
+        assertEquals(utcDate, actual);
         verify(jdbcTemplate, times(1)).queryForList(sql);
     }
 
