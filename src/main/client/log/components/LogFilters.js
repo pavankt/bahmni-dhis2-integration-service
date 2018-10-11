@@ -12,58 +12,74 @@ class LogFilters extends Component {
         super();
         this.onDateChange = this.onDateChange.bind(this);
         this.onTimeChange = this.onTimeChange.bind(this);
-        this.onDateEnter = this.onDateEnter.bind(this);
         this.onFilterClick = this.onFilterClick.bind(this);
-        this.onTimeEnter = this.onTimeEnter.bind(this);
-        this.isValidMoment = this.isValidMoment.bind(this);
+        this.validateDate = this.validateDate.bind(this);
+        this.validateTime = this.validateTime.bind(this);
         this.state = {
             date: moment(),
             time: moment("12:00 AM", "hh:mm A"),
-            disableButton: false
+            disableButton: false,
+            enteredDate: moment(),
+            enteredTime: moment("12:00 AM", "hh:mm A")
         }
     }
 
     onDateChange(date) {
         this.setState({
-            date: date
+            date: date,
+            enteredDate: date
         });
-        this.props.dispatch(showMessage());
-        this.setState({
-            disableButton: false
-        });
+
+        if(this.state.enteredTime.isValid()) {
+            this.setState({
+                disableButton: false
+            });
+        }
     }
 
     onTimeChange(time) {
         this.setState({
-            time: time
+            time: time,
+            enteredTime: time
         });
-        this.props.dispatch(showMessage());
+
+        if(this.state.enteredDate.isValid()) {
+            this.setState({
+                disableButton: false
+            });
+        }
+    }
+
+    validateDate(dateObj) {
+        let date = moment(dateObj.target.value, "MM/DD/YYYY", true);
         this.setState({
-            disableButton: false
+            enteredDate: date
         });
-    }
 
-    onDateEnter(_event) {
-        let date = moment(_event.target.value, "MM/DD/YYYY", true);
-        this.isValidMoment(date, "date", "MM/DD/YYYY");
-    }
-
-    onTimeEnter(_event) {
-        let time = moment(_event.target.value, "h:mm A", true);
-        this.isValidMoment(time, "time", "either of h:mm A/P, h:mm AM/PM, hh:mm A/P, hh:mm AM/PM");
-    }
-
-    isValidMoment(momentObj, invalidField, format) {
-        let errorMessage = "Please Enter Valid " + invalidField + " and format should be " + format;
-        if (!momentObj.isValid()) {
-            this.props.dispatch(showMessage(errorMessage, "error"));
+        if(date.isValid()) {
+            this.onDateChange(date);
+        } else {
+            this.props.dispatch(showMessage("Please Enter Valid date and format should be MM/DD/YYYY", "error"));
             this.setState({
                 disableButton: true
             });
+        }
+    }
+
+    validateTime(timeObj) {
+        let time = moment(timeObj.target.value, "h:mm A", true);
+        this.setState({
+            enteredTime: time
+        });
+
+        if(time.isValid()) {
+            this.onTimeChange(time);
         } else {
-            if(invalidField === "time") {
-                this.onTimeChange(momentObj);
-            }
+            this.props.dispatch(showMessage("Please Enter Valid time and format should be either of h:mm A/P, " +
+                "h:mm AM/PM, hh:mm A/P, hh:mm AM/PM", "error"));
+            this.setState({
+                disableButton: true
+            });
         }
     }
 
@@ -88,7 +104,7 @@ class LogFilters extends Component {
                     onChange={this.onDateChange}
                     dropdownMode="select"
                     className="date-picker"
-                    onChangeRaw={this.onDateEnter}
+                    onBlur={this.validateDate}
                 />
                 <DatePicker
                     selected={this.state.time}
@@ -100,7 +116,7 @@ class LogFilters extends Component {
                     dateFormat="LT"
                     timeCaption="Time"
                     className="time-picker"
-                    onChangeRaw={this.onTimeEnter}
+                    onBlur={this.validateTime}
                 />
                 <span className="filter-on">Service</span>
                 <input className="filter-input" ref="service"/>
