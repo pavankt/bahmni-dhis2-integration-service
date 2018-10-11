@@ -50,7 +50,7 @@ class LogFilters extends Component {
 
     onTimeEnter(_event) {
         let time = moment(_event.target.value, "h:mm A", true);
-        this.isValidMoment(time, "time", "h:mm A");
+        this.isValidMoment(time, "time", "either of h:mm A/P, h:mm AM/PM, hh:mm A/P, hh:mm AM/PM");
     }
 
     isValidMoment(momentObj, invalidField, format) {
