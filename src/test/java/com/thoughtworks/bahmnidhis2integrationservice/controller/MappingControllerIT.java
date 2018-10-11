@@ -45,7 +45,7 @@ public class MappingControllerIT{
         // The date in the DB is localized. So the expected value in UTC need to account for the time-zone difference
         // Current test data has IST date in the DB
         expected.put("HTS Service", new MappingDetails("2018-10-03 05:51:32", "success"));
-        expected.put("TB Service", new MappingDetails("2018-10-04 05:51:32,", "success"));
+        expected.put("TB Service", new MappingDetails("2018-10-04 05:51:32", "success"));
 
         Map<String, MappingDetails> mappings = mappingController.getAllMappingNames();
 
