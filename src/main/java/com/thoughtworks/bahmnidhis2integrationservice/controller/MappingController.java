@@ -1,6 +1,8 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
+import com.google.gson.Gson;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LoggerServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -75,7 +78,12 @@ public class MappingController {
     @PutMapping(value = "/mappings")
     @ResponseBody
     public Map<String, String> saveMappings(@RequestBody List<Object> params) throws Exception {
-        String response = mappingService.saveMapping(params);
+        Gson gson = new Gson();
+        List<Mapping> mappingList = params.stream()
+                .map(mappingObj -> gson.fromJson(mappingObj.toString(), Mapping.class))
+                .collect(Collectors.toList());
+
+        String response = mappingService.saveMapping(mappingList);
 
         Map<String, String> responseObj = new HashMap<>();
         responseObj.put("data", response);

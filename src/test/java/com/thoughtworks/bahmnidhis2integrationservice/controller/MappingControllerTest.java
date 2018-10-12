@@ -1,21 +1,18 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
+import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LoggerServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
-import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.setValuesForMemberFields;
 import static org.junit.Assert.assertEquals;
@@ -154,37 +151,56 @@ public class MappingControllerTest {
     @Test
     public void shouldImportAllMappingsSuccessfully() throws Exception {
         String expected = "Successfully Imported Mapping(s)";
+        String lookupTable = "{" +
+                    "\"instance\":\"hts_instance_table\"," +
+                    "\"enrollments\":\"hts_program_enrollment_table\"," +
+                    "\"event\":\"hts_program_events_table\"" +
+                "}";
+        String mappingJson = "{" +
+                    "\"instance\":" +
+                        "{" +
+                            "\"Patient_Identifier\":\"\"," +
+                            "\"UIC\":\"rOb34aQLSyC\"" +
+                        "}," +
+                    "\"event\":" +
+                        "{" +
+                            "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                            "\"client_received\":\"gXNu7zJBTDN\"" +
+                        "}" +
+                "}";
         String mapping = "{" +
-                "\"mapping_name\":\"test2\"," +
-                "\"lookup_table\":" +
-                    "\"{" +
-                        "\"instance\":\"hts_instance_table\"," +
-                        "\"enrollments\":\"hts_program_enrollment_table\"," +
-                        "\"event\":\"hts_program_events_table" +
-                    "\"}\"," +
-                "\"mapping_json\":" +
-                    "\"{" +
-                        "\"instance\":" +
-                            "{" +
-                                "\"Patient_Identifier\":\"\"," +
-                                "\"UIC\":\"rOb34aQLSyC\"," +
-                            "}," +
-                        "\"event\":" +
-                            "{" +
-                                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
-                                "\"client_received\":\"gXNu7zJBTDN\"" +
-                            "}" +
-                    "}\"," +
-                "\"user\":\"superman\"" +
-            "}";
-
+                    "\"mapping_name\":\"test2\"," +
+                    "\"lookup_table\":" +
+                        "\"{" +
+                            "\\\"instance\\\":\\\"hts_instance_table\\\"," +
+                            "\\\"enrollments\\\":\\\"hts_program_enrollment_table\\\"," +
+                            "\\\"event\\\":\\\"hts_program_events_table\\\"" +
+                        "}\"," +
+                    "\"mapping_json\":" +
+                        "\"{" +
+                            "\\\"instance\\\":" +
+                                "{" +
+                                    "\\\"Patient_Identifier\\\":\\\"\\\"," +
+                                    "\\\"UIC\\\":\\\"rOb34aQLSyC\\\"" +
+                                "}," +
+                            "\\\"event\\\":" +
+                                "{" +
+                                    "\\\"self_testing_outcome\\\":\\\"gwatO1kb3Fy\\\"," +
+                                    "\\\"client_received\\\":\\\"gXNu7zJBTDN\\\"" +
+                                "}" +
+                        "}\"," +
+                    "\"user\":\"superman\"" +
+                "}";
         List<Object> mappings = Collections.singletonList(mapping);
 
-        when(mappingService.saveMapping(mappings)).thenReturn(expected);
+        Mapping mappingObj = new Mapping("test2", null, lookupTable, mappingJson, "superman");
+        List<Mapping> mappingsObj = Collections.singletonList(mappingObj);
+
+        when(mappingService.saveMapping(mappingsObj)).thenReturn(expected);
 
         Map<String, String> actual = mappingController.saveMappings(mappings);
 
-        verify(mappingService, times(1)).saveMapping(mappings);
+        verify(mappingService, times(1)).saveMapping(mappingsObj);
 
         assertEquals(expected, actual.get("data"));
     }
@@ -192,39 +208,59 @@ public class MappingControllerTest {
     @Test
     public void shouldThrowErrorWhenImportFails() throws Exception {
         String expected = "Could not able to add Mapping";
-        String mapping = "{" +
-                "\"mapping_name\":\"test2\"," +
-                "\"lookup_table\":" +
-                    "\"{" +
-                        "\"instance\":\"hts_instance_table\"," +
-                        "\"enrollments\":\"hts_program_enrollment_table\"," +
-                        "\"event\":\"hts_program_events_table" +
-                    "\"}\"," +
-                "\"mapping_json\":" +
-                    "\"{" +
-                        "\"instance\":" +
-                            "{" +
-                                "\"Patient_Identifier\":\"\"," +
-                                "\"UIC\":\"rOb34aQLSyC\"," +
-                            "}," +
-                        "\"event\":" +
-                            "{" +
-                                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
-                                "\"client_received\":\"gXNu7zJBTDN\"" +
-                            "}" +
-                    "}\"," +
-                "\"user\":\"superman\"" +
-            "}";
+        String lookupTable = "{" +
+                    "\"instance\":\"hts_instance_table\"," +
+                    "\"enrollments\":\"hts_program_enrollment_table\"," +
+                    "\"event\":\"hts_program_events_table\"" +
+                "}";
+        String mappingJson = "{" +
+                    "\"instance\":" +
+                        "{" +
+                            "\"Patient_Identifier\":\"\"," +
+                            "\"UIC\":\"rOb34aQLSyC\"" +
+                        "}," +
+                    "\"event\":" +
+                        "{" +
+                            "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                            "\"client_received\":\"gXNu7zJBTDN\"" +
+                        "}" +
+                "}";
 
+        String mapping = "{" +
+                    "\"mapping_name\":\"test2\"," +
+                    "\"lookup_table\":" +
+                        "\"{" +
+                            "\\\"instance\\\":\\\"hts_instance_table\\\"," +
+                            "\\\"enrollments\\\":\\\"hts_program_enrollment_table\\\"," +
+                            "\\\"event\\\":\\\"hts_program_events_table\\\"" +
+                        "}\"," +
+                    "\"mapping_json\":" +
+                        "\"{" +
+                            "\\\"instance\\\":" +
+                                "{" +
+                                    "\\\"Patient_Identifier\\\":\\\"\\\"," +
+                                    "\\\"UIC\\\":\\\"rOb34aQLSyC\\\"" +
+                                "}," +
+                            "\\\"event\\\":" +
+                                "{" +
+                                    "\\\"self_testing_outcome\\\":\\\"gwatO1kb3Fy\\\"," +
+                                    "\\\"client_received\\\":\\\"gXNu7zJBTDN\\\"" +
+                            "}" +
+                        "}\"," +
+                    "\"user\":\"superman\"" +
+                "}";
         List<Object> mappings = Collections.singletonList(mapping);
 
-        when(mappingService.saveMapping(mappings))
+        Mapping mappingObj = new Mapping("test2", "", lookupTable, mappingJson, "superman");
+        List<Mapping> mappingsObj = Collections.singletonList(mappingObj);
+
+        when(mappingService.saveMapping(mappingsObj))
                 .thenThrow(new Exception(expected));
 
         try {
             mappingController.saveMappings(mappings);
         } catch (Exception e) {
-            verify(mappingService, times(1)).saveMapping(mappings);
+            verify(mappingService, times(1)).saveMapping(mappingsObj);
             assertEquals(expected, e.getMessage());
         }
     }

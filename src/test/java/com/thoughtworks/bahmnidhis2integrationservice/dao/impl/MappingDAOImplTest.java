@@ -1,6 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -153,7 +154,10 @@ public class MappingDAOImplTest {
                     "}" +
             "}";
 
-        String mapping1 = "{" +
+        Mapping mapping1 = new Mapping("insert mapping", "", lookupTable, mappingJson, "superman");
+        Mapping mapping2 = new Mapping("update mapping", "update mapping", lookupTable, mappingJson, "superman");
+
+        String mapping12 = "{" +
                 "\"mapping_name\":\"insert mapping\"," +
                 "\"lookup_table\":" +
                     "\"{" +
@@ -177,7 +181,7 @@ public class MappingDAOImplTest {
                 "\"user\":\"superman\"" +
             "}";
 
-        String mapping2 = "{" +
+        String mapping21 = "{" +
                 "\"mapping_name\":\"update mapping\"," +
                 "\"lookup_table\":" +
                     "\"{" +
@@ -202,13 +206,15 @@ public class MappingDAOImplTest {
                 "\"user\":\"superman\"" +
             "}";
 
-        List<Object> mappings = Arrays.asList(mapping1,  mapping2);
+        List<Mapping> mappings = Arrays.asList(mapping1,  mapping2);
         String sql1 = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
                 "VALUES ('insert mapping', '%s', '%s', 'superman', '%s');", lookupTable, mappingJson, time);
 
         String sql2 = String.format("UPDATE mapping " +
                 "SET mapping_name='update mapping', lookup_table='%s', mapping_json='%s', modified_by='superman', date_modified='%s' " +
                 "WHERE mapping_name='update mapping';", lookupTable, mappingJson, time);
+
+        System.out.println(sql1 + sql2);
 
         when(jdbcTemplate.update(sql1 + sql2)).thenReturn(1);
 
@@ -237,7 +243,7 @@ public class MappingDAOImplTest {
                         "\"client_received\":\"gXNu7zJBTDN\"" +
                     "}" +
                 "}";
-        String mapping1 = "{" +
+        String mapping12 = "{" +
                 "\"mapping_name\":\"insert mapping\"," +
                 "\"lookup_table\":" +
                     "\"{" +
@@ -261,7 +267,9 @@ public class MappingDAOImplTest {
                 "\"user\":\"superman\"" +
                 "}";
 
-        List<Object> mappings = Collections.singletonList(mapping1);
+        Mapping mapping1 = new Mapping("insert mapping", "", lookupTable, mappingJson, "superman");
+
+        List<Mapping> mappings = Collections.singletonList(mapping1);
         String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
                 "VALUES ('insert mapping', '%s', '%s', 'superman', '%s');", lookupTable, mappingJson, time);
 

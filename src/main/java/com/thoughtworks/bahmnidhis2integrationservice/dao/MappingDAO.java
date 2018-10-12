@@ -1,6 +1,7 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 
 import java.util.List;
 import java.util.Map;
@@ -11,5 +12,5 @@ public interface MappingDAO {
 
     Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException;
 
-    String saveMapping(List<Object> mappingsList) throws Exception;
+    String saveMapping(List<Mapping> mappingsList) throws Exception;
 }

@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.service.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.dao.impl.MappingDAOImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 import com.thoughtworks.bahmnidhis2integrationservice.service.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    public String saveMapping(List<Object> mappingsList) throws Exception {
+    public String saveMapping(List<Mapping> mappingsList) throws Exception {
         return mappingDAO.saveMapping(mappingsList);
     }
 }

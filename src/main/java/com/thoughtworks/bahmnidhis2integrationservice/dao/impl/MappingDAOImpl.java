@@ -1,6 +1,5 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
-import com.google.gson.Gson;
 import com.thoughtworks.bahmnidhis2integrationservice.dao.MappingDAO;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
 import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
@@ -64,11 +63,9 @@ public class MappingDAOImpl implements MappingDAO {
     }
 
     @Override
-    public String saveMapping(List<Object> mappingsList) throws Exception {
+    public String saveMapping(List<Mapping> mappingsList) throws Exception {
         StringBuilder mappingQueries = new StringBuilder();
-        Gson gson = new Gson();
-        mappingsList.forEach(mappingObj -> {
-            Mapping mapping = gson.fromJson(mappingObj.toString(), Mapping.class);
+        mappingsList.forEach(mapping -> {
             String query = getMappingSql(
                     mapping.getMapping_name(),
                     mapping.getLookup_table(),

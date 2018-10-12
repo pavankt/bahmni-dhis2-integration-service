@@ -2,6 +2,7 @@ package com.thoughtworks.bahmnidhis2integrationservice.service.impl;
 
 import com.thoughtworks.bahmnidhis2integrationservice.dao.impl.MappingDAOImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,31 +110,9 @@ public class MappingServiceImplTest {
     @Test
     public void shouldReturnSuccessMessageOnSuccessImportOfMappings() throws Exception {
         String expected = "Successfully Added Mapping";
-        String mapping = "{" +
-                "\"mapping_name\":\"test2\"," +
-                "\"lookup_table\":" +
-                "\"{" +
-                "\"instance\":\"hts_instance_table\"," +
-                "\"enrollments\":\"hts_program_enrollment_table\"," +
-                "\"event\":\"hts_program_events_table" +
-                "\"}\"," +
-                "\"mapping_json\":" +
-                "\"{" +
-                "\"instance\":" +
-                "{" +
-                "\"Patient_Identifier\":\"\"," +
-                "\"UIC\":\"rOb34aQLSyC\"," +
-                "}," +
-                "\"event\":" +
-                "{" +
-                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
-                "\"client_received\":\"gXNu7zJBTDN\"" +
-                "}" +
-                "}\"," +
-                "\"user\":\"superman\"" +
-                "}";
+        Mapping mapping = new Mapping("insert mapping", "", lookupTable, mappingJson, "superman");
 
-        List<Object> mappings = Collections.singletonList(mapping);
+        List<Mapping> mappings = Collections.singletonList(mapping);
 
         when(mappingDAO.saveMapping(mappings)).thenReturn(expected);
 
@@ -146,31 +125,9 @@ public class MappingServiceImplTest {
     @Test
     public void shouldThrowErrorOnMappingImportFail() throws Exception {
         String expected = "Could not able to insert";
-        String mapping = "{" +
-                "\"mapping_name\":\"test2\"," +
-                "\"lookup_table\":" +
-                "\"{" +
-                "\"instance\":\"hts_instance_table\"," +
-                "\"enrollments\":\"hts_program_enrollment_table\"," +
-                "\"event\":\"hts_program_events_table" +
-                "\"}\"," +
-                "\"mapping_json\":" +
-                "\"{" +
-                "\"instance\":" +
-                "{" +
-                "\"Patient_Identifier\":\"\"," +
-                "\"UIC\":\"rOb34aQLSyC\"," +
-                "}," +
-                "\"event\":" +
-                "{" +
-                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
-                "\"client_received\":\"gXNu7zJBTDN\"" +
-                "}" +
-                "}\"," +
-                "\"user\":\"superman\"" +
-                "}";
+        Mapping mapping = new Mapping("insert mapping", "", lookupTable, mappingJson, "superman");
 
-        List<Object> mappings = Collections.singletonList(mapping);
+        List<Mapping> mappings = Collections.singletonList(mapping);
         when(mappingDAO.saveMapping(mappings)).thenThrow(new Exception(expected));
 
         try {
