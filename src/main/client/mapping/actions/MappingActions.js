@@ -70,6 +70,13 @@ export function mappingJson(mappingJson = {instance: {}, enrollments: {}, event:
     }
 }
 
+export function importedMappings(mappingNames = []) {
+    return {
+        type: 'importedMappings',
+        mappingNames
+    }
+}
+
 export function hasNoMappings(mappings) {
     let elementIds = Object.values(mappings);
     return elementIds.filter(element => element !== "").length === 0;
@@ -303,7 +310,19 @@ function isJsonObj(obj) {
     return obj !== undefined && obj !== null && obj.constructor === Object;
 }
 
-function validateMappingValues(mapping, dispatch) {
+function getAllMappingNames(mappingsToImport) {
+    return mappingsToImport.map(mapping => {
+        let mappingName = mapping.mapping_name;
+        return isEmpty(mappingName) ? "" : mappingName;
+    });
+}
+
+function isNameDuplicate(mappingName, mappingList) {
+    let multiples = mappingList.filter(mapping => mapping.mapping_name === mappingName);
+    return multiples.length > 1;
+}
+
+function validateMapping(mapping, mappingNames, dispatch) {
     let isValid = true;
     let mappingName = mapping.mapping_name;
     let lookupTable = mapping.lookup_table;
@@ -314,28 +333,87 @@ function validateMappingValues(mapping, dispatch) {
         isValid = false;
     } else if (hasInvalidString(mappingName)) {
         dispatch(showMessage(`${mappingName} is invalid mapping name. Mapping name should be alpha numeric
-                    ..Please correct the file and import again`, "error"));
+                    . Please correct the file and import again`, "error"));
+        isValid = false;
+    } else if(isNameDuplicate(mappingName, mappingNames)) {
+        dispatch(showMessage("Mapping Name should be unique. Please correct the file and import again", "error"));
         isValid = false;
     } else if (!isJsonObj(lookupTable)) {
-        dispatch(showMessage("lookup_table should be Object..Please correct the file and import again"));
+        dispatch(showMessage("lookup_table should be Object. Please correct the file and import again", "error"));
         isValid = false;
     } else if (!isJsonObj(mappingJson)) {
-        dispatch(showMessage("mapping_json should be Object..Please correct the file and import again"));
+        dispatch(showMessage("mapping_json should be Object. Please correct the file and import again", "error"));
         isValid = false;
     }
 
     return isValid;
 }
 
-export function importMappings(mappings) {
-    return async (dispatch) => {
+export function importMappings(mappingsToImport) {
+    return async (dispatch, getState) => {
         await dispatch(ensureActiveSession());
-        if (!Array.isArray(mappings)) {
-            return dispatch(showMessage("File should contain array of Object..Please correct the file and import again", "error"));
+        if (!Array.isArray(mappingsToImport)) {
+            return dispatch(showMessage("File should contain array of Object. Please correct the file and import again", "error"));
         }
 
-        mappings.every((mapping) => {
-            return validateMappingValues(mapping, dispatch);
-        });
+        let validMappingsCount = validateAllMappings(mappingsToImport, dispatch);
+        const state = getState();
+        let user = state.session.user;
+        let newMappings = [];
+        if(validMappingsCount > 0 && validMappingsCount === mappingsToImport.length) {
+            let body = getImportMappingApiBody(mappingsToImport, newMappings, user);
+            let isSuccess = await saveValidatedMappings(body, dispatch, user);
+            isSuccess && dispatch(importedMappings(newMappings));
+        }
     }
+}
+
+function validateAllMappings(MappingsToImport, dispatch) {
+    let validMappingsCount = 0;
+    let mappingNames = getAllMappingNames(MappingsToImport);
+    MappingsToImport.every((mapping) => {
+        let isValid = validateMapping(mapping, mappingNames, dispatch);
+        if (isValid) {
+            validMappingsCount++;
+        }
+        return isValid;
+    });
+
+    return validMappingsCount;
+}
+
+async function saveValidatedMappings(body, dispatch, user) {
+    dispatch(hideSpinner(false));
+    let ajax = Ajax.instance();
+    try {
+        let response = await ajax.put("/dhis-integration/api/mappings", body);
+        auditLogEventDetails.IMPORT_MAPPING_SERVICE.message = `User ${user} imported Mapping Service(s)`;
+        auditLog(auditLogEventDetails.IMPORT_MAPPING_SERVICE);
+        dispatch(showMessage(response.data, "success"));
+        dispatch(hideSpinner());
+        return true;
+    } catch (e) {
+        dispatch(hideSpinner());
+        dispatch(showMessage(e.message, "error"));
+    }
+    return false;
+}
+
+function getImportMappingApiBody(mappingsToImport, newMappings, user) {
+    let body = [];
+    mappingsToImport.forEach((mapping) => {
+        let mappingName = mapping.mapping_name;
+        if (mappingNameIsNotUnique(state, mappingName)) {
+            mapping.current_mapping = mappingName;
+            mapping.user = user;
+        } else {
+            mapping.user = user;
+            newMappings = newMappings.concat(mappingName);
+        }
+        mapping.lookup_table = JSON.stringify(mapping.lookup_table);
+        mapping.mapping_json = JSON.stringify(mapping.mapping_json);
+        body = body.concat(JSON.stringify(mapping));
+    });
+
+    return body;
 }

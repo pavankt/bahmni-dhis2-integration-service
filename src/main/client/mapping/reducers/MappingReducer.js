@@ -59,6 +59,8 @@ export function allMappingNames(state = [], action = {}){
             return action.allMappings;
         case 'addNewMapping':
             return state.concat(action.mappingName);
+        case 'importedMappings':
+            return state.concat(action.mappingNames);
         default:
             return state;
     }
