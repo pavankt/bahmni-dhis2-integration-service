@@ -292,5 +292,5 @@ export async function exportMapping(mappingName, dispatch, user) {
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
     }
-    // dispatch(hideSpinner());
+    dispatch(hideSpinner());
 }

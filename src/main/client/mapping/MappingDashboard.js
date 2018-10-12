@@ -80,6 +80,7 @@ class MappingDashboard extends Component {
               <button
                   type="submit"
                   className="export-all-button"
+                  disabled={this.props.mappingNames.length === 0}
                   onClick={this.exportAllMappings}
               >
                     Export All Mappings
