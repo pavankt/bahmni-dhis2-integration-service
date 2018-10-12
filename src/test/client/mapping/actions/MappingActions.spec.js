@@ -1079,11 +1079,7 @@ describe('#mappingActions', () => {
                         '}' +
                         '}',
                     "type": "json"
-                },
-                "created_by": "superman",
-                "date_created": "2019-10-18",
-                "modified_by": null,
-                "date_modified": null
+                }
             };
             let dispatchMock = jest.fn();
             let ajax = Ajax.instance();
@@ -1094,15 +1090,10 @@ describe('#mappingActions', () => {
                 .expects("get")
                 .withArgs("/dhis-integration/api/getMapping", {"mappingName": mappingName})
                 .returns(Promise.resolve(responseJson));
-            let actionsMock = sandbox.mock(Actions);
-            let hideSpinnerMock = actionsMock.expects("hideSpinner");
-            let hideSpinnerFalse = hideSpinnerMock.withArgs(false);
 
             MappingActions.exportMapping(mappingName, dispatchMock);
 
             ajaxGetMock.verify();
-            hideSpinnerFalse.verify();
-            hideSpinnerMock.verify();
             sandbox.restore();
         });
 
@@ -1118,8 +1109,6 @@ describe('#mappingActions', () => {
                 .withArgs("/dhis-integration/api/getMapping", {"mappingName": mappingName})
                 .returns(Promise.reject({ message: 'Could not get mapping info' }));
             let actionsMock = sandbox.mock(Actions);
-            let hideSpinnerMock = actionsMock.expects("hideSpinner");
-            let hideSpinnerFalse = hideSpinnerMock.withArgs(false);
             let showMsgMock = actionsMock.expects('showMessage')
                 .withArgs("Could not get mapping info", "error");
 
@@ -1127,8 +1116,6 @@ describe('#mappingActions', () => {
                 MappingActions.exportMapping(mappingName, dispatchMock);
             } catch (e) {
                 ajaxGetMock.verify();
-                hideSpinnerFalse.verify();
-                hideSpinnerMock.verify();
                 showMsgMock.verify();
             }
             sandbox.restore();

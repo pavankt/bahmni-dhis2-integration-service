@@ -270,18 +270,10 @@ export function getTables() {
     }
 }
 
-export async function exportMapping(mappingName, dispatch, user) {
-    dispatch(hideSpinner(false));
-    try {
-        auditLogEventDetails.EXPORT_MAPPING_SERVICE.message = `User ${user} exported ${mappingName} Mapping Service`;
-        auditLog(auditLogEventDetails.EXPORT_MAPPING_SERVICE);
-    } catch (e) {
-        window.location.pathname = '/home';
-    }
+export async function exportMapping(mappingName, dispatch) {
     try {
         let ajax = Ajax.instance();
         let response = parseResponse(await ajax.get('/dhis-integration/api/getMapping', {"mappingName": mappingName}));
-        dispatch(hideSpinner());
         let mappingArray = [];
         mappingArray.push({
             mapping_name: response.mapping_name,
@@ -292,5 +284,4 @@ export async function exportMapping(mappingName, dispatch, user) {
     } catch (e) {
         dispatch(showMessage(e.message, "error"))
     }
-    dispatch(hideSpinner());
 }

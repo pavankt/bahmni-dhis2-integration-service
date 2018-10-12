@@ -17,7 +17,8 @@ export const auditLogEventDetails = {
   OPEN_SYNC_TO_DHIS: { patientUuid: null, eventType: 'OPEN_SYNC_TO_DHIS', message: 'OPEN_SYNC_TO_DHIS_MESSAGE', module: audit.LABEL },
   OPEN_DHIS_LOG: { patientUuid: null, eventType: 'OPEN_DHIS_LOG', message: 'OPEN_DHIS_LOG_MESSAGE', module: audit.LABEL },
   SEND_DATA_TO_DHIS: { patientUuid: null, eventType: 'SEND_DATA_TO_DHIS', message: 'SEND_DATA_TO_DHIS_MESSAGE', module: audit.LABEL },
-  EXPORT_MAPPING_SERVICE: { patientUuid: null, eventType: 'EXPORT_MAPPING_SERVICE', message: '', module: audit.LABEL }
+  EXPORT_MAPPING_SERVICE: { patientUuid: null, eventType: 'EXPORT_MAPPING_SERVICE', message: '', module: audit.LABEL },
+  EXPORT_ALL_MAPPINGS: { patientUuid: null, eventType: 'EXPORT_ALL_MAPPINGS', message: 'EXPORT_ALL_MAPPINGS_MESSAGE', module: audit.LABEL }
 };
 
 export const sync = {

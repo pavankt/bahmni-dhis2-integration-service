@@ -7,7 +7,9 @@ import Spinner from '../common/Spinner';
 import {getAllMappings, exportMapping} from './actions/MappingActions';
 import Message from '../common/Message';
 import fileDownload from 'js-file-download';
-import { showMessage } from '../common/Actions';
+import { showMessage, hideSpinner } from '../common/Actions';
+import auditLog from '../common/AuditLog';
+import {auditLogEventDetails} from '../common/constants';
 
 class MappingDashboard extends Component {
     constructor() {
@@ -27,19 +29,29 @@ class MappingDashboard extends Component {
     }
 
     async exportMapping(mappingName) {
-        let mappingDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
+        this.props.dispatch(hideSpinner(false));
+
+        auditLogEventDetails.EXPORT_MAPPING_SERVICE.message = `User ${this.props.user} exported ${mappingName} Mapping Service`;
+        await auditLog(auditLogEventDetails.EXPORT_MAPPING_SERVICE);
+
+        let mappingDetails = await exportMapping(mappingName, this.props.dispatch);
         fileDownload(JSON.stringify(mappingDetails), `${mappingName}.json`);
+        this.props.dispatch(hideSpinner());
         this.props.dispatch(showMessage(`Successfully exported ${mappingName} Mapping`, "success"));
     }
 
     async exportAllMappings() {
+        this.props.dispatch(hideSpinner(false));
+        await auditLog(auditLogEventDetails.EXPORT_ALL_MAPPINGS);
+
         const timestamp = moment().format("DDMMMYYYY_kk:mm:ss");
         let detailedMappingList = [];
         await Promise.all(this.props.mappingNames.map(async mappingName => {
-            let mapDetails = await exportMapping(mappingName, this.props.dispatch, this.props.user);
+            let mapDetails = await exportMapping(mappingName, this.props.dispatch);
             mapDetails && detailedMappingList.push(mapDetails[0]);
         }));
         fileDownload(JSON.stringify(detailedMappingList), `AllMappingExport_${timestamp}.json`);
+        this.props.dispatch(hideSpinner());
         this.props.dispatch(showMessage(`Successfully exported all the mappings`, "success"));
     }
 
