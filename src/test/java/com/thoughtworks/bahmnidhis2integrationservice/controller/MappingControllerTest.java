@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,84 @@ public class MappingControllerTest {
             mappingController.getMapping(mappingName);
         } catch (NoMappingFoundException e) {
             assertEquals(e.getMessage(), "No mapping found with name " + mappingName);
+        }
+    }
+
+    @Test
+    public void shouldImportAllMappingsSuccessfully() throws Exception {
+        String expected = "Successfully Imported Mapping(s)";
+        String mapping = "{" +
+                "\"mapping_name\":\"test2\"," +
+                "\"lookup_table\":" +
+                    "\"{" +
+                        "\"instance\":\"hts_instance_table\"," +
+                        "\"enrollments\":\"hts_program_enrollment_table\"," +
+                        "\"event\":\"hts_program_events_table" +
+                    "\"}\"," +
+                "\"mapping_json\":" +
+                    "\"{" +
+                        "\"instance\":" +
+                            "{" +
+                                "\"Patient_Identifier\":\"\"," +
+                                "\"UIC\":\"rOb34aQLSyC\"," +
+                            "}," +
+                        "\"event\":" +
+                            "{" +
+                                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                                "\"client_received\":\"gXNu7zJBTDN\"" +
+                            "}" +
+                    "}\"," +
+                "\"user\":\"superman\"" +
+            "}";
+
+        List<Object> mappings = Collections.singletonList(mapping);
+
+        when(mappingService.saveMapping(mappings)).thenReturn(expected);
+
+        Map<String, String> actual = mappingController.saveMappings(mappings);
+
+        verify(mappingService, times(1)).saveMapping(mappings);
+
+        assertEquals(expected, actual.get("data"));
+    }
+
+    @Test
+    public void shouldThrowErrorWhenImportFails() throws Exception {
+        String expected = "Could not able to add Mapping";
+        String mapping = "{" +
+                "\"mapping_name\":\"test2\"," +
+                "\"lookup_table\":" +
+                    "\"{" +
+                        "\"instance\":\"hts_instance_table\"," +
+                        "\"enrollments\":\"hts_program_enrollment_table\"," +
+                        "\"event\":\"hts_program_events_table" +
+                    "\"}\"," +
+                "\"mapping_json\":" +
+                    "\"{" +
+                        "\"instance\":" +
+                            "{" +
+                                "\"Patient_Identifier\":\"\"," +
+                                "\"UIC\":\"rOb34aQLSyC\"," +
+                            "}," +
+                        "\"event\":" +
+                            "{" +
+                                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                                "\"client_received\":\"gXNu7zJBTDN\"" +
+                            "}" +
+                    "}\"," +
+                "\"user\":\"superman\"" +
+            "}";
+
+        List<Object> mappings = Collections.singletonList(mapping);
+
+        when(mappingService.saveMapping(mappings))
+                .thenThrow(new Exception(expected));
+
+        try {
+            mappingController.saveMappings(mappings);
+        } catch (Exception e) {
+            verify(mappingService, times(1)).saveMapping(mappings);
+            assertEquals(expected, e.getMessage());
         }
     }
 }

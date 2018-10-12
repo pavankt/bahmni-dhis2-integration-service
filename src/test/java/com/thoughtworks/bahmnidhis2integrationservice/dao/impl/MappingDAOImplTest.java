@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -130,5 +131,147 @@ public class MappingDAOImplTest {
         assertEquals(HTSMapping, mappingDAO.getMapping("HTS Service"));
 
         verify(jdbcTemplate, times(1)).queryForMap(sql);
+    }
+
+    @Test
+    public void shouldInsertTheMappingWhichDoesNotHaveCurrentMappingNameAndShouldUpdateMappingWhichHasCurrentMapping() throws Exception {
+        String lookupTable = "{" +
+                "\"instance\":\"hts_instance_table\"," +
+                "\"enrollments\":\"hts_program_enrollment_table\"," +
+                "\"event\":\"hts_program_events_table\"" +
+                "}";
+        String mappingJson = "{" +
+                "\"instance\":" +
+                    "{" +
+                        "\"Patient_Identifier\":\"\"," +
+                        "\"UIC\":\"rOb34aQLSyC\"" +
+                    "}," +
+                "\"event\":" +
+                    "{" +
+                        "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                        "\"client_received\":\"gXNu7zJBTDN\"" +
+                    "}" +
+            "}";
+
+        String mapping1 = "{" +
+                "\"mapping_name\":\"insert mapping\"," +
+                "\"lookup_table\":" +
+                    "\"{" +
+                        "\\\"instance\\\":\\\"hts_instance_table\\\"," +
+                        "\\\"enrollments\\\":\\\"hts_program_enrollment_table\\\"," +
+                        "\\\"event\\\":\\\"hts_program_events_table\\\"" +
+                    "}\"," +
+                "\"mapping_json\":" +
+                    "\"{" +
+                        "\\\"instance\\\":" +
+                            "{" +
+                                "\\\"Patient_Identifier\\\":\\\"\\\"," +
+                                "\\\"UIC\\\":\\\"rOb34aQLSyC\\\"" +
+                            "}," +
+                        "\\\"event\\\":" +
+                            "{" +
+                                "\\\"self_testing_outcome\\\":\\\"gwatO1kb3Fy\\\"," +
+                                "\\\"client_received\\\":\\\"gXNu7zJBTDN\\\"" +
+                            "}" +
+                        "}\"," +
+                "\"user\":\"superman\"" +
+            "}";
+
+        String mapping2 = "{" +
+                "\"mapping_name\":\"update mapping\"," +
+                "\"lookup_table\":" +
+                    "\"{" +
+                        "\\\"instance\\\":\\\"hts_instance_table\\\"," +
+                        "\\\"enrollments\\\":\\\"hts_program_enrollment_table\\\"," +
+                        "\\\"event\\\":\\\"hts_program_events_table\\\"" +
+                    "}\"," +
+                "\"mapping_json\":" +
+                    "\"{" +
+                        "\\\"instance\\\":" +
+                            "{" +
+                                "\\\"Patient_Identifier\\\":\\\"\\\"," +
+                                "\\\"UIC\\\":\\\"rOb34aQLSyC\\\"" +
+                            "}," +
+                        "\\\"event\\\":" +
+                            "{" +
+                                "\\\"self_testing_outcome\\\":\\\"gwatO1kb3Fy\\\"," +
+                                "\\\"client_received\\\":\\\"gXNu7zJBTDN\\\"" +
+                            "}" +
+                        "}\"," +
+                "\"current_mapping\":\"update mapping\", " +
+                "\"user\":\"superman\"" +
+            "}";
+
+        List<Object> mappings = Arrays.asList(mapping1,  mapping2);
+        String sql1 = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
+                "VALUES ('insert mapping', '%s', '%s', 'superman', '%s');", lookupTable, mappingJson, time);
+
+        String sql2 = String.format("UPDATE mapping " +
+                "SET mapping_name='update mapping', lookup_table='%s', mapping_json='%s', modified_by='superman', date_modified='%s' " +
+                "WHERE mapping_name='update mapping';", lookupTable, mappingJson, time);
+
+        when(jdbcTemplate.update(sql1 + sql2)).thenReturn(1);
+
+        String result = mappingDAO.saveMapping(mappings);
+
+        verify(jdbcTemplate, times(1)).update(sql1 + sql2);
+        assertEquals("Successfully Imported All Mappings", result);
+    }
+
+    @Test
+    public void shouldThrowErrorWhenImportOfMappingsGotFailed() throws Exception {
+        String lookupTable = "{" +
+                    "\"instance\":\"hts_instance_table\"," +
+                    "\"enrollments\":\"hts_program_enrollment_table\"," +
+                    "\"event\":\"hts_program_events_table\"" +
+                "}";
+        String mappingJson = "{" +
+                    "\"instance\":" +
+                    "{" +
+                        "\"Patient_Identifier\":\"\"," +
+                        "\"UIC\":\"rOb34aQLSyC\"" +
+                    "}," +
+                    "\"event\":" +
+                    "{" +
+                        "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                        "\"client_received\":\"gXNu7zJBTDN\"" +
+                    "}" +
+                "}";
+        String mapping1 = "{" +
+                "\"mapping_name\":\"insert mapping\"," +
+                "\"lookup_table\":" +
+                    "\"{" +
+                        "\\\"instance\\\":\\\"hts_instance_table\\\"," +
+                        "\\\"enrollments\\\":\\\"hts_program_enrollment_table\\\"," +
+                        "\\\"event\\\":\\\"hts_program_events_table\\\"" +
+                    "}\"," +
+                "\"mapping_json\":" +
+                    "\"{" +
+                        "\\\"instance\\\":" +
+                            "{" +
+                                "\\\"Patient_Identifier\\\":\\\"\\\"," +
+                                "\\\"UIC\\\":\\\"rOb34aQLSyC\\\"" +
+                            "}," +
+                        "\\\"event\\\":" +
+                            "{" +
+                                "\\\"self_testing_outcome\\\":\\\"gwatO1kb3Fy\\\"," +
+                                "\\\"client_received\\\":\\\"gXNu7zJBTDN\\\"" +
+                            "}" +
+                    "}\"," +
+                "\"user\":\"superman\"" +
+                "}";
+
+        List<Object> mappings = Collections.singletonList(mapping1);
+        String sql = String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
+                "VALUES ('insert mapping', '%s', '%s', 'superman', '%s');", lookupTable, mappingJson, time);
+
+        when(jdbcTemplate.update(sql)).thenReturn(0);
+
+        try {
+            mappingDAO.saveMapping(mappings);
+        } catch(Exception e) {
+            verify(jdbcTemplate, times(1)).update(sql);
+            assertEquals("Could not add Mapping(s)", e.getMessage());
+        }
     }
 }

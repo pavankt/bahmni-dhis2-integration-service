@@ -1,10 +1,10 @@
 package com.thoughtworks.bahmnidhis2integrationservice.controller;
 
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.LoggerServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MappingServiceImpl;
 import com.thoughtworks.bahmnidhis2integrationservice.service.impl.MarkerServiceImpl;
-import com.thoughtworks.bahmnidhis2integrationservice.model.MappingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +70,16 @@ public class MappingController {
     @ResponseBody
     public Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException {
         return mappingService.getMapping(mappingName);
+    }
+
+    @PutMapping(value = "/mappings")
+    @ResponseBody
+    public Map<String, String> saveMappings(@RequestBody List<Object> params) throws Exception {
+        String response = mappingService.saveMapping(params);
+
+        Map<String, String> responseObj = new HashMap<>();
+        responseObj.put("data", response);
+
+        return responseObj;
     }
 }

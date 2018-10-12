@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,81 @@ public class MappingServiceImplTest {
             mappingService.getMapping(mappingName);
         }catch (NoMappingFoundException e){
             assertEquals(e.getMessage(),"No mapping found with name "+mappingName);
+        }
+    }
+
+    @Test
+    public void shouldReturnSuccessMessageOnSuccessImportOfMappings() throws Exception {
+        String expected = "Successfully Added Mapping";
+        String mapping = "{" +
+                "\"mapping_name\":\"test2\"," +
+                "\"lookup_table\":" +
+                "\"{" +
+                "\"instance\":\"hts_instance_table\"," +
+                "\"enrollments\":\"hts_program_enrollment_table\"," +
+                "\"event\":\"hts_program_events_table" +
+                "\"}\"," +
+                "\"mapping_json\":" +
+                "\"{" +
+                "\"instance\":" +
+                "{" +
+                "\"Patient_Identifier\":\"\"," +
+                "\"UIC\":\"rOb34aQLSyC\"," +
+                "}," +
+                "\"event\":" +
+                "{" +
+                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                "\"client_received\":\"gXNu7zJBTDN\"" +
+                "}" +
+                "}\"," +
+                "\"user\":\"superman\"" +
+                "}";
+
+        List<Object> mappings = Collections.singletonList(mapping);
+
+        when(mappingDAO.saveMapping(mappings)).thenReturn(expected);
+
+        String actual = mappingService.saveMapping(mappings);
+
+        verify(mappingDAO, times(1)).saveMapping(mappings);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldThrowErrorOnMappingImportFail() throws Exception {
+        String expected = "Could not able to insert";
+        String mapping = "{" +
+                "\"mapping_name\":\"test2\"," +
+                "\"lookup_table\":" +
+                "\"{" +
+                "\"instance\":\"hts_instance_table\"," +
+                "\"enrollments\":\"hts_program_enrollment_table\"," +
+                "\"event\":\"hts_program_events_table" +
+                "\"}\"," +
+                "\"mapping_json\":" +
+                "\"{" +
+                "\"instance\":" +
+                "{" +
+                "\"Patient_Identifier\":\"\"," +
+                "\"UIC\":\"rOb34aQLSyC\"," +
+                "}," +
+                "\"event\":" +
+                "{" +
+                "\"self_testing_outcome\":\"gwatO1kb3Fy\"," +
+                "\"client_received\":\"gXNu7zJBTDN\"" +
+                "}" +
+                "}\"," +
+                "\"user\":\"superman\"" +
+                "}";
+
+        List<Object> mappings = Collections.singletonList(mapping);
+        when(mappingDAO.saveMapping(mappings)).thenThrow(new Exception(expected));
+
+        try {
+            mappingService.saveMapping(mappings);
+        } catch (Exception e) {
+            verify(mappingDAO, times(1)).saveMapping(mappings);
+            assertEquals(expected, e.getMessage());
         }
     }
 }

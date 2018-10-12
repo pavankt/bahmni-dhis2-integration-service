@@ -10,4 +10,6 @@ public interface MappingDAO {
     List<String> getMappingNames();
 
     Map<String, Object> getMapping(String mappingName) throws NoMappingFoundException;
+
+    String saveMapping(List<Object> mappingsList) throws Exception;
 }

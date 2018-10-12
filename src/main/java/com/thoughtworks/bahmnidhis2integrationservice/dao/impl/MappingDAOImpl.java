@@ -1,12 +1,15 @@
 package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
 
+import com.google.gson.Gson;
 import com.thoughtworks.bahmnidhis2integrationservice.dao.MappingDAO;
 import com.thoughtworks.bahmnidhis2integrationservice.exception.NoMappingFoundException;
+import com.thoughtworks.bahmnidhis2integrationservice.model.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,6 +61,42 @@ public class MappingDAOImpl implements MappingDAO {
         }catch (EmptyResultDataAccessException e){
             throw new NoMappingFoundException(mappingName);
         }
+    }
+
+    @Override
+    public String saveMapping(List<Object> mappingsList) throws Exception {
+        StringBuilder mappingQueries = new StringBuilder();
+        Gson gson = new Gson();
+        mappingsList.forEach(mappingObj -> {
+            Mapping mapping = gson.fromJson(mappingObj.toString(), Mapping.class);
+            String query = getMappingSql(
+                    mapping.getMapping_name(),
+                    mapping.getLookup_table(),
+                    mapping.getMapping_json(),
+                    mapping.getCurrent_mapping(),
+                    mapping.getUser()
+                    );
+
+            mappingQueries.append(query);
+        });
+
+        int result = jdbcTemplate.update(mappingQueries.toString());
+
+        if (result == SUCCESS) {
+            return "Successfully Imported All Mappings";
+        }
+
+        throw new Exception("Could not add Mapping(s)");
+    }
+
+    private String getMappingSql(String mappingName, String lookupTable, String mappingJson, String currentMapping, String user) {
+        String currentTime = getCurrentTime();
+        return StringUtils.isEmpty(currentMapping) ?
+                String.format("INSERT INTO mapping (mapping_name, lookup_table, mapping_json, created_by, date_created) " +
+                        "VALUES ('%s', '%s', '%s', '%s', '%s');", mappingName, lookupTable, mappingJson, user, currentTime)
+                : String.format("UPDATE mapping " +
+                "SET mapping_name='%s', lookup_table='%s', mapping_json='%s', modified_by='%s', date_modified='%s' " +
+                "WHERE mapping_name='%s';", mappingName, lookupTable, mappingJson, user, currentTime, currentMapping);
     }
 
     private String getCurrentTime() {
