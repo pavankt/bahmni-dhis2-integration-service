@@ -18,7 +18,11 @@ describe('#syncActions', () => {
             let mappingName = "HTS Service";
             let user = "admin";
             let expectedActions = [
-                {"responseMessage": "Enter comment before syncing HTS Service", "responseType": "error", "type": "showMessage"}
+                {
+                    "responseMessage": "Enter comment before syncing HTS Service",
+                    "responseType": "error",
+                    "type": "showMessage"
+                }
             ];
 
             let store = mockStore({});
@@ -82,7 +86,7 @@ describe('#syncActions', () => {
             let ajaxPutMock = ajaxMock
                 .expects("put")
                 .withArgs(sync.URI, {service: mappingName, user: user, comment: comment})
-                .returns(Promise.reject({"message" : "no data to sync"}));
+                .returns(Promise.reject({"message": "no data to sync"}));
 
             await store.dispatch(SyncActions.syncData(mappingName, user, comment));
 

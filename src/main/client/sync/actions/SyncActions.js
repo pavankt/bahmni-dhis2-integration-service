@@ -10,15 +10,15 @@ export function syncData(mappingName = '', user = '', comment = '') {
             dispatch(showMessage("Enter comment before syncing " + mappingName, "error"));
             return;
         }
+        let ajax = Ajax.instance();
+        let body = {
+            service: mappingName,
+            user: user,
+            comment: comment
+        };
+        dispatch(showMessage("Sync started for " + mappingName, "success"));
+        auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
         try {
-            let ajax = Ajax.instance();
-            let body = {
-                service: mappingName,
-                user: user,
-                comment: comment
-            };
-            dispatch(showMessage("Sync started for " + mappingName, "success"));
-            auditLog(auditLogEventDetails.SEND_DATA_TO_DHIS);
             await ajax.put(sync.URI, body);
         } catch (e) {
             dispatch(showMessage("No data to sync for " + mappingName, "error"));

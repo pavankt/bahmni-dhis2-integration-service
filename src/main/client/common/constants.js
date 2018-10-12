@@ -21,7 +21,7 @@ export const auditLogEventDetails = {
 };
 
 export const sync = {
-    URI: '/sync/pushData'
+    URI: '/dhis-integration/api/syncData'
 };
 
 export const displayHeaderNames = {
