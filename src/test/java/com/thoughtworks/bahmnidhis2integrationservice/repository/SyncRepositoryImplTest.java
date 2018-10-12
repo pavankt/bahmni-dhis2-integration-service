@@ -1,4 +1,4 @@
-package com.thoughtworks.bahmnidhis2integrationservice.dao.impl;
+package com.thoughtworks.bahmnidhis2integrationservice.repository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,20 +9,24 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static com.thoughtworks.bahmnidhis2integrationservice.CommonTestHelper.setValuesForMemberFields;
 import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({SyncRepositoryImpl.class})
+@PrepareForTest({SyncRepository.class})
 @PowerMockIgnore("javax.management.*")
 public class SyncRepositoryImplTest {
-    private SyncRepositoryImpl syncRepository;
+    private SyncRepository syncRepository;
+    private String body;
 
     @Mock
     private RestTemplate restTemplate;
@@ -36,25 +40,34 @@ public class SyncRepositoryImplTest {
     @Mock
     private HttpServerErrorException httpServerErrorException;
 
+    @Mock
+    private HttpHeaders httpHeaders;
+
+    @Mock
+    private HttpEntity httpEntity;
+
     @Before
     public void setUp() throws Exception {
-        syncRepository = new SyncRepositoryImpl();
-
-        setValuesForMemberFields(syncRepository,"logger", logger);
-        whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);
-    }
-
-    @Test
-    public void shouldCallPutMethodOfRestTemplate() {
-        String URI = "http://localhost/sync/pushData";
-        String body = "{" +
+        body = "{" +
                 "service: \"someMapping\"," +
                 "user: \"superman\"," +
                 "comment: \"This is a comment\" " +
                 "}";
-        doNothing().when(restTemplate).put(URI, body);
+
+        syncRepository = new SyncRepository();
+
+        setValuesForMemberFields(syncRepository,"logger", logger);
+        whenNew(RestTemplate.class).withNoArguments().thenReturn(restTemplate);
+        whenNew(HttpHeaders.class).withNoArguments().thenReturn(httpHeaders);
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        whenNew(HttpEntity.class).withArguments(body, httpHeaders).thenReturn(httpEntity);
+    }
+
+    @Test
+    public void shouldCallExchangeMethodOfRestTemplate() throws Exception {
+        String URI = "http://localhost/sync/pushData";
         syncRepository.sync(body);
-        verify(restTemplate, times(1)).put(URI, body);
+        verify(restTemplate, times(1)).exchange(URI, HttpMethod.PUT, httpEntity, Object.class);
     }
 
     @Test
@@ -64,9 +77,9 @@ public class SyncRepositoryImplTest {
         String errorMsg = "[Client Exception]:" + exceptionMessage;
 
         when(httpClientErrorException.getMessage()).thenReturn(exceptionMessage);
-        Mockito.doThrow(httpClientErrorException).when(restTemplate).put(URI, "");
+        Mockito.doThrow(httpClientErrorException).when(restTemplate).exchange(URI, HttpMethod.PUT, httpEntity, Object.class);
 
-        syncRepository.sync("");
+        syncRepository.sync(body);
 
         verify(logger, times(1)).error(errorMsg);
         verify(httpClientErrorException, times(1)).getMessage();
@@ -79,9 +92,9 @@ public class SyncRepositoryImplTest {
         String errorMsg = "[Server Exception]:" + exceptionMessage;
 
         when(httpServerErrorException.getMessage()).thenReturn(exceptionMessage);
-        Mockito.doThrow(httpServerErrorException).when(restTemplate).put(URI, "");
+        Mockito.doThrow(httpServerErrorException).when(restTemplate).exchange(URI, HttpMethod.PUT, httpEntity, Object.class);
 
-        syncRepository.sync("");
+        syncRepository.sync(body);
 
         verify(logger, times(1)).error(errorMsg);
         verify(httpServerErrorException, times(1)).getMessage();

@@ -1,6 +1,6 @@
 package com.thoughtworks.bahmnidhis2integrationservice.service.impl;
 
-import com.thoughtworks.bahmnidhis2integrationservice.dao.impl.SyncRepositoryImpl;
+import com.thoughtworks.bahmnidhis2integrationservice.repository.SyncRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ public class SyncServiceImplTest {
     SyncServiceImpl syncService;
 
     @Mock
-    private SyncRepositoryImpl syncRepository;
+    private SyncRepository syncRepository;
 
     @Before
     public void setUp() throws Exception {
