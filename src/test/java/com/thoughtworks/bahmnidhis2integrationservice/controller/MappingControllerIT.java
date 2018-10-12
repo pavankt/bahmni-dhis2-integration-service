@@ -53,6 +53,7 @@ public class MappingControllerIT{
     }
 
     @Test
+    @Sql(scripts = {"classpath:data/mapping_marker.sql"})
     public void shouldGetAllMappingsWithSyncInformation() {
         Map<String, MappingDetails> expected = new HashMap<>();
         // The date in the DB is localized. So the expected value in UTC need to account for the time-zone difference
